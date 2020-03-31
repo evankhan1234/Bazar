@@ -55,7 +55,7 @@ dependencies {
 
     //New Material Design
     implementation 'com.google.android.material:material:1.1.0-alpha10'
-
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
     //Kodein Dependency Injection
     implementation "org.kodein.di:kodein-di-generic-jvm:6.2.1"
     implementation "org.kodein.di:kodein-di-framework-android-x:6.2.1"

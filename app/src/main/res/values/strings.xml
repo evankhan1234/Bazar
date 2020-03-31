@@ -2,6 +2,14 @@
     <string name="app_name">Bazar</string>
     <string name="app_name_bazar">Bazar Inc</string>
     <string name="login">Login</string>
+    <string name="name">Name</string>
+    <string name="shop_name">Shop Name</string>
+    <string name="agreement">Agreement Date</string>
+    <string name="address">Address</string>
+    <string name="license_number">License Number</string>
+    <string name="create_account">Create Account</string>
+    <string name="step_one">STEP-1</string>
+    <string name="step_two">STEP-2</string>
     <string name="email">Email</string>
     <string name="with">Login with Email or Mobile number</string>
     <string name="password">Password</string>
@@ -9,4 +17,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="account">Do not Have a account?</string>
     <string name="sine_in">Please sign in to continue</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

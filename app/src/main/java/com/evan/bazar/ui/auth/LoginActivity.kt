@@ -55,6 +55,12 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
             et_email?.visibility=View.GONE
             et_mobile?.visibility=View.VISIBLE
         }
+        tv_sign_in?.setOnClickListener{
+            Intent(this, CreateAccountActivity::class.java).also {
+
+                startActivity(it)
+            }
+        }
         viewModel.authListener = this
 
         viewModel.getLoggedInUser().observe(this, Observer { user ->
