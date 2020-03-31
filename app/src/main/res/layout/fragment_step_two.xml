@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="vertical">
+        <Spinner
+                android:id="@+id/spinner_ward"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/test"
+                android:visibility="visible" />
+        <EditText
+                android:visibility="visible"
+                android:id="@+id/et_date"
+                android:inputType="text"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/smartphone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:focusable="false"
+                android:hint="@string/agreement"
+                android:paddingBottom="20dp"
+                android:textColor="@color/black" />
+        <EditText
+                android:visibility="visible"
+                android:id="@+id/et_shop_name"
+                android:inputType="text"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/smartphone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:hint="@string/shop_name"
+                android:paddingBottom="20dp"
+                android:textColor="@color/black" />
+        <EditText
+                android:id="@+id/et_shop_address"
+                android:inputType="textEmailAddress"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:hint="@string/address"
+                android:paddingBottom="20dp"
+                android:textColor="@color/black" />
+        <EditText
+                android:visibility="visible"
+                android:id="@+id/et_license_number"
+                android:inputType="text"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/smartphone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:hint="@string/license_number"
+                android:paddingBottom="20dp"
+                android:textColor="@color/black" />
+    </LinearLayout>
+
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:visibility="gone" />
+</RelativeLayout>
+
+
