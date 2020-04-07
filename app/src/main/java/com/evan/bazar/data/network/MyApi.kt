@@ -4,8 +4,11 @@ package com.evan.bazar.data.network
 import com.evan.bazar.data.network.post.AuthPost
 import com.evan.bazar.data.network.post.LoginResponse
 import com.evan.bazar.data.network.responses.AuthResponse
+import com.evan.bazar.data.network.responses.ImageResponse
 import com.evan.bazar.data.network.responses.QuotesResponse
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,6 +27,13 @@ interface MyApi {
     suspend fun userLoginFor(
         @Body authPost: AuthPost
     ) : Response<LoginResponse>
+
+    @Multipart
+    @POST("create-profile-image-api.php")
+    suspend fun createProfileImage(
+        @Header("Authorization") test:String,
+        @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
+    ) : Response<ImageResponse>
     @FormUrlEncoded
     @POST("signup")
     suspend fun userSignup(

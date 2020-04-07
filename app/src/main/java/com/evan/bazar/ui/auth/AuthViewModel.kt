@@ -6,9 +6,13 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import com.evan.bazar.data.network.post.AuthPost
 import com.evan.bazar.data.repositories.UserRepository
+import com.evan.bazar.interfaces.Listener
 import com.evan.bazar.util.ApiException
 import com.evan.bazar.util.Coroutines
 import com.evan.bazar.util.NoInternetException
+import com.google.gson.Gson
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 class AuthViewModel(
@@ -20,7 +24,7 @@ class AuthViewModel(
     var email: String? = null
     var password: String? = null
     var passwordconfirm: String? = null
-
+    var AddListener: Listener? = null
     var authListener: AuthListener? = null
 
     fun getLoggedInUser() = repository.getUser()
@@ -52,7 +56,34 @@ class AuthViewModel(
         }
 
     }
+    fun uploadImage(part: MultipartBody.Part, body: RequestBody){
+        //else success
+        Coroutines.main {
+            try {
+                val uploadImageResponse = repository.createImage(part,body,"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE1ODYyODM3MzUsIm5iZiI6MTU4NjI4Mzc0NSwiZXhwIjoxNTg2MzcwMTM1LCJhdWQiOiJteXVzZXJzIiwiZGF0YSI6eyJJZCI6MzUsIk93bmVyTmFtZSI6Ik1kIFNhaWZ1bCBJc2xhbSIsIkVtYWlsIjoiZXZhbjEwMEBob3RtYWlsLmNvbSJ9fQ.Cc2hjHWsoh6eRpG0GHwGSDufJukzEi5NHUQIbAXnfbv-Q9Yf7w14CJCyYuq5V1MpMQuCqEOLmeJpmZLhRlY1eA")
+                if (uploadImageResponse.success!! ) {
+                    Log.e("imageUpload",""+ Gson().toJson(uploadImageResponse));
+                    AddListener?.Success(uploadImageResponse.img_address!!)
+                } else {
+                    // val alerts = repository.getDeliveryistAPI(1)
+                    /**Save in local db*/
+                    //   repository.saveAllAlert(alerts)
+                    //listOfDelivery.value = alerts
+                    AddListener?.Failure(uploadImageResponse.message!!)
+                    Log.e("imageUpload",""+ Gson().toJson(uploadImageResponse));
 
+                }
+            } catch (e: ApiException) {
+                AddListener?.Success(e.message!!)
+//                deliveryAddListener!!.onFailure(e.message!!)
+            } catch (e: NoInternetException) {
+                 AddListener?.Success(e.message!!)
+//                deliveryAddListener!!.onFailure(e.message!!)
+            }
+
+        }
+
+    }
     fun onLogin(view: View){
         Intent(view.context, LoginActivity::class.java).also {
             view.context.startActivity(it)

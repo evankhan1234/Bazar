@@ -26,7 +26,7 @@
                         android:layout_marginTop="31dp"
                         android:src="@drawable/img_profile_icon" />
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/img_user_add"
                         android:layout_width="37dp"
                         android:layout_height="30dp"
