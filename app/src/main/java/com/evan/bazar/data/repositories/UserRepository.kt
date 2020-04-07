@@ -7,6 +7,9 @@ import com.evan.bazar.data.network.SafeApiRequest
 import com.evan.bazar.data.network.post.AuthPost
 import com.evan.bazar.data.network.post.LoginResponse
 import com.evan.bazar.data.network.responses.AuthResponse
+import com.evan.bazar.data.network.responses.ImageResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 class UserRepository(
@@ -19,6 +22,9 @@ class UserRepository(
     }
     suspend fun userLoginFor(auth: AuthPost): LoginResponse {
         return apiRequest { api.userLoginFor(auth) }
+    }
+    suspend fun createImage(part: MultipartBody.Part, body: RequestBody,temp:String): ImageResponse {
+        return apiRequest { api.createProfileImage(temp,part,body) }
     }
     suspend fun userSignup(
         name: String,
