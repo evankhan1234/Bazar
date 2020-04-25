@@ -6,6 +6,7 @@ import com.evan.bazar.data.network.post.LoginResponse
 import com.evan.bazar.data.network.responses.AuthResponse
 import com.evan.bazar.data.network.responses.ImageResponse
 import com.evan.bazar.data.network.responses.QuotesResponse
+import com.evan.bazar.data.network.responses.ShopTypeResponses
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -21,34 +22,43 @@ interface MyApi {
     suspend fun userLogin(
         @Field("email") email: String,
         @Field("password") password: String
-    ) : Response<AuthResponse>
+    ): Response<AuthResponse>
 
     @POST("login-api.php")
     suspend fun userLoginFor(
         @Body authPost: AuthPost
-    ) : Response<LoginResponse>
+    ): Response<LoginResponse>
 
+    //    @Multipart
+//    @POST("create-profile-image-api.php")
+//    suspend fun createProfileImage(
+//        @Header("Authorization") test:String,
+//        @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
+//    ) : Response<ImageResponse>
     @Multipart
-    @POST("create-profile-image-api.php")
+    @POST("create-sign-up-image.php")
     suspend fun createProfileImage(
-        @Header("Authorization") test:String,
         @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
-    ) : Response<ImageResponse>
+    ): Response<ImageResponse>
+
     @FormUrlEncoded
     @POST("signup")
     suspend fun userSignup(
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ) : Response<AuthResponse>
+    ): Response<AuthResponse>
 
+    @GET("shop-type.php")
+    suspend fun getShopType(
+    ): Response<ShopTypeResponses>
     @GET("quotes")
-    suspend fun getQuotes() : Response<QuotesResponse>
+    suspend fun getQuotes(): Response<QuotesResponse>
 
-    companion object{
+    companion object {
         operator fun invoke(
             networkConnectionInterceptor: NetworkConnectionInterceptor
-        ) : MyApi{
+        ): MyApi {
 
             val okkHttpclient = OkHttpClient.Builder()
                 .addInterceptor(networkConnectionInterceptor)
@@ -56,7 +66,7 @@ interface MyApi {
 
             return Retrofit.Builder()
                 .client(okkHttpclient)
-                .baseUrl("http://192.168.0.105/stationary/v1/")
+                .baseUrl("http://192.168.0.106/stationary/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(MyApi::class.java)

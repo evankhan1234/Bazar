@@ -40,7 +40,17 @@ class CreateAccountActivity : AppCompatActivity() {
     var btn_step_1: AppCompatButton ?=null
     var btn_step_2: AppCompatButton ?=null
     var step: Boolean?=null
-
+    var name: String=""
+    var mobile: String=""
+    var email: String=""
+    var password: String=""
+    var address: String=""
+    var image: String=""
+    var shopId: String=""
+    var shopAddress: String=""
+    var agreementDate: String=""
+    var shopName: String=""
+    var license: String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
@@ -48,14 +58,66 @@ class CreateAccountActivity : AppCompatActivity() {
         btn_step_2=findViewById(R.id.btn_step_2)
         addFragment(FRAG_STEP_ONE,false,null)
         btn_step_1?.setOnClickListener{
-            goToStepTwoFragment()
+            goToStepTwoFragment(shopId!!,agreementDate,shopName,shopAddress,license)
             btn_step_2?.visibility=View.VISIBLE
+            val f = getVisibleFragment()
+            if (f != null) {
+                if (f is StepOneFragment) {
+
+                    f.value()
+                  //  f.showImage(updated_image_url)
+                }
+                else if (f is StepTwoFragment) {
+
+                    f.value()
+                    Log.e("data","data"+name)
+                    Log.e("data","data"+mobile)
+                    Log.e("data","data"+email)
+                    Log.e("data","data"+password)
+                    Log.e("data","data"+address)
+                    Log.e("data","data"+shopId)
+                    Log.e("data","data"+shopAddress)
+                    Log.e("data","data"+agreementDate)
+                    Log.e("data","data"+shopName)
+                    Log.e("data","data"+license)
+                    Log.e("data","data"+image)
+                    //  f.showImage(updated_image_url)
+                }
+            }
+
+
+
 
         }
         btn_step_2?.setOnClickListener{
-            goToStepOneFragment()
+            goToStepOneFragment(name,mobile,email,password,address,image!!)
+            val f = getVisibleFragment()
+            if (f != null) {
+                if (f is StepTwoFragment) {
+
+                    f.value()
+                    //  f.showImage(updated_image_url)
+                }
+            }
 
         }
+    }
+    fun stepOneValue(names:String,mobiles:String,emails:String,passwords:String,addresss:String,images :String){
+        name=names
+        mobile=mobiles
+        email=emails
+        password=passwords
+        address=addresss
+        image=images
+
+    }
+    fun stepTwoValue(ids:String,dates:String,name:String,address:String,licenses:String){
+        shopId=ids
+        agreementDate=dates
+        shopName=name
+        shopAddress=address
+        license=licenses
+
     }
     fun addFragment(fragId: Int, isHasAnimation: Boolean, obj: Any?) {
         // init fragment manager
@@ -107,11 +169,79 @@ class CreateAccountActivity : AppCompatActivity() {
         fragTransaction!!.commit()
     }
 
-    fun goToStepOneFragment(){
-        addFragment(FRAG_STEP_ONE,true,null)
+    fun goToStepOneFragment(name:String,mobile:String,email:String,password:String,address:String,image :String){
+        mFragManager = supportFragmentManager
+        fragTransaction = mFragManager?.beginTransaction()
+        var fragId: Int? = 0
+        fragId = FRAG_STEP_ONE
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+        }
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+
+        var newFrag: Fragment? = null
+        // identify which fragment will be called
+        newFrag = StepOneFragment()
+        mCurrentFrag = newFrag
+        // init argument
+        val b = Bundle()
+        b.putString("name", name)
+        b.putString("mobile", mobile)
+        b.putString("email", email)
+        b.putString("password", password)
+        b.putString("address", address)
+        b.putString("image", image)
+        newFrag.setArguments(b)
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
+
+
+        fragTransaction?.add(R.id.main_container, newFrag!!, fragId.toString())
+        fragTransaction?.addToBackStack(fragId.toString())
+        fragTransaction!!.commit()
+
     }
-    fun goToStepTwoFragment(){
-        addFragment(FRAG_STEP_TWO,true,null)
+    fun goToStepTwoFragment(id:String,date:String,name:String,address:String,license:String){
+        mFragManager = supportFragmentManager
+        fragTransaction = mFragManager?.beginTransaction()
+        var fragId: Int? = 0
+        fragId = FRAG_STEP_TWO
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+        }
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+
+        var newFrag: Fragment? = null
+        // identify which fragment will be called
+        newFrag = StepTwoFragment()
+        mCurrentFrag = newFrag
+        // init argument
+        val b = Bundle()
+        b.putString("id", id)
+        b.putString("date", date)
+        b.putString("name", name)
+        b.putString("address", address)
+        b.putString("license", license)
+        newFrag.setArguments(b)
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
+
+
+        fragTransaction?.add(R.id.main_container, newFrag!!, fragId.toString())
+        fragTransaction?.addToBackStack(fragId.toString())
+        fragTransaction!!.commit()
     }
     private val CAMERA_PERMISSION_REQUEST_CODE = 1001
     private val RESULT_TAKE_PHOTO = 10
