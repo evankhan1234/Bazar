@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.evan.bazar.data.network.post.AuthPost
 import com.evan.bazar.data.repositories.UserRepository
 import com.evan.bazar.interfaces.Listener
+import com.evan.bazar.ui.interfaces.ShopTypeInterface
 import com.evan.bazar.util.ApiException
 import com.evan.bazar.util.Coroutines
 import com.evan.bazar.util.NoInternetException
@@ -26,43 +27,45 @@ class AuthViewModel(
     var passwordconfirm: String? = null
     var AddListener: Listener? = null
     var authListener: AuthListener? = null
+    var shopTypeListener: ShopTypeInterface? = null
 
     fun getLoggedInUser() = repository.getUser()
 
 
-    fun onLoginButtonClick(view: View){
+    fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
-        if(email.isNullOrEmpty() || password.isNullOrEmpty()){
+        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
             authListener?.onFailure("Invalid email or password")
             return
         }
 
         Coroutines.main {
             try {
-                authPost= AuthPost(email!!, password!!,"")
+                authPost = AuthPost(email!!, password!!, "")
                 val authResponse = repository.userLoginFor(authPost!!)
-                Log.e("response","response"+authResponse.message)
+                Log.e("response", "response" + authResponse.message)
 //                authResponse.user?.let {
 //                    authListener?.onSuccess(it)
 //                    repository.saveUser(it)
 //                    return@main
 //                }
                 authListener?.onFailure(authResponse.message!!)
-            }catch(e: ApiException){
+            } catch (e: ApiException) {
                 authListener?.onFailure(e.message!!)
-            }catch (e: NoInternetException){
+            } catch (e: NoInternetException) {
                 authListener?.onFailure(e.message!!)
             }
         }
 
     }
-    fun uploadImage(part: MultipartBody.Part, body: RequestBody){
+
+    fun uploadImage(part: MultipartBody.Part, body: RequestBody) {
         //else success
         Coroutines.main {
             try {
-                val uploadImageResponse = repository.createImage(part,body,"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE1ODYyODM3MzUsIm5iZiI6MTU4NjI4Mzc0NSwiZXhwIjoxNTg2MzcwMTM1LCJhdWQiOiJteXVzZXJzIiwiZGF0YSI6eyJJZCI6MzUsIk93bmVyTmFtZSI6Ik1kIFNhaWZ1bCBJc2xhbSIsIkVtYWlsIjoiZXZhbjEwMEBob3RtYWlsLmNvbSJ9fQ.Cc2hjHWsoh6eRpG0GHwGSDufJukzEi5NHUQIbAXnfbv-Q9Yf7w14CJCyYuq5V1MpMQuCqEOLmeJpmZLhRlY1eA")
-                if (uploadImageResponse.success!! ) {
-                    Log.e("imageUpload",""+ Gson().toJson(uploadImageResponse));
+                val uploadImageResponse = repository.createImage(part, body)
+                if (uploadImageResponse.success!!) {
+                    Log.e("imageUpload", "" + Gson().toJson(uploadImageResponse));
                     AddListener?.Success(uploadImageResponse.img_address!!)
                 } else {
                     // val alerts = repository.getDeliveryistAPI(1)
@@ -70,52 +73,55 @@ class AuthViewModel(
                     //   repository.saveAllAlert(alerts)
                     //listOfDelivery.value = alerts
                     AddListener?.Failure(uploadImageResponse.message!!)
-                    Log.e("imageUpload",""+ Gson().toJson(uploadImageResponse));
+                    Log.e("imageUpload", "" + Gson().toJson(uploadImageResponse));
 
                 }
             } catch (e: ApiException) {
                 AddListener?.Success(e.message!!)
 //                deliveryAddListener!!.onFailure(e.message!!)
+                Log.e("imageUpload", "" + (e.message!!));
             } catch (e: NoInternetException) {
-                 AddListener?.Success(e.message!!)
+                AddListener?.Success(e.message!!)
 //                deliveryAddListener!!.onFailure(e.message!!)
+                Log.e("imageUpload", "" + (e.message!!));
             }
 
         }
 
     }
-    fun onLogin(view: View){
+
+    fun onLogin(view: View) {
         Intent(view.context, LoginActivity::class.java).also {
             view.context.startActivity(it)
         }
     }
 
-    fun onSignup(view: View){
+    fun onSignup(view: View) {
         Intent(view.context, SignupActivity::class.java).also {
             view.context.startActivity(it)
         }
     }
 
 
-    fun onSignupButtonClick(view: View){
+    fun onSignupButtonClick(view: View) {
         authListener?.onStarted()
 
-        if(name.isNullOrEmpty()){
+        if (name.isNullOrEmpty()) {
             authListener?.onFailure("Name is required")
             return
         }
 
-        if(email.isNullOrEmpty()){
+        if (email.isNullOrEmpty()) {
             authListener?.onFailure("Email is required")
             return
         }
 
-        if(password.isNullOrEmpty()){
+        if (password.isNullOrEmpty()) {
             authListener?.onFailure("Please enter a password")
             return
         }
 
-        if(password != passwordconfirm){
+        if (password != passwordconfirm) {
             authListener?.onFailure("Password did not match")
             return
         }
@@ -130,13 +136,28 @@ class AuthViewModel(
                     return@main
                 }
                 authListener?.onFailure(authResponse.message!!)
-            }catch(e: ApiException){
+            } catch (e: ApiException) {
                 authListener?.onFailure(e.message!!)
-            }catch (e: NoInternetException){
+            } catch (e: NoInternetException) {
                 authListener?.onFailure(e.message!!)
             }
         }
 
     }
 
+    fun getShopType() {
+        Coroutines.main {
+            try {
+                val authResponse = repository.getShopType()
+                shopTypeListener?.shopType(authResponse?.data!!)
+                Log.e("response", "response" + Gson().toJson(authResponse))
+
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
 }

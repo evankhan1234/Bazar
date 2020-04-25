@@ -10,8 +10,8 @@
     <string name="address">Address</string>
     <string name="license_number">License Number</string>
     <string name="create_account">Create Account</string>
-    <string name="step_one">STEP-1</string>
-    <string name="step_two">STEP-2</string>
+    <string name="step_one">Next</string>
+    <string name="step_two">Previous</string>
     <string name="email">Email</string>
     <string name="with">Login with Email or Mobile number</string>
     <string name="password">Password</string>
