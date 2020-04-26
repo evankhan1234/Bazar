@@ -8,16 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageButton
 import com.bumptech.glide.Glide
 
 import com.evan.bazar.R
 import com.evan.bazar.ui.auth.CreateAccountActivity
+import com.evan.bazar.util.snackbar
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_login.*
 
 class StepOneFragment : Fragment() {
 
     var root:View?=null
+    var root_layout:RelativeLayout?=null
     var img_user_add: AppCompatImageButton?=null
     var img_user_profile: CircleImageView?=null
     var et_name:EditText?=null
@@ -32,6 +36,7 @@ class StepOneFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         root= inflater.inflate(R.layout.fragment_step_one, container, false)
+        root_layout=root?.findViewById(R.id.root_layout)
         et_name=root?.findViewById(R.id.et_name)
         et_mobile=root?.findViewById(R.id.et_mobile)
         et_email=root?.findViewById(R.id.et_email)
@@ -82,7 +87,31 @@ class StepOneFragment : Fragment() {
         email=et_email?.text.toString()
         password=et_password?.text.toString()
         address=et_address?.text.toString()
-        (activity as CreateAccountActivity?)!!.stepOneValue(name,mobile,email,password,address,image_address!!)
+        if(name.isNullOrEmpty() && mobile.isNullOrEmpty()&& email.isNullOrEmpty() && password.isNullOrEmpty() && address.isNullOrEmpty()&& image_address.isNullOrEmpty()){
+            root_layout?.snackbar("All Field is Empty")
+        }
+        else if(name.isNullOrEmpty()){
+            root_layout?.snackbar("Name is Empty")
+        }
+        else if(mobile.isNullOrEmpty()){
+            root_layout?.snackbar("Mobile is Empty")
+        }
+        else if(email.isNullOrEmpty()){
+            root_layout?.snackbar("Email is Empty")
+        }
+        else if(password.isNullOrEmpty()){
+            root_layout?.snackbar("Password is Empty")
+        }
+        else if(address.isNullOrEmpty()){
+            root_layout?.snackbar("Address is Empty")
+        }
+        else if(image_address.isNullOrEmpty()){
+            root_layout?.snackbar("Image is Empty")
+        }
+        else{
+            (activity as CreateAccountActivity?)!!.stepOneValue(name,mobile,email,password,address,image_address!!)
+        }
+
     }
     fun showImage(temp:String?){
         image_address="http://192.168.0.106/"+temp

@@ -13,6 +13,9 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
@@ -20,18 +23,32 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProviders
 import com.evan.bazar.BuildConfig
 import com.evan.bazar.R
 import com.evan.bazar.interfaces.DialogActionListener
 import com.evan.bazar.ui.fragments.StepOneFragment
 import com.evan.bazar.ui.fragments.StepTwoFragment
+import com.evan.bazar.ui.home.HomeActivity
+import com.evan.bazar.ui.interfaces.SignUpInterface
 import com.evan.bazar.util.*
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_login.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
+
 import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateAccountActivity : AppCompatActivity() {
+class CreateAccountActivity : AppCompatActivity(),KodeinAware, SignUpInterface {
+    override val kodein by kodein()
+    private lateinit var viewModel: AuthViewModel
+    private val factory: AuthViewModelFactory by instance()
+    var progress_bar: ProgressBar? = null
     var mFragManager: FragmentManager? = null
     var fragTransaction: FragmentTransaction? = null
     var mCurrentFrag: Fragment? = null
@@ -51,15 +68,20 @@ class CreateAccountActivity : AppCompatActivity() {
     var agreementDate: String=""
     var shopName: String=""
     var license: String=""
+    var root_layout: RelativeLayout?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
+        viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
+        viewModel.signUpInterface=this
+        root_layout=findViewById(R.id.root_layout)
+        progress_bar=findViewById(R.id.progress_bar)
         btn_step_1=findViewById(R.id.btn_step_1)
         btn_step_2=findViewById(R.id.btn_step_2)
         addFragment(FRAG_STEP_ONE,false,null)
         btn_step_1?.setOnClickListener{
-            goToStepTwoFragment(shopId!!,agreementDate,shopName,shopAddress,license)
-            btn_step_2?.visibility=View.VISIBLE
+
+
             val f = getVisibleFragment()
             if (f != null) {
                 if (f is StepOneFragment) {
@@ -82,6 +104,10 @@ class CreateAccountActivity : AppCompatActivity() {
                     Log.e("data","data"+license)
                     Log.e("data","data"+image)
                     //  f.showImage(updated_image_url)
+                    val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+                    val currentDate = sdf.format(Date())
+                    Log.e("currentDate","currentDate"+currentDate)
+                    viewModel.signUp(email,password,mobile,name,agreementDate,address,"0",shopId,image,currentDate,shopName,shopAddress,license)
                 }
             }
 
@@ -99,6 +125,7 @@ class CreateAccountActivity : AppCompatActivity() {
                     //  f.showImage(updated_image_url)
                 }
             }
+            btn_step_2?.visibility=View.GONE
 
         }
     }
@@ -109,6 +136,9 @@ class CreateAccountActivity : AppCompatActivity() {
         password=passwords
         address=addresss
         image=images
+        goToStepTwoFragment(shopId!!,agreementDate,shopName,shopAddress,license)
+        btn_step_2?.visibility=View.VISIBLE
+        btn_step_1?.text="Finish"
 
     }
     fun stepTwoValue(ids:String,dates:String,name:String,address:String,licenses:String){
@@ -117,7 +147,7 @@ class CreateAccountActivity : AppCompatActivity() {
         shopName=name
         shopAddress=address
         license=licenses
-
+        btn_step_1?.text="Next"
     }
     fun addFragment(fragId: Int, isHasAnimation: Boolean, obj: Any?) {
         // init fragment manager
@@ -498,5 +528,29 @@ class CreateAccountActivity : AppCompatActivity() {
                 null
             )
         }
+    }
+
+    override fun onStartProgress() {
+        progress_bar?.show()
+
+    }
+
+    override fun onEndProgress() {
+        progress_bar?.hide()
+
+    }
+
+    override fun onSignUpSuccess(message: String) {
+        progress_bar?.hide()
+        root_layout?.snackbar(message)
+        Intent(this, LoginActivity::class.java).also {
+            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(it)
+        }
+    }
+
+    override fun onSignUpFailed(message: String) {
+        progress_bar?.hide()
+        root_layout?.snackbar(message)
     }
 }

@@ -6,8 +6,10 @@ import com.evan.bazar.data.network.MyApi
 import com.evan.bazar.data.network.SafeApiRequest
 import com.evan.bazar.data.network.post.AuthPost
 import com.evan.bazar.data.network.post.LoginResponse
+import com.evan.bazar.data.network.post.RegistrationPost
 import com.evan.bazar.data.network.responses.AuthResponse
 import com.evan.bazar.data.network.responses.ImageResponse
+import com.evan.bazar.data.network.responses.RegistrationResponse
 import com.evan.bazar.data.network.responses.ShopTypeResponses
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -23,6 +25,9 @@ class UserRepository(
     }
     suspend fun userLoginFor(auth: AuthPost): LoginResponse {
         return apiRequest { api.userLoginFor(auth) }
+    }
+    suspend fun userRegistrationFor(registrationPost: RegistrationPost): RegistrationResponse {
+        return apiRequest { api.userRegistrationFor(registrationPost) }
     }
     suspend fun getShopType(): ShopTypeResponses {
         return apiRequest { api.getShopType() }

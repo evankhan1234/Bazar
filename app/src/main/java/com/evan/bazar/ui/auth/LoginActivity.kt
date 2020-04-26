@@ -3,6 +3,7 @@ package com.evan.bazar.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
@@ -22,6 +23,8 @@ import com.evan.bazar.util.snackbar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
@@ -50,10 +53,12 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
         radio_email?.setOnClickListener{
             et_mobile?.visibility=View.GONE
             et_email?.visibility=View.VISIBLE
+            et_mobile?.setText("")
         }
         radio_mobile?.setOnClickListener{
             et_email?.visibility=View.GONE
             et_mobile?.visibility=View.VISIBLE
+            et_mobile?.setText("")
         }
         tv_sign_in?.setOnClickListener{
             Intent(this, CreateAccountActivity::class.java).also {

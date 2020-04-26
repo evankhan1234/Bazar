@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import com.evan.bazar.data.network.post.AuthPost
+import com.evan.bazar.data.network.post.RegistrationPost
 import com.evan.bazar.data.repositories.UserRepository
 import com.evan.bazar.interfaces.Listener
 import com.evan.bazar.ui.interfaces.ShopTypeInterface
+import com.evan.bazar.ui.interfaces.SignUpInterface
 import com.evan.bazar.util.ApiException
 import com.evan.bazar.util.Coroutines
 import com.evan.bazar.util.NoInternetException
@@ -21,11 +23,14 @@ class AuthViewModel(
 ) : ViewModel() {
 
     var authPost: AuthPost? = null
+    var registrationPost: RegistrationPost? = null
     var name: String? = null
-    var email: String? = null
+    var email: String? = ""
+    var mobile: String? = ""
     var password: String? = null
     var passwordconfirm: String? = null
     var AddListener: Listener? = null
+    var signUpInterface: SignUpInterface? = null
     var authListener: AuthListener? = null
     var shopTypeListener: ShopTypeInterface? = null
 
@@ -34,14 +39,14 @@ class AuthViewModel(
 
     fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
-        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-            authListener?.onFailure("Invalid email or password")
+        if ( password.isNullOrEmpty()) {
+            authListener?.onFailure("Password is Empty")
             return
         }
 
         Coroutines.main {
             try {
-                authPost = AuthPost(email!!, password!!, "")
+                authPost = AuthPost(email!!, password!!, mobile!!)
                 val authResponse = repository.userLoginFor(authPost!!)
                 Log.e("response", "response" + authResponse.message)
 //                authResponse.user?.let {
@@ -155,6 +160,38 @@ class AuthViewModel(
             } catch (e: ApiException) {
 
             } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+
+    fun signUp(email:String,password:String,mobile:String,name:String,agreementDate:String,ownerAddress:String,status:String,shopTypeId:String,picture:String,created:String,shopName:String,shopAddress:String,licenseNumber:String) {
+        signUpInterface?.onStartProgress()
+        Coroutines.main {
+            try {
+                registrationPost= RegistrationPost(email,password,mobile,name,agreementDate,ownerAddress,status,shopTypeId,picture,created,shopName,shopAddress,licenseNumber)
+                val authResponse = repository.userRegistrationFor(registrationPost!!)
+                Log.e("response", "response" + Gson().toJson(authResponse))
+                if (authResponse.success!!) {
+
+                    signUpInterface?.onEndProgress()
+                    signUpInterface?.onSignUpSuccess(authResponse.message!!)
+
+                } else {
+                    signUpInterface?.onEndProgress()
+                    signUpInterface?.onSignUpFailed(authResponse.message!!)
+
+                }
+            } catch (e: ApiException) {
+                Log.e("ApiException", "" + e.message)
+                signUpInterface?.onSignUpFailed(e.message!!)
+                signUpInterface?.onEndProgress()
+            } catch (e: NoInternetException) {
+                signUpInterface?.onEndProgress()
+                Log.e("NoInternetException", "" + e.message)
+                signUpInterface?.onSignUpFailed(e.message!!)
+                signUpInterface?.onEndProgress()
 
             }
         }

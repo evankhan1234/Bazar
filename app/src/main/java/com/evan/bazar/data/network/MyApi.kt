@@ -3,10 +3,8 @@ package com.evan.bazar.data.network
 
 import com.evan.bazar.data.network.post.AuthPost
 import com.evan.bazar.data.network.post.LoginResponse
-import com.evan.bazar.data.network.responses.AuthResponse
-import com.evan.bazar.data.network.responses.ImageResponse
-import com.evan.bazar.data.network.responses.QuotesResponse
-import com.evan.bazar.data.network.responses.ShopTypeResponses
+import com.evan.bazar.data.network.post.RegistrationPost
+import com.evan.bazar.data.network.responses.*
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -28,6 +26,12 @@ interface MyApi {
     suspend fun userLoginFor(
         @Body authPost: AuthPost
     ): Response<LoginResponse>
+
+
+    @POST("create-user-api.php")
+    suspend fun userRegistrationFor(
+        @Body registrationPost: RegistrationPost
+    ): Response<RegistrationResponse>
 
     //    @Multipart
 //    @POST("create-profile-image-api.php")

@@ -103,7 +103,7 @@
                     android:layout_marginTop="30dp"
                     android:hint="@string/mobile"
                     android:paddingBottom="20dp"
-                    android:text="@={viewmodel.email}"
+                    android:text="@={viewmodel.mobile}"
                     android:textColor="@color/black" />
             <EditText
                     android:id="@+id/et_email"
