@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.evan.bazar.R
@@ -20,6 +17,7 @@ import com.evan.bazar.ui.auth.AuthViewModel
 import com.evan.bazar.ui.auth.AuthViewModelFactory
 import com.evan.bazar.ui.auth.CreateAccountActivity
 import com.evan.bazar.ui.interfaces.ShopTypeInterface
+import com.evan.bazar.util.snackbar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
@@ -41,6 +39,7 @@ class StepTwoFragment : Fragment(), KodeinAware, ShopTypeInterface {
     var calender: Calendar? = null
     var shopTypeDataAdapter: ArrayAdapter<String>? = null
     var shopType: MutableList<ShopType>? = null
+    var root_layout: RelativeLayout?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +47,7 @@ class StepTwoFragment : Fragment(), KodeinAware, ShopTypeInterface {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_step_two, container, false)
         viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
+        root_layout = root?.findViewById(R.id.root_layout)
         et_date = root?.findViewById(R.id.et_date)
         et_shop_name = root?.findViewById(R.id.et_shop_name)
         et_shop_address = root?.findViewById(R.id.et_shop_address)
@@ -82,10 +82,13 @@ class StepTwoFragment : Fragment(), KodeinAware, ShopTypeInterface {
             et_license_number?.setText(license)
             Handler().postDelayed({
 
-                for (i in shopType!!.indices) {
-                    if (shopType!!.get(i).Id.equals(id)) {
-                        spinner_shop_type?.setSelection(i)
+                try {
+                    for (i in shopType!!.indices) {
+                        if (shopType!!.get(i).Id.equals(id)) {
+                            spinner_shop_type?.setSelection(i)
+                        }
                     }
+                } catch (e: Exception) {
                 }
 
 
@@ -104,7 +107,24 @@ class StepTwoFragment : Fragment(), KodeinAware, ShopTypeInterface {
         name = et_shop_name?.text.toString()
         license = et_license_number?.text.toString()
         shopAddress = et_shop_address?.text.toString()
-        (activity as CreateAccountActivity?)!!.stepTwoValue(id_!!, date, name, shopAddress, license)
+        if(name.isNullOrEmpty() && date.isNullOrEmpty()&& license.isNullOrEmpty() && shopAddress.isNullOrEmpty() ){
+            root_layout?.snackbar("All Field is Empty")
+        }
+        else if(name.isNullOrEmpty()){
+            root_layout?.snackbar("Name is Empty")
+        }
+        else if(date.isNullOrEmpty()){
+            root_layout?.snackbar("Agreement Date is Empty")
+        }
+        else if(license.isNullOrEmpty()){
+            root_layout?.snackbar("License is Empty")
+        }
+        else if(shopAddress.isNullOrEmpty()){
+            root_layout?.snackbar("Shop Address is Empty")
+        }
+        else{
+            (activity as CreateAccountActivity?)!!.stepTwoValue(id_!!, date, name, shopAddress, license)
+        }
     }
 
     override fun shopType(shop: MutableList<ShopType>?) {
