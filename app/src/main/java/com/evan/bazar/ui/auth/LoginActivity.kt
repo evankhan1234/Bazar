@@ -17,9 +17,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.User
 import com.evan.bazar.databinding.ActivityLoginBinding
-import com.evan.bazar.util.hide
-import com.evan.bazar.util.show
-import com.evan.bazar.util.snackbar
+import com.evan.bazar.util.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -68,14 +66,31 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
         }
         viewModel.authListener = this
 
-        viewModel.getLoggedInUser().observe(this, Observer { user ->
-            if(user != null){
-                Intent(this, HomeActivity::class.java).also {
-                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(it)
-                }
+        var token:String?=""
+        token = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
+        if (token != null && !token?.trim().equals("") && !token.isNullOrEmpty()) {
+            Intent(this, HomeActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(it)
             }
-        })
+        } else {
+           // gotoLoginPage()
+        }
+//        viewModel.getLoggedInUser().observe(this, Observer { user ->
+//            if(user != null){
+//                Intent(this, HomeActivity::class.java).also {
+//                   it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                    startActivity(it)
+//                }
+//            }
+//        })
+//        Coroutines.main {
+//            viewModel.quotes.await().observe(this, Observer { user ->
+//                if(user != null){
+//                  //  initRecyclerView(user!!)
+//                }
+//            })
+//        }
         text_building_name =
             resources!!.getString(R.string.account) + "<font color=#DDC915> Sign up</font>"
         tv_sign_in?.text = Html.fromHtml(text_building_name)

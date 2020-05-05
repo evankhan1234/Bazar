@@ -10,7 +10,7 @@ import com.evan.bazar.data.db.entities.User
 
 @Database(
     entities = [User::class, Quote::class],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -34,6 +34,6 @@ abstract class AppDatabase : RoomDatabase() {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "MyDatabase.db"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
     }
 }
