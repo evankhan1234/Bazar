@@ -18,7 +18,7 @@ interface UserDao{
     @Query("SELECT * FROM user WHERE uid = $CURRENT_USER_ID")
     fun getuser() : LiveData<User>
 
-    @Query("SELECT * FROM user WHERE uid = $CURRENT_USER_ID")
+    @Query("SELECT * FROM user")
     fun getuserList() : LiveData<List<User>>
 
 }

@@ -10,9 +10,7 @@ import com.evan.bazar.data.repositories.UserRepository
 import com.evan.bazar.interfaces.Listener
 import com.evan.bazar.ui.interfaces.ShopTypeInterface
 import com.evan.bazar.ui.interfaces.SignUpInterface
-import com.evan.bazar.util.ApiException
-import com.evan.bazar.util.Coroutines
-import com.evan.bazar.util.NoInternetException
+import com.evan.bazar.util.*
 import com.google.gson.Gson
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,6 +34,9 @@ class AuthViewModel(
 
     fun getLoggedInUser() = repository.getUser()
 
+    val quotes by lazyDeferred {
+        repository.getUserList()
+    }
 
     fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
@@ -49,12 +50,19 @@ class AuthViewModel(
                 authPost = AuthPost(email!!, password!!, mobile!!)
                 val authResponse = repository.userLoginFor(authPost!!)
                 Log.e("response", "response" + authResponse.message)
+                SharedPreferenceUtil.saveShared(
+                    view.context,
+                    SharedPreferenceUtil.TYPE_AUTH_TOKEN,
+                    authResponse.jwt!!
+                )
+                authListener?.onSuccess(authResponse.data!!)
+                repository.saveUser(authResponse.data!!)
 //                authResponse.user?.let {
 //                    authListener?.onSuccess(it)
 //                    repository.saveUser(it)
 //                    return@main
 //                }
-                authListener?.onFailure(authResponse.message!!)
+               // authListener?.onFailure(authResponse.message!!)
             } catch (e: ApiException) {
                 authListener?.onFailure(e.message!!)
             } catch (e: NoInternetException) {
@@ -135,12 +143,12 @@ class AuthViewModel(
         Coroutines.main {
             try {
                 val authResponse = repository.userSignup(name!!, email!!, password!!)
-                authResponse.user?.let {
+                authResponse.data?.let {
                     authListener?.onSuccess(it)
-                    repository.saveUser(it)
+                   //  repository.saveUser(it)
                     return@main
                 }
-                authListener?.onFailure(authResponse.message!!)
+               // authListener?.onFailure(authResponse.message!!)
             } catch (e: ApiException) {
                 authListener?.onFailure(e.message!!)
             } catch (e: NoInternetException) {

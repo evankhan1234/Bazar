@@ -20,7 +20,7 @@ class ProfileViewModel(
 
     fun saveUser(user: User){
         Coroutines.main {
-            Log.e("sdfds","Sds"+user.created_at)
+          //  Log.e("sdfds","Sds"+user.created_at)
             repository.saveUser(user)
         }
 
