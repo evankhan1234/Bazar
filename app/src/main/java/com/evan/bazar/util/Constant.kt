@@ -26,6 +26,7 @@ var fragmentStack: Fragment? =  null
 const val FRAG_TOP: Int = 1
 const val FRAG_STORE: Int = 2
 const val FRAG_CATEGORY: Int = 6
+const val FRAG_CREATE_CATEGORY: Int = 7
 const val FRAG_ORDER: Int = 3
 const val FRAG_SETTINGS: Int = 4
 const val FRAG_NOTICE: Int = 5

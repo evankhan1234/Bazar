@@ -56,6 +56,10 @@ interface MyApi {
     @GET("shop-type.php")
     suspend fun getShopType(
     ): Response<ShopTypeResponses>
+    @GET("product-category-type-get.php")
+    suspend fun getCategoryType(
+        @Header("Authorization") Authorization:String
+    ): Response<CategoryTypeResponse>
     @GET("quotes")
     suspend fun getQuotes(): Response<QuotesResponse>
 

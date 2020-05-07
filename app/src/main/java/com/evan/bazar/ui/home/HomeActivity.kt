@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.evan.bazar.R
 import com.evan.bazar.ui.home.category.CategoryFragment
+import com.evan.bazar.ui.home.category.CreateCategoryFragment
 import com.evan.bazar.ui.home.dashboard.DashboardFragment
 import com.evan.bazar.ui.home.order.OrderFragment
 import com.evan.bazar.ui.home.settings.SettingsFragment
@@ -83,9 +84,15 @@ class HomeActivity : AppCompatActivity() {
                 storeFragment.removeChild()
                 setUpHeader(FRAG_STORE)
             }
-
+            if (f is CategoryFragment) {
+                val storeFragment: CategoryFragment =
+                    mFragManager?.findFragmentByTag(FRAG_CATEGORY.toString()) as CategoryFragment
+                storeFragment.removeChild()
+                setUpHeader(FRAG_CATEGORY)
+            }
 
         }
+
     }
     fun backPress() {
         hideKeyboard(this)
@@ -95,6 +102,11 @@ class HomeActivity : AppCompatActivity() {
     fun goToCategoryFragment() {
         setUpHeader(FRAG_CATEGORY)
         addFragment(FRAG_CATEGORY, true, null)
+
+    }
+    fun goToCreateCategoryFragment() {
+        setUpHeader(FRAG_CREATE_CATEGORY)
+        addFragment(FRAG_CREATE_CATEGORY, true, null)
 
     }
     fun addFragment(fragId: Int, isHasAnimation: Boolean, obj: Any?) {
@@ -130,7 +142,9 @@ class HomeActivity : AppCompatActivity() {
             FRAG_CATEGORY -> {
                 newFrag = CategoryFragment()
             }
-
+            FRAG_CREATE_CATEGORY-> {
+                newFrag = CreateCategoryFragment()
+            }
 
         }
         mCurrentFrag = newFrag
@@ -149,7 +163,7 @@ class HomeActivity : AppCompatActivity() {
         }
         // param 1: container id, param 2: new fragment, param 3: fragment id
 
-        fragTransaction?.add(R.id.main_container, newFrag!!, fragId.toString())
+        fragTransaction?.replace(R.id.main_container, newFrag!!, fragId.toString())
         // prevent showed when user press back fabReview
         fragTransaction?.addToBackStack(fragId.toString())
         //  fragTransaction?.hide(active).show(guideFragment).commit();
