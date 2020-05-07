@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:ignore="MissingDefaultResource">
+    <androidx.cardview.widget.CardView
+            android:id="@+id/line1"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="22dp"
+            android:visibility="visible"
+            android:layout_marginRight="22dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                >
+
+
+
+            <RelativeLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:layout_alignParentLeft="true"
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
+                        android:gravity="center_vertical"
+                        android:letterSpacing=".00"
+                        android:maxLines="1"
+                        android:text="Coca-Cola"
+                        android:textColor="@color/black_again"
+                        android:textSize="19sp" />
+
+                <TextView
+                        android:textStyle="bold"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical"
+                        android:letterSpacing=".00"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/black_again"
+                        android:textSize="19sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:layout_alignParentLeft="true"
+                        android:id="@+id/tv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
+                        android:gravity="center_vertical"
+                        android:letterSpacing=".00"
+                        android:maxLines="1"
+                        android:text="02,January,2020"
+                        android:textColor="@color/black_again"
+                        android:textSize="19sp" />
+                <TextView
+                        android:layout_alignParentRight="true"
+                        android:textAlignment="center"
+                        android:id="@+id/text_follow"
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/btn_yes"
+                        android:paddingTop="7dp"
+                        android:text="Update"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

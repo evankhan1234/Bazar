@@ -21,8 +21,7 @@ import com.evan.bazar.util.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 
 class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {

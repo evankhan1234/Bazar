@@ -30,4 +30,5 @@
     <color name="gradient_strong">#80AAAAAA</color>
     <color name="gradient_weak">#00555555</color>
     <color name="checkbox_color">#17ABED</color>
+    <color name="green">#0E7112</color>
 </resources>
