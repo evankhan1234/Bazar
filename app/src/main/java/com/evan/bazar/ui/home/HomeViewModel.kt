@@ -4,10 +4,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
-import com.evan.bazar.data.network.post.AuthPost
-import com.evan.bazar.data.network.post.CategoryType
-import com.evan.bazar.data.network.post.CategoryUpdate
-import com.evan.bazar.data.network.post.RegistrationPost
+import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.repositories.HomeRepository
 import com.evan.bazar.data.repositories.UserRepository
 import com.evan.bazar.interfaces.Listener
@@ -16,6 +13,7 @@ import com.evan.bazar.ui.auth.LoginActivity
 import com.evan.bazar.ui.auth.SignupActivity
 import com.evan.bazar.ui.home.category.ICategoryListener
 import com.evan.bazar.ui.home.category.ICreateCategoryListener
+import com.evan.bazar.ui.home.supplier.ICreateSupplierListener
 import com.evan.bazar.ui.interfaces.ShopTypeInterface
 import com.evan.bazar.ui.interfaces.SignUpInterface
 import com.evan.bazar.util.*
@@ -28,7 +26,9 @@ class HomeViewModel(
 ) : ViewModel() {
     var categoryListener: ICategoryListener?=null
     var createCategoryListener: ICreateCategoryListener?=null
+    var createSupplierListener: ICreateSupplierListener?=null
     var typePost: CategoryType? = null
+    var supplierPost: SupplierPost? = null
     var typeUpdatePost: CategoryUpdate? = null
 
     fun getCategoryType(header:String) {
@@ -80,6 +80,25 @@ class HomeViewModel(
                 createCategoryListener?.end()
             } catch (e: NoInternetException) {
                 createCategoryListener?.end()
+            }
+        }
+
+    }
+    fun postSupplier(header:String,name:String,phone:String,email:String,address:String,details:String,image:String,status:Int,shopId:Int,created:String) {
+        createSupplierListener?.started()
+        Coroutines.main {
+            try {
+                supplierPost = SupplierPost(name!!,phone!!,email!!,address!!,details!!,image!!,status!!, shopId!!,created!!)
+                Log.e("response", "response" + Gson().toJson(supplierPost))
+                val response = repository.postSupplier(header,supplierPost!!)
+                createSupplierListener?.show(response?.message!!)
+                createSupplierListener?.end()
+                Log.e("response", "response" + Gson().toJson(response))
+
+            } catch (e: ApiException) {
+                createSupplierListener?.end()
+            } catch (e: NoInternetException) {
+                createSupplierListener?.end()
             }
         }
 

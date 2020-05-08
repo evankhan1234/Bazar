@@ -65,10 +65,21 @@ interface MyApi {
         @Body categoryPost: CategoryPost
     ): Response<CategoryTypeResponse>
 
+    @POST("supplier-pagination.php")
+    suspend fun supplierPagination(
+        @Header("Authorization") Authorization:String,
+        @Body limitPost: LimitPost
+    ): Response<SupplierResponses>
+
     @POST("product-category.php")
     suspend fun createCategory(
         @Header("Authorization") Authorization:String,
         @Body categoryPost: CategoryType
+    ): Response<CategoryTypePostResponse>
+    @POST("create-suppplier-api.php")
+    suspend fun createSupplier(
+        @Header("Authorization") Authorization:String,
+        @Body supplierPost: SupplierPost
     ): Response<CategoryTypePostResponse>
     @POST("update-product-category.php")
     suspend fun updateCategory(

@@ -16,6 +16,10 @@ import com.evan.bazar.ui.home.category.CategorySourceFactory
 import com.evan.bazar.ui.home.category.CategoryViewModel
 import com.evan.bazar.ui.home.profile.ProfileViewModelFactory
 import com.evan.bazar.ui.home.quotes.QuotesViewModelFactory
+import com.evan.bazar.ui.home.supplier.SupplierDataSource
+import com.evan.bazar.ui.home.supplier.SupplierModelFactory
+import com.evan.bazar.ui.home.supplier.SupplierSourceFactory
+import com.evan.bazar.ui.home.supplier.SupplierViewModel
 
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -39,10 +43,14 @@ class MVVMApplication : Application(), KodeinAware {
         bind() from singleton { QuotesRepository(instance(), instance(), instance()) }
         bind() from provider { AuthViewModelFactory(instance()) }
         bind() from provider { CategoryModelFactory(instance(),instance()) }
+        bind() from provider { SupplierModelFactory(instance(),instance()) }
         bind() from provider { CategoryDataSource(instance(),instance()) }
+        bind() from provider { SupplierDataSource(instance(),instance()) }
         bind() from provider { CategorySourceFactory(instance()) }
+        bind() from provider { SupplierSourceFactory(instance()) }
         bind() from provider { HomeViewModelFactory(instance()) }
         bind() from provider { CategoryViewModel(instance(),instance()) }
+        bind() from provider { SupplierViewModel(instance(),instance()) }
         bind() from provider { ProfileViewModelFactory(instance()) }
         bind() from provider{ QuotesViewModelFactory(instance()) }
 

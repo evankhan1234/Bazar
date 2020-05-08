@@ -22,7 +22,10 @@
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".ui.auth.CreateAccountActivity"></activity>
         <activity android:name=".ui.auth.ImageUpdateActivity"></activity>
-        <activity android:name=".ui.home.HomeActivity"></activity>
+        <activity android:name=".ui.home.HomeActivity"
+                android:screenOrientation="fullSensor"
+                android:windowSoftInputMode="stateHidden|adjustPan"
+                />
         <activity android:name=".ui.auth.SignupActivity"></activity>
         <provider
                 android:name="androidx.core.content.FileProvider"

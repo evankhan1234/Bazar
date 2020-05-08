@@ -28,6 +28,7 @@ const val FRAG_STORE: Int = 2
 const val FRAG_CATEGORY: Int = 6
 const val FRAG_CREATE_CATEGORY: Int = 7
 const val FRAG_UPDATE_CATEGORY: Int = 8
+const val FRAG_CREATE_SUPPLIER: Int = 10
 const val FRAG_SUPPLIER: Int = 9
 const val FRAG_ORDER: Int = 3
 const val FRAG_SETTINGS: Int = 4
