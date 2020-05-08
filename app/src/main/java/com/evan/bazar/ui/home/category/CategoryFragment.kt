@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.evan.bazar.data.db.entities.CategoryType
 import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.HomeViewModel
 import com.evan.bazar.ui.home.HomeViewModelFactory
+import com.evan.bazar.util.NetworkState
 import com.evan.bazar.util.SharedPreferenceUtil
 import com.evan.bazar.util.hide
 import com.evan.bazar.util.show
@@ -25,14 +27,14 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 
-class CategoryFragment : Fragment() , KodeinAware,ICategoryListener {
+class CategoryFragment : Fragment() , KodeinAware,ICategoryListener,ICategoryUpdateListener {
     override val kodein by kodein()
 
-    private val factory : HomeViewModelFactory by instance()
+    private val factory : CategoryModelFactory by instance()
 
-    var categoryAdapter:CategoryAdapter?=null
+    var categoryAdapter:CategoryListAdapter?=null
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: CategoryViewModel
 
     var rcv_category:RecyclerView?=null
     var progress_bar:ProgressBar?=null
@@ -47,11 +49,11 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener {
         progress_bar=root?.findViewById(R.id.progress_bar)
         rcv_category=root?.findViewById(R.id.rcv_category)
         btn_category_new=root?.findViewById(R.id.btn_category_new)
-         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
+         viewModel = ViewModelProviders.of(this, factory).get(CategoryViewModel::class.java)
 
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
 
-        viewModel.categoryListener=this
+        //viewModel.categoryListener=this
 
         btn_category_new?.setOnClickListener {
             if (activity is HomeActivity) {
@@ -61,13 +63,49 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener {
         return root
     }
 
+    fun replace(){
+        viewModel.replaceSubscription(this)
+        startListening()
+    }
     override fun onResume() {
         super.onResume()
-        viewModel.getCategoryType(token!!)
+       // viewModel.getCategoryType(token!!)
         Log.e("stop","stop")
+        initAdapter()
+        initState()
+    }
+
+    private fun initAdapter() {
+        categoryAdapter = CategoryListAdapter(context!!,this)
+        rcv_category?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rcv_category?.adapter = categoryAdapter
+        startListening()
+    }
+
+    private fun startListening() {
+
+        viewModel.listOfAlerts?.observe(this, Observer {
+            categoryAdapter?.submitList(it)
+        })
+
     }
 
 
+    private fun initState() {
+        viewModel.getNetworkState().observe(this, Observer { state ->
+            when (state.status) {
+                NetworkState.Status.LOADIND -> {
+                    progress_bar?.visibility=View.VISIBLE
+                }
+                NetworkState.Status.SUCCESS -> {
+                    progress_bar?.visibility=View.GONE
+                }
+                NetworkState.Status.FAILED -> {
+                    progress_bar?.visibility=View.GONE
+                }
+            }
+        })
+    }
 
     fun removeChild() {
         val f =
@@ -83,12 +121,12 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener {
     }
 
     override fun show(data: MutableList<CategoryType>) {
-        categoryAdapter = CategoryAdapter(context!!,data!!)
-        rcv_category?.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-            setHasFixedSize(true)
-            adapter = categoryAdapter
-        }
+//        categoryAdapter = CategoryAdapter(context!!,data!!)
+//        rcv_category?.apply {
+//            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+//            setHasFixedSize(true)
+//            adapter = categoryAdapter
+//        }
     }
 
     override fun started() {
@@ -97,6 +135,12 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener {
 
     override fun end() {
         progress_bar?.hide()
+    }
+
+    override fun onUpdate(category: CategoryType) {
+        if (activity is HomeActivity) {
+            (activity as HomeActivity).goToUpdateCategoryFragment(category)
+        }
     }
 
 

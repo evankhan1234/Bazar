@@ -17,6 +17,7 @@ import com.evan.bazar.ui.home.category.CategoryFragment
 class StoreFragment : Fragment() {
 
     var linear_category:LinearLayout?=null
+    var linear_supplier:LinearLayout?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,9 +26,15 @@ class StoreFragment : Fragment() {
         // Inflate the layout for this fragment
         val root= inflater.inflate(R.layout.fragment_store, container, false)
         linear_category=root.findViewById(R.id.linear_category)
+        linear_supplier=root.findViewById(R.id.linear_supplier)
         linear_category?.setOnClickListener {
             if (activity is HomeActivity) {
                 (activity as HomeActivity).goToCategoryFragment()
+            }
+        }
+        linear_supplier?.setOnClickListener {
+            if (activity is HomeActivity) {
+                (activity as HomeActivity).goToSupplierFragment()
             }
         }
         return root

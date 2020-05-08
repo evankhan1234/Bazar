@@ -59,6 +59,8 @@ dependencies {
     //Kodein Dependency Injection
     implementation "org.kodein.di:kodein-di-generic-jvm:6.2.1"
     implementation "org.kodein.di:kodein-di-framework-android-x:6.2.1"
+    implementation 'android.arch.paging:runtime:1.0.0'
+
 
     //Android Room
     implementation "androidx.room:room-runtime:2.2.0-rc01"

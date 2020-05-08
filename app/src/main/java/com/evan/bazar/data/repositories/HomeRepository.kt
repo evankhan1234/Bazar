@@ -4,9 +4,7 @@ import com.evan.bazar.data.db.AppDatabase
 import com.evan.bazar.data.db.entities.User
 import com.evan.bazar.data.network.MyApi
 import com.evan.bazar.data.network.SafeApiRequest
-import com.evan.bazar.data.network.post.AuthPost
-import com.evan.bazar.data.network.post.LoginResponse
-import com.evan.bazar.data.network.post.RegistrationPost
+import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.network.responses.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -20,6 +18,13 @@ class HomeRepository (
         return apiRequest { api.getCategoryType(header) }
     }
 
-
-
+    suspend fun getCategoryTypePagination(header:String,post:CategoryPost): CategoryTypeResponse {
+        return apiRequest { api.categoryPagination(header,post) }
+    }
+    suspend fun postCategoryType(header:String,categoryPost: CategoryType): CategoryTypePostResponse {
+        return apiRequest { api.createCategory(header,categoryPost!!) }
+    }
+    suspend fun postUpdateCategoryType(header:String,categoryPost: CategoryUpdate): CategoryTypePostResponse {
+        return apiRequest { api.updateCategory(header,categoryPost!!) }
+    }
 }
