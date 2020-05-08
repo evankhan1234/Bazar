@@ -1,15 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ui.home.category.CreateCategoryFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+        android:clickable="true">
+    <androidx.cardview.widget.CardView
+            android:layout_centerInParent="true"
+            android:id="@+id/line1"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="22dp"
+            android:visibility="visible"
+            android:layout_marginRight="22dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:layout_height="300dp">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="vertical">
 
-</FrameLayout>
+        <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:drawableLeft="@drawable/user"
+                android:drawablePadding="10dp"
+                android:hint="@string/category_name"
+                android:inputType="text"
+                android:paddingBottom="20dp"
+                android:textColor="@color/black"
+                android:visibility="visible" />
+
+        <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_status"
+                android:text="Status"
+                android:layout_marginLeft="5dp"
+                app:switchPadding="20dp"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="match_parent"
+
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/black_capsul"
+                android:stateListAnimator="@null"
+                android:text="Done"
+                android:textColor="#fff"
+                android:textSize="15sp" />
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:visibility="gone" />
+</RelativeLayout>
+
+

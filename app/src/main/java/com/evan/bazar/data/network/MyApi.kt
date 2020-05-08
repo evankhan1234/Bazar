@@ -1,9 +1,7 @@
 package com.evan.bazar.data.network
 
 
-import com.evan.bazar.data.network.post.AuthPost
-import com.evan.bazar.data.network.post.LoginResponse
-import com.evan.bazar.data.network.post.RegistrationPost
+import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.network.responses.*
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -60,6 +58,23 @@ interface MyApi {
     suspend fun getCategoryType(
         @Header("Authorization") Authorization:String
     ): Response<CategoryTypeResponse>
+
+    @POST("category-pagination.php")
+    suspend fun categoryPagination(
+        @Header("Authorization") Authorization:String,
+        @Body categoryPost: CategoryPost
+    ): Response<CategoryTypeResponse>
+
+    @POST("product-category.php")
+    suspend fun createCategory(
+        @Header("Authorization") Authorization:String,
+        @Body categoryPost: CategoryType
+    ): Response<CategoryTypePostResponse>
+    @POST("update-product-category.php")
+    suspend fun updateCategory(
+        @Header("Authorization") Authorization:String,
+        @Body categoryPost: CategoryUpdate
+    ): Response<CategoryTypePostResponse>
     @GET("quotes")
     suspend fun getQuotes(): Response<QuotesResponse>
 

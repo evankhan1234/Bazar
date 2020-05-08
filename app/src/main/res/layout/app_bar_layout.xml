@@ -81,6 +81,21 @@
                 android:layout_marginTop="3dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/img_arrow_left" />
+        <TextView
+                android:id="@+id/tv_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:alpha="1.5"
+                android:layout_marginTop="10.1dp"
+                android:textColor="@color/black_again"
+                android:lines="1"
+                android:letterSpacing=".065"
+                android:maxLines="1"
+                android:layout_marginLeft="120.4dp"
+                android:singleLine="true"
+                android:text="Home"
+                android:textSize="23sp" />
     </LinearLayout>
 
 
