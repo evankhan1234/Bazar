@@ -1,4 +1,4 @@
-package com.evan.bazar.ui.home.supplier
+package com.evan.bazar.ui.home.purchase
 
 import android.os.Bundle
 import android.util.Log
@@ -14,48 +14,47 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.evan.bazar.R
+import com.evan.bazar.data.db.entities.Purchase
 import com.evan.bazar.data.db.entities.Supplier
 import com.evan.bazar.ui.home.HomeActivity
-import com.evan.bazar.ui.home.category.CategoryListAdapter
-import com.evan.bazar.ui.home.category.CategoryModelFactory
-import com.evan.bazar.ui.home.category.CategoryViewModel
-import com.evan.bazar.ui.home.category.CreateCategoryFragment
+import com.evan.bazar.ui.home.supplier.*
 import com.evan.bazar.util.NetworkState
 import com.evan.bazar.util.SharedPreferenceUtil
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
-class SupplierFragment : Fragment(), KodeinAware,ISupplierUpdateListener {
+
+class PurchaseFragment : Fragment() , KodeinAware,IPurchaseUpdateListener {
     override val kodein by kodein()
 
-    private val factory : SupplierModelFactory by instance()
+    private val factory : PurchaseModelFactory by instance()
 
-    var supplierAdapter: SupplierAdapter?=null
+    var purchaseAdapter: PurchaseAdapter?=null
 
-    var rcv_supplier: RecyclerView?=null
+    var rcv_purchase: RecyclerView?=null
     var progress_bar: ProgressBar?=null
-    var btn_category_new: ImageView?=null
+    var btn_purchase_new: ImageView?=null
     var token:String?=""
-    private lateinit var viewModel: SupplierViewModel
+    private lateinit var viewModel: PurchaseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val root= inflater.inflate(R.layout.fragment_supplier, container, false)
+        val root= inflater.inflate(R.layout.fragment_purchase, container, false)
         progress_bar=root?.findViewById(R.id.progress_bar)
-        rcv_supplier=root?.findViewById(R.id.rcv_supplier)
-        btn_category_new=root?.findViewById(R.id.btn_category_new)
-        viewModel = ViewModelProviders.of(this, factory).get(SupplierViewModel::class.java)
+        rcv_purchase=root?.findViewById(R.id.rcv_purchase)
+        btn_purchase_new=root?.findViewById(R.id.btn_purchase_new)
+        viewModel = ViewModelProviders.of(this, factory).get(PurchaseViewModel::class.java)
 
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
 
 
-        btn_category_new?.setOnClickListener {
+        btn_purchase_new?.setOnClickListener {
             if (activity is HomeActivity) {
-               (activity as HomeActivity).goToCreateSupplierFragment()
+                (activity as HomeActivity).goToCreatePurchaseFragment()
             }
         }
         return root
@@ -73,16 +72,16 @@ class SupplierFragment : Fragment(), KodeinAware,ISupplierUpdateListener {
     }
 
     private fun initAdapter() {
-        supplierAdapter = SupplierAdapter(context!!,this)
-        rcv_supplier?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rcv_supplier?.adapter = supplierAdapter
+        purchaseAdapter = PurchaseAdapter(context!!,this)
+        rcv_purchase?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rcv_purchase?.adapter = purchaseAdapter
         startListening()
     }
 
     private fun startListening() {
 
         viewModel.listOfAlerts?.observe(this, Observer {
-            supplierAdapter?.submitList(it)
+            purchaseAdapter?.submitList(it)
         })
 
     }
@@ -116,9 +115,10 @@ class SupplierFragment : Fragment(), KodeinAware,ISupplierUpdateListener {
             childFragmentManager.popBackStack()
         }
     }
-    override fun onUpdate(supplier: Supplier) {
+
+    override fun onUpdate(purchase: Purchase) {
         if (activity is HomeActivity) {
-            (activity as HomeActivity).goToUpdateSupplierFragment(supplier)
+            (activity as HomeActivity).goToUpdatePurchaseFragment(purchase)
         }
     }
 
