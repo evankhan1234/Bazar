@@ -13,6 +13,8 @@ import com.evan.bazar.ui.auth.LoginActivity
 import com.evan.bazar.ui.auth.SignupActivity
 import com.evan.bazar.ui.home.category.ICategoryListener
 import com.evan.bazar.ui.home.category.ICreateCategoryListener
+import com.evan.bazar.ui.home.purchase.ICreatePurchaseListener
+import com.evan.bazar.ui.home.purchase.IUnitListener
 import com.evan.bazar.ui.home.supplier.ICreateSupplierListener
 import com.evan.bazar.ui.interfaces.ShopTypeInterface
 import com.evan.bazar.ui.interfaces.SignUpInterface
@@ -27,8 +29,11 @@ class HomeViewModel(
     var categoryListener: ICategoryListener?=null
     var createCategoryListener: ICreateCategoryListener?=null
     var createSupplierListener: ICreateSupplierListener?=null
+    var createPurchaseListener: ICreatePurchaseListener?=null
+    var unitListener: IUnitListener?=null
     var typePost: CategoryType? = null
     var supplierPost: SupplierPost? = null
+    var supplierUpdatePost: SupplierUpdatePost? = null
     var typeUpdatePost: CategoryUpdate? = null
 
     fun getCategoryType(header:String) {
@@ -99,6 +104,40 @@ class HomeViewModel(
                 createSupplierListener?.end()
             } catch (e: NoInternetException) {
                 createSupplierListener?.end()
+            }
+        }
+
+    }
+    fun postUpdateSupplier(header:String,id:Int,name:String,phone:String,email:String,address:String,details:String,image:String,status:Int,shopId:Int,created:String) {
+        createSupplierListener?.started()
+        Coroutines.main {
+            try {
+                supplierUpdatePost = SupplierUpdatePost(id,name!!,phone!!,email!!,address!!,details!!,image!!,status!!, shopId!!,created!!)
+                Log.e("response", "response" + Gson().toJson(supplierUpdatePost))
+                val response = repository.postUpdateSupplier(header,supplierUpdatePost!!)
+                createSupplierListener?.show(response?.message!!)
+                createSupplierListener?.end()
+                Log.e("response", "response" + Gson().toJson(response))
+
+            } catch (e: ApiException) {
+                createSupplierListener?.end()
+            } catch (e: NoInternetException) {
+                createSupplierListener?.end()
+            }
+        }
+
+    }
+    fun getUnit() {
+        Coroutines.main {
+            try {
+                val authResponse = repository.getUnit()
+                unitListener?.unit(authResponse?.data!!)
+                Log.e("response", "response" + Gson().toJson(authResponse))
+
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
             }
         }
 

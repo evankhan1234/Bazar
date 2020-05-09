@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 
 import com.evan.bazar.R
+import com.evan.bazar.data.db.entities.Supplier
 import com.evan.bazar.ui.auth.CreateAccountActivity
 import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.HomeViewModel
@@ -21,6 +22,7 @@ import com.evan.bazar.util.SharedPreferenceUtil
 import com.evan.bazar.util.hide
 import com.evan.bazar.util.show
 import com.evan.bazar.util.snackbar
+import com.google.gson.Gson
 import de.hdodenhof.circleimageview.CircleImageView
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -48,6 +50,8 @@ class CreateSupplierFragment : Fragment(),KodeinAware,ICreateSupplierListener {
     var switch_status: SwitchCompat?=null
     var btn_ok: Button?=null
     var status:Int?=null
+    var id:Int?=0
+    var supplier: Supplier?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,62 +74,124 @@ class CreateSupplierFragment : Fragment(),KodeinAware,ICreateSupplierListener {
         img_user_add?.setOnClickListener{
             (activity as HomeActivity?)!!.openImageChooser()
         }
+        val args: Bundle? = arguments
+        if (args != null) {
+            if (args?.containsKey(Supplier::class.java.getSimpleName()) != null) {
+                supplier = args?.getParcelable(Supplier::class.java.getSimpleName())
+                id=supplier?.Id
+                image_address=supplier?.SupplierImage
+                et_name?.setText(supplier?.Name)
+                et_mobile?.setText(supplier?.ContactNumber)
+                et_email?.setText(supplier?.Email)
+                et_address?.setText(supplier?.Address)
+                et_details?.setText(supplier?.Details)
+                switch_status?.isChecked = supplier?.Status==1
+                Glide.with(this)
+                    .load(supplier?.SupplierImage)
+                    .into(img_user_profile!!)
+                Log.e("data","data"+ Gson().toJson(supplier))
+            }
+        }
+
+
         btn_ok?.setOnClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-            val currentDate = sdf.format(Date())
-            if (switch_status?.isChecked!!){
-                status=1
+
+            if (id==0){
+                val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+                val currentDate = sdf.format(Date())
+                if (switch_status?.isChecked!!){
+                    status=1
+                }
+                else{
+                    status=0
+                }
+
+                var name: String=""
+                var mobile: String=""
+                var email: String=""
+                var address: String=""
+                var details: String=""
+                name=et_name?.text.toString()
+                mobile=et_mobile?.text.toString()
+                email=et_email?.text.toString()
+                details=et_details?.text.toString()
+                address=et_address?.text.toString()
+                if(name.isNullOrEmpty() && mobile.isNullOrEmpty()&& email.isNullOrEmpty() && details.isNullOrEmpty() && address.isNullOrEmpty()&& image_address.isNullOrEmpty()){
+                    root_layout?.snackbar("All Field is Empty")
+                }
+                else if(name.isNullOrEmpty()){
+                    root_layout?.snackbar("Name is Empty")
+                }
+                else if(mobile.isNullOrEmpty()){
+                    root_layout?.snackbar("Mobile is Empty")
+                }
+                else if(email.isNullOrEmpty()){
+                    root_layout?.snackbar("Email is Empty")
+                }
+                else if(details.isNullOrEmpty()){
+                    root_layout?.snackbar("Details is Empty")
+                }
+                else if(address.isNullOrEmpty()){
+                    root_layout?.snackbar("Address is Empty")
+                }
+                else if(image_address.isNullOrEmpty()){
+                    root_layout?.snackbar("Image is Empty")
+                }
+                else{
+                    Log.e("Evan","Evan")
+                    viewModel.postSupplier(
+                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,name,mobile,email,address,details,image_address!!,status!!,
+                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),currentDate)
+                }
             }
             else{
-                status=0
-            }
-//            Log.e("currentDate","currentDate"+currentDate)
-//            Log.e("status","status"+status)
-//            Log.e("name","name"+et_name?.text.toString())
-//            Log.e("name","name"+et_mobile?.text.toString())
-//            Log.e("name","name"+et_email?.text.toString())
-//            Log.e("name","name"+et_address?.text.toString())
-//            Log.e("name","name"+et_details?.text.toString())
-//            Log.e("name","name"+ SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID))
+                val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+                val currentDate = sdf.format(Date())
+                if (switch_status?.isChecked!!){
+                    status=1
+                }
+                else{
+                    status=0
+                }
 
-            var name: String=""
-            var mobile: String=""
-            var email: String=""
-            var address: String=""
-            var details: String=""
-            name=et_name?.text.toString()
-            mobile=et_mobile?.text.toString()
-            email=et_email?.text.toString()
-            details=et_details?.text.toString()
-            address=et_address?.text.toString()
-            if(name.isNullOrEmpty() && mobile.isNullOrEmpty()&& email.isNullOrEmpty() && details.isNullOrEmpty() && address.isNullOrEmpty()&& image_address.isNullOrEmpty()){
-                root_layout?.snackbar("All Field is Empty")
+                var name: String=""
+                var mobile: String=""
+                var email: String=""
+                var address: String=""
+                var details: String=""
+                name=et_name?.text.toString()
+                mobile=et_mobile?.text.toString()
+                email=et_email?.text.toString()
+                details=et_details?.text.toString()
+                address=et_address?.text.toString()
+                if(name.isNullOrEmpty() && mobile.isNullOrEmpty()&& email.isNullOrEmpty() && details.isNullOrEmpty() && address.isNullOrEmpty()&& image_address.isNullOrEmpty()){
+                    root_layout?.snackbar("All Field is Empty")
+                }
+                else if(name.isNullOrEmpty()){
+                    root_layout?.snackbar("Name is Empty")
+                }
+                else if(mobile.isNullOrEmpty()){
+                    root_layout?.snackbar("Mobile is Empty")
+                }
+                else if(email.isNullOrEmpty()){
+                    root_layout?.snackbar("Email is Empty")
+                }
+                else if(details.isNullOrEmpty()){
+                    root_layout?.snackbar("Details is Empty")
+                }
+                else if(address.isNullOrEmpty()){
+                    root_layout?.snackbar("Address is Empty")
+                }
+                else if(image_address.isNullOrEmpty()){
+                    root_layout?.snackbar("Image is Empty")
+                }
+                else{
+                    Log.e("Evan","Evan")
+                    viewModel.postUpdateSupplier(
+                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,id!!,name,mobile,email,address,details,image_address!!,status!!,
+                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),currentDate)
+                }
             }
-            else if(name.isNullOrEmpty()){
-                root_layout?.snackbar("Name is Empty")
-            }
-            else if(mobile.isNullOrEmpty()){
-                root_layout?.snackbar("Mobile is Empty")
-            }
-            else if(email.isNullOrEmpty()){
-                root_layout?.snackbar("Email is Empty")
-            }
-            else if(details.isNullOrEmpty()){
-                root_layout?.snackbar("Details is Empty")
-            }
-            else if(address.isNullOrEmpty()){
-                root_layout?.snackbar("Address is Empty")
-            }
-            else if(image_address.isNullOrEmpty()){
-                root_layout?.snackbar("Image is Empty")
-            }
-            else{
-                Log.e("Evan","Evan")
-                viewModel.postSupplier(
-                    SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,name,mobile,email,address,details,image_address!!,status!!,
-                    SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),currentDate)
-            }
-
         }
         return root
     }

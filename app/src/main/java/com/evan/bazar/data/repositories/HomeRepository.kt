@@ -33,4 +33,15 @@ class HomeRepository (
     suspend fun postSupplier(header:String,supplierPost:  SupplierPost): CategoryTypePostResponse {
         return apiRequest { api.createSupplier(header,supplierPost!!) }
     }
+    suspend fun postUpdateSupplier(header:String,supplierUpdatePost:  SupplierUpdatePost): CategoryTypePostResponse {
+        return apiRequest { api.updateSupplier(header,supplierUpdatePost!!) }
+    }
+
+    suspend fun getPurchasePagination(header:String,post:LimitPost): PurchaseResponses {
+        return apiRequest { api.purchasePagination(header,post) }
+    }
+    suspend fun getUnit(): UnitResponses {
+        return apiRequest { api.getUnit() }
+    }
+
 }

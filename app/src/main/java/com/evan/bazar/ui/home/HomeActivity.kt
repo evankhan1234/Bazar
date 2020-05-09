@@ -23,6 +23,8 @@ import androidx.navigation.ui.NavigationUI
 import com.evan.bazar.BuildConfig
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.CategoryType
+import com.evan.bazar.data.db.entities.Purchase
+import com.evan.bazar.data.db.entities.Supplier
 import com.evan.bazar.interfaces.DialogActionListener
 import com.evan.bazar.ui.auth.ImageUpdateActivity
 import com.evan.bazar.ui.fragments.StepOneFragment
@@ -30,6 +32,8 @@ import com.evan.bazar.ui.home.category.CategoryFragment
 import com.evan.bazar.ui.home.category.CreateCategoryFragment
 import com.evan.bazar.ui.home.dashboard.DashboardFragment
 import com.evan.bazar.ui.home.order.OrderFragment
+import com.evan.bazar.ui.home.purchase.CreatePurchaseFragment
+import com.evan.bazar.ui.home.purchase.PurchaseFragment
 import com.evan.bazar.ui.home.settings.SettingsFragment
 import com.evan.bazar.ui.home.store.StoreFragment
 import com.evan.bazar.ui.home.supplier.CreateSupplierFragment
@@ -118,6 +122,13 @@ class HomeActivity : AppCompatActivity() {
                 supplierFragment.removeChild()
                 setUpHeader(FRAG_SUPPLIER)
             }
+            if (f is PurchaseFragment) {
+                val purchaseFragment: PurchaseFragment =
+                    mFragManager?.findFragmentByTag(FRAG_PURCHASE.toString()) as PurchaseFragment
+                purchaseFragment.replace()
+                purchaseFragment.removeChild()
+                setUpHeader(FRAG_PURCHASE)
+            }
 
         }
 
@@ -138,6 +149,11 @@ class HomeActivity : AppCompatActivity() {
         addFragment(FRAG_SUPPLIER, true, null)
 
     }
+    fun goToPurchaseFragment() {
+        setUpHeader(FRAG_PURCHASE)
+        addFragment(FRAG_PURCHASE, true, null)
+
+    }
     fun goToCreateCategoryFragment() {
         setUpHeader(FRAG_CREATE_CATEGORY)
         addFragment(FRAG_CREATE_CATEGORY, true, null)
@@ -146,6 +162,11 @@ class HomeActivity : AppCompatActivity() {
     fun goToCreateSupplierFragment() {
         setUpHeader(FRAG_CREATE_SUPPLIER)
         addFragment(FRAG_CREATE_SUPPLIER, true, null)
+
+    }
+    fun goToCreatePurchaseFragment() {
+        setUpHeader(FRAG_CREATE_PURCHASE)
+        addFragment(FRAG_CREATE_PURCHASE, true, null)
 
     }
     fun goToUpdateCategoryFragment(categoryType: CategoryType) {
@@ -183,6 +204,96 @@ class HomeActivity : AppCompatActivity() {
                 R.anim.view_transition_in_right,
                 R.anim.view_transition_out_right
             )
+
+        // param 1: container id, param 2: new fragment, param 3: fragment id
+
+        fragTransaction?.replace(R.id.main_container, newFrag!!, fragId.toString())
+        // prevent showed when user press back fabReview
+        fragTransaction?.addToBackStack(fragId.toString())
+        //  fragTransaction?.hide(active).show(guideFragment).commit();
+        fragTransaction!!.commit()
+
+    }
+    fun goToUpdateSupplierFragment(supplier: Supplier) {
+        setUpHeader(FRAG_UPDATE_CATEGORY)
+        mFragManager = supportFragmentManager
+        // create transaction
+        var fragId:Int?=0
+        fragId=FRAG_UPDATE_CATEGORY
+        fragTransaction = mFragManager?.beginTransaction()
+        //check if there is any backstack if yes then remove it
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+            //this will clear the back stack and displays no animation on the screen
+            // mFragManager?.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        // check current fragment is wanted fragment
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+        var newFrag: Fragment? = null
+
+        // identify which fragment will be called
+
+        newFrag = CreateSupplierFragment()
+        val b= Bundle()
+        b.putParcelable(Supplier::class.java?.getSimpleName(), supplier)
+
+        newFrag.setArguments(b)
+
+        mCurrentFrag = newFrag
+
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
+
+        // param 1: container id, param 2: new fragment, param 3: fragment id
+
+        fragTransaction?.replace(R.id.main_container, newFrag!!, fragId.toString())
+        // prevent showed when user press back fabReview
+        fragTransaction?.addToBackStack(fragId.toString())
+        //  fragTransaction?.hide(active).show(guideFragment).commit();
+        fragTransaction!!.commit()
+
+    }
+    fun goToUpdatePurchaseFragment(purchase: Purchase) {
+        setUpHeader(FRAG_UPDATE_PURCHASE)
+        mFragManager = supportFragmentManager
+        // create transaction
+        var fragId:Int?=0
+        fragId=FRAG_UPDATE_PURCHASE
+        fragTransaction = mFragManager?.beginTransaction()
+        //check if there is any backstack if yes then remove it
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+            //this will clear the back stack and displays no animation on the screen
+            // mFragManager?.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        // check current fragment is wanted fragment
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+        var newFrag: Fragment? = null
+
+        // identify which fragment will be called
+
+        newFrag = CreatePurchaseFragment()
+        val b= Bundle()
+        b.putParcelable(Purchase::class.java?.getSimpleName(), purchase)
+
+        newFrag.setArguments(b)
+
+        mCurrentFrag = newFrag
+
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
 
         // param 1: container id, param 2: new fragment, param 3: fragment id
 
@@ -235,7 +346,12 @@ class HomeActivity : AppCompatActivity() {
             FRAG_CREATE_SUPPLIER-> {
                 newFrag = CreateSupplierFragment()
             }
-
+            FRAG_PURCHASE-> {
+                newFrag = PurchaseFragment()
+            }
+            FRAG_CREATE_PURCHASE-> {
+                newFrag = CreatePurchaseFragment()
+            }
         }
         mCurrentFrag = newFrag
         // init argument
@@ -312,6 +428,28 @@ class HomeActivity : AppCompatActivity() {
                 btn_footer_store.setSelected(true)
 
             }
+            FRAG_PURCHASE -> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.purchase)
+                btn_footer_store.setSelected(true)
+
+            }
+            FRAG_CREATE_PURCHASE -> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.purchase)
+                btn_footer_store.setSelected(true)
+
+            }
+            FRAG_UPDATE_PURCHASE -> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.purchase)
+                btn_footer_store.setSelected(true)
+
+            }
+
             FRAG_SUPPLIER -> {
             ll_back_header?.visibility = View.VISIBLE
             rlt_header?.visibility = View.GONE

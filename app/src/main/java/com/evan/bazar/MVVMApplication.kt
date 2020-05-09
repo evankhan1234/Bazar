@@ -15,6 +15,10 @@ import com.evan.bazar.ui.home.category.CategoryModelFactory
 import com.evan.bazar.ui.home.category.CategorySourceFactory
 import com.evan.bazar.ui.home.category.CategoryViewModel
 import com.evan.bazar.ui.home.profile.ProfileViewModelFactory
+import com.evan.bazar.ui.home.purchase.PurchaseDataSource
+import com.evan.bazar.ui.home.purchase.PurchaseModelFactory
+import com.evan.bazar.ui.home.purchase.PurchaseSourceFactory
+import com.evan.bazar.ui.home.purchase.PurchaseViewModel
 import com.evan.bazar.ui.home.quotes.QuotesViewModelFactory
 import com.evan.bazar.ui.home.supplier.SupplierDataSource
 import com.evan.bazar.ui.home.supplier.SupplierModelFactory
@@ -43,13 +47,17 @@ class MVVMApplication : Application(), KodeinAware {
         bind() from singleton { QuotesRepository(instance(), instance(), instance()) }
         bind() from provider { AuthViewModelFactory(instance()) }
         bind() from provider { CategoryModelFactory(instance(),instance()) }
+        bind() from provider { PurchaseModelFactory(instance(),instance()) }
         bind() from provider { SupplierModelFactory(instance(),instance()) }
         bind() from provider { CategoryDataSource(instance(),instance()) }
+        bind() from provider { PurchaseDataSource(instance(),instance()) }
         bind() from provider { SupplierDataSource(instance(),instance()) }
         bind() from provider { CategorySourceFactory(instance()) }
+        bind() from provider { PurchaseSourceFactory(instance()) }
         bind() from provider { SupplierSourceFactory(instance()) }
         bind() from provider { HomeViewModelFactory(instance()) }
         bind() from provider { CategoryViewModel(instance(),instance()) }
+        bind() from provider { PurchaseViewModel(instance(),instance()) }
         bind() from provider { SupplierViewModel(instance(),instance()) }
         bind() from provider { ProfileViewModelFactory(instance()) }
         bind() from provider{ QuotesViewModelFactory(instance()) }

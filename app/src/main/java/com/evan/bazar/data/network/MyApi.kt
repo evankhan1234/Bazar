@@ -58,6 +58,9 @@ interface MyApi {
     suspend fun getCategoryType(
         @Header("Authorization") Authorization:String
     ): Response<CategoryTypeResponse>
+    @GET("unit-details.php")
+    suspend fun getUnit(
+    ): Response<UnitResponses>
 
     @POST("category-pagination.php")
     suspend fun categoryPagination(
@@ -71,6 +74,13 @@ interface MyApi {
         @Body limitPost: LimitPost
     ): Response<SupplierResponses>
 
+    @POST("purchase-pagination.php")
+    suspend fun purchasePagination(
+        @Header("Authorization") Authorization:String,
+        @Body limitPost: LimitPost
+    ): Response<PurchaseResponses>
+
+
     @POST("product-category.php")
     suspend fun createCategory(
         @Header("Authorization") Authorization:String,
@@ -80,6 +90,12 @@ interface MyApi {
     suspend fun createSupplier(
         @Header("Authorization") Authorization:String,
         @Body supplierPost: SupplierPost
+    ): Response<CategoryTypePostResponse>
+
+    @POST("update-supplier-api.php")
+    suspend fun updateSupplier(
+        @Header("Authorization") Authorization:String,
+        @Body supplierUpdatePost: SupplierUpdatePost
     ): Response<CategoryTypePostResponse>
     @POST("update-product-category.php")
     suspend fun updateCategory(
