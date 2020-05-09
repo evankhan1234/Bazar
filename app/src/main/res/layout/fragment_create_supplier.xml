@@ -1,14 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.supplier.CreateSupplierFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+            android:id="@+id/root_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:alpha="1.5"
+            android:visibility="visible">
 
-</FrameLayout>
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_user_profile"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="31dp"
+                        android:src="@drawable/img_profile_icon" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/img_user_add"
+                        android:layout_width="37dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-75dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/img_plus_icon"
+                        android:visibility="visible" />
+                <androidx.appcompat.widget.SwitchCompat
+                        android:layout_marginTop="70dp"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/switch_status"
+                        android:text="Status"
+                        android:layout_marginLeft="5dp"
+                        app:switchPadding="20dp"
+                        android:textStyle="bold"
+                        android:textSize="19sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+            <EditText
+                    android:visibility="visible"
+                    android:id="@+id/et_name"
+                    android:inputType="text"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/name"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/black" />
+            <EditText
+                    android:visibility="visible"
+                    android:id="@+id/et_mobile"
+                    android:inputType="phone"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/smartphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:hint="@string/mobile"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/black" />
+            <EditText
+                    android:id="@+id/et_email"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:hint="@string/email"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/black" />
+
+            <EditText
+                    android:visibility="visible"
+                    android:id="@+id/et_address"
+                    android:inputType="text"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/adress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:hint="@string/address"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/black" />
+
+                <EditText
+                        android:visibility="visible"
+                        android:id="@+id/et_details"
+                        android:inputType="text"
+                        android:drawablePadding="10dp"
+                        android:drawableLeft="@drawable/file"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:hint="@string/details"
+                        android:maxLines="3"
+                        android:paddingBottom="20dp"
+                        android:textColor="@color/black" />
+                <Button
+                        android:id="@+id/btn_ok"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/black_capsul"
+                        android:stateListAnimator="@null"
+                        android:text="Done"
+                        android:textColor="#fff"
+                        android:textSize="15sp" />
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:indeterminateDrawable="@drawable/progress"
+            android:visibility="gone" />
+</RelativeLayout>

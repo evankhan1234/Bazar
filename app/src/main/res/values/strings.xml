@@ -9,6 +9,7 @@
     <string name="shop_name">Shop Name</string>
     <string name="agreement">Agreement Date</string>
     <string name="address">Address</string>
+    <string name="details">Details</string>
     <string name="license_number">License Number</string>
     <string name="create_account">Create Account</string>
     <string name="step_one">Next</string>
