@@ -91,7 +91,16 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body supplierPost: SupplierPost
     ): Response<CategoryTypePostResponse>
-
+    @POST("create-purchase-api.php")
+    suspend fun createPurchase(
+        @Header("Authorization") Authorization:String,
+        @Body purchasePost: PurchasePost
+    ): Response<CategoryTypePostResponse>
+    @POST("update-purchase-api.php")
+    suspend fun updatePurchase(
+        @Header("Authorization") Authorization:String,
+        @Body purchaseUpdatePost: PurchaseUpdatePost
+    ): Response<CategoryTypePostResponse>
     @POST("update-supplier-api.php")
     suspend fun updateSupplier(
         @Header("Authorization") Authorization:String,

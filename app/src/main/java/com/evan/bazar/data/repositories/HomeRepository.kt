@@ -43,5 +43,11 @@ class HomeRepository (
     suspend fun getUnit(): UnitResponses {
         return apiRequest { api.getUnit() }
     }
+    suspend fun postPurchase(header:String,purchasePost:  PurchasePost): CategoryTypePostResponse {
+        return apiRequest { api.createPurchase(header,purchasePost!!) }
+    }
+    suspend fun updatePurchase(header:String,purchaseUpdatePost:  PurchaseUpdatePost): CategoryTypePostResponse {
+        return apiRequest { api.updatePurchase(header,purchaseUpdatePost!!) }
+    }
 
 }

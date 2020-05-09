@@ -91,7 +91,9 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
         et_grand_total=root?.findViewById(R.id.et_grand_total)
         switch_status=root?.findViewById(R.id.switch_status)
         btn_ok=root?.findViewById(R.id.btn_ok)
-     //   et_email?.addTextChangedListener(email)
+        et_quantity?.addTextChangedListener(quantity)
+        et_rate?.addTextChangedListener(rate)
+        et_discount?.addTextChangedListener(discount)
         viewModel.unitListener=this
         viewModel.createPurchaseListener=this
         viewModel.getUnit()
@@ -113,6 +115,7 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
                 et_purchase_date?.setText(getStartDate(purchase?.PurchaseDate))
                 et_stock?.setText(purchase?.Stock!!.toString())
                 et_item?.setText(purchase?.Item!!.toString())
+                et_rate?.setText(purchase?.Rate!!.toString())
                 et_quantity?.setText(purchase?.Quantity!!.toString())
                 et_discount?.setText(purchase?.Discount!!.toString())
                 et_total?.setText(purchase?.Total!!.toString())
@@ -121,8 +124,9 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
                 Handler().postDelayed({
 
                     try {
+                        Log.e("unit","unit"+ Gson().toJson(unit))
                         for (i in unit!!.indices) {
-                            if (unit!!.get(i).Id!!.equals(id)) {
+                            if (unit!!.get(i).Id!!.equals(purchase?.UnitId)) {
                                 spinner_unit?.setSelection(i)
                             }
                         }
@@ -130,7 +134,7 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
                     }
 
 
-                }, 200)
+                }, 300)
                 Log.e("data","data"+ Gson().toJson(purchase))
             }
         }
@@ -207,6 +211,11 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
                 }
                 else{
                     Log.e("Evan","Evan")
+
+                    viewModel.postPurchase(SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,purchase_name!!,purchase_details!!,purchase_no!!,purchase_date!!,
+                        stock!!.toInt(),Item!!.toInt(),quantity!!.toInt(),rate!!.toDouble(),discount!!.toDouble(),total!!.toDouble(),grand_total!!.toDouble(),id_!!,SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),
+                        currentDate!!,status!!)
+
 //                    viewModel.postSupplier(
 //                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,name,mobile,email,address,details,image_address!!,status!!,
 //                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),currentDate)
@@ -282,6 +291,9 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
                 }
                 else{
                     Log.e("Evan","Evan")
+                    viewModel.updatePurchase(SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,id!!,purchase_name!!,purchase_details!!,purchase_no!!,purchase_date!!,
+                        stock!!.toInt(),Item!!.toInt(),quantity!!.toInt(),rate!!.toDouble(),discount!!.toDouble(),total!!.toDouble(),grand_total!!.toDouble(),id_!!,SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),
+                        currentDate!!,status!!)
 //                    viewModel.postUpdateSupplier(
 //                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,id!!,name,mobile,email,address,details,image_address!!,status!!,
 //                SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),currentDate)
@@ -376,21 +388,121 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
             DateTimeFormatter.ofPattern("yyyy-MM-dd")
         return LocalDate.parse(startDate, inputFormat).format(outputFormat)
     }
-    var email: TextWatcher = object : TextWatcher {
+    var quantity: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            //YOUR CODE
+
         }
 
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            //YOUR CODE
+
         }
 
         override fun afterTextChanged(s: Editable) {
 
-          //  btn_send?.isSelected = !s.toString().equals("")
+            try {
+                var quantity:Int?=0
+                var rate:Double?=0.0
+                var discount:Double?=0.0
+                var total:Double?=0.0
+                var grand_total:Double?=0.0
+                quantity=s.toString().toInt()
+                rate=et_rate?.text.toString().toDouble()
+                discount=et_discount?.text.toString().toDouble()
+                total=quantity*rate
+                grand_total=total-discount
+                et_total?.setText(total?.toString())
+                et_grand_total?.setText(grand_total?.toString())
+            } catch (e: Exception) {
+
+
+                try {
+                    var quantity:Int?=0
+                    var rate:Double?=0.0
+                    var total:Double?=0.0
+                    quantity=s.toString().toInt()
+                    rate=et_rate?.text.toString().toDouble()
+                    total=quantity*rate
+                    et_total?.setText(total?.toString())
+                } catch (e: Exception) {
+                }
+            }
+
 
         }
 
     }
+    var rate: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
 
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+            try {
+                var quantity:Int?=0
+                var rate:Double?=0.0
+                var discount:Double?=0.0
+                var total:Double?=0.0
+                var grand_total:Double?=0.0
+                quantity=et_quantity?.text.toString()?.toInt()
+                rate=s.toString().toDouble()
+                discount=et_discount?.text.toString().toDouble()
+                total=quantity!!*rate
+                grand_total=total-discount
+                et_total?.setText(total?.toString())
+                et_grand_total?.setText(grand_total?.toString())
+            } catch (e: Exception) {
+                try {
+                    var quantity:Int?=0
+                    var rate:Double?=0.0
+                    var total:Double?=0.0
+                    quantity=et_quantity?.text.toString()?.toInt()
+                    rate=s.toString().toDouble()
+                    total=quantity!!*rate
+                    et_total?.setText(total?.toString())
+                } catch (e: Exception) {
+                }
+
+            }
+
+
+        }
+
+    }
+    var discount: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+            try {
+                var quantity:Int?=0
+                var rate:Double?=0.0
+                var discount:Double?=0.0
+                var total:Double?=0.0
+                var grand_total:Double?=0.0
+                quantity=et_quantity?.text.toString()?.toInt()
+                rate=et_rate?.text.toString()?.toDouble()
+                discount=s.toString().toDouble()
+                total=quantity!!*rate!!
+                grand_total=total-discount
+                et_total?.setText(total?.toString())
+                et_grand_total?.setText(grand_total?.toString())
+            } catch (e: Exception) {
+
+            }
+
+
+        }
+
+    }
 }
