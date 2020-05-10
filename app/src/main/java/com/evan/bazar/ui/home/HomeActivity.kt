@@ -23,6 +23,7 @@ import androidx.navigation.ui.NavigationUI
 import com.evan.bazar.BuildConfig
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.CategoryType
+import com.evan.bazar.data.db.entities.Product
 import com.evan.bazar.data.db.entities.Purchase
 import com.evan.bazar.data.db.entities.Supplier
 import com.evan.bazar.interfaces.DialogActionListener
@@ -32,6 +33,8 @@ import com.evan.bazar.ui.home.category.CategoryFragment
 import com.evan.bazar.ui.home.category.CreateCategoryFragment
 import com.evan.bazar.ui.home.dashboard.DashboardFragment
 import com.evan.bazar.ui.home.order.OrderFragment
+import com.evan.bazar.ui.home.product.CreateProductFragment
+import com.evan.bazar.ui.home.product.ProductFragment
 import com.evan.bazar.ui.home.purchase.CreatePurchaseFragment
 import com.evan.bazar.ui.home.purchase.PurchaseFragment
 import com.evan.bazar.ui.home.settings.SettingsFragment
@@ -129,7 +132,13 @@ class HomeActivity : AppCompatActivity() {
                 purchaseFragment.removeChild()
                 setUpHeader(FRAG_PURCHASE)
             }
-
+            if (f is ProductFragment) {
+                val productFragment: ProductFragment =
+                    mFragManager?.findFragmentByTag(FRAG_PRODUCT.toString()) as ProductFragment
+                productFragment.replace()
+                productFragment.removeChild()
+                setUpHeader(FRAG_PRODUCT)
+            }
         }
 
     }
@@ -154,6 +163,11 @@ class HomeActivity : AppCompatActivity() {
         addFragment(FRAG_PURCHASE, true, null)
 
     }
+    fun goToProductFragment() {
+        setUpHeader(FRAG_PRODUCT)
+        addFragment(FRAG_PRODUCT, true, null)
+
+    }
     fun goToCreateCategoryFragment() {
         setUpHeader(FRAG_CREATE_CATEGORY)
         addFragment(FRAG_CREATE_CATEGORY, true, null)
@@ -167,6 +181,11 @@ class HomeActivity : AppCompatActivity() {
     fun goToCreatePurchaseFragment() {
         setUpHeader(FRAG_CREATE_PURCHASE)
         addFragment(FRAG_CREATE_PURCHASE, true, null)
+
+    }
+    fun goToCreateProductFragment() {
+        setUpHeader(FRAG_CREATE_PRODUCT)
+        addFragment(FRAG_CREATE_PRODUCT, true, null)
 
     }
     fun goToUpdateCategoryFragment(categoryType: CategoryType) {
@@ -304,6 +323,51 @@ class HomeActivity : AppCompatActivity() {
         fragTransaction!!.commit()
 
     }
+    fun goToUpdateProductFragment(product: Product) {
+        setUpHeader(FRAG_UPDATE_PRODUCT)
+        mFragManager = supportFragmentManager
+        // create transaction
+        var fragId:Int?=0
+        fragId=FRAG_UPDATE_PRODUCT
+        fragTransaction = mFragManager?.beginTransaction()
+        //check if there is any backstack if yes then remove it
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+            //this will clear the back stack and displays no animation on the screen
+            // mFragManager?.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        // check current fragment is wanted fragment
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+        var newFrag: Fragment? = null
+
+        // identify which fragment will be called
+
+        newFrag = CreateProductFragment()
+        val b= Bundle()
+        b.putParcelable(Product::class.java?.getSimpleName(), product)
+
+        newFrag.setArguments(b)
+
+        mCurrentFrag = newFrag
+
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
+
+        // param 1: container id, param 2: new fragment, param 3: fragment id
+
+        fragTransaction?.replace(R.id.main_container, newFrag!!, fragId.toString())
+        // prevent showed when user press back fabReview
+        fragTransaction?.addToBackStack(fragId.toString())
+        //  fragTransaction?.hide(active).show(guideFragment).commit();
+        fragTransaction!!.commit()
+
+    }
     fun addFragment(fragId: Int, isHasAnimation: Boolean, obj: Any?) {
         // init fragment manager
         mFragManager = supportFragmentManager
@@ -351,6 +415,12 @@ class HomeActivity : AppCompatActivity() {
             }
             FRAG_CREATE_PURCHASE-> {
                 newFrag = CreatePurchaseFragment()
+            }
+            FRAG_PRODUCT-> {
+                newFrag = ProductFragment()
+            }
+            FRAG_CREATE_PRODUCT-> {
+                newFrag = CreateProductFragment()
             }
         }
         mCurrentFrag = newFrag
@@ -456,7 +526,24 @@ class HomeActivity : AppCompatActivity() {
             tv_details.text = resources.getString(R.string.supplier)
             btn_footer_store.setSelected(true)
         }
-
+            FRAG_PRODUCT -> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.product)
+                btn_footer_store.setSelected(true)
+            }
+            FRAG_CREATE_PRODUCT -> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.product)
+                btn_footer_store.setSelected(true)
+            }
+            FRAG_UPDATE_PRODUCT-> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.product)
+                btn_footer_store.setSelected(true)
+            }
             else -> {
 
             }
@@ -747,6 +834,10 @@ class HomeActivity : AppCompatActivity() {
                             val f = getVisibleFragment()
                             if (f != null) {
                                 if (f is CreateSupplierFragment) {
+
+                                    f.showImage(updated_image_url)
+                                }
+                                else if (f is CreateProductFragment) {
 
                                     f.showImage(updated_image_url)
                                 }

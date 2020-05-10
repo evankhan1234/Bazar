@@ -50,4 +50,20 @@ class HomeRepository (
         return apiRequest { api.updatePurchase(header,purchaseUpdatePost!!) }
     }
 
+    suspend fun getProductPagination(header:String,post:LimitPost): ProductResponses {
+        return apiRequest { api.productPagination(header,post) }
+    }
+
+    suspend fun postProduct(header:String,productPost:  ProductPost): CategoryTypePostResponse {
+        return apiRequest { api.createProduct(header,productPost!!) }
+    }
+    suspend fun postUpdateProduct(header:String,productUpdatePost:  ProductUpdatePost): CategoryTypePostResponse {
+        return apiRequest { api.updateProduct(header,productUpdatePost!!) }
+    }
+    suspend fun getSupplier(header:String): SupplierResponses {
+        return apiRequest { api.getSuppliers(header) }
+    }
+    suspend fun getCategory(header:String): CategoryTypeResponse {
+        return apiRequest { api.getCategory(header) }
+    }
 }
