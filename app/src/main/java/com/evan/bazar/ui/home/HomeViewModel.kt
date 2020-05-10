@@ -33,6 +33,8 @@ class HomeViewModel(
     var unitListener: IUnitListener?=null
     var typePost: CategoryType? = null
     var supplierPost: SupplierPost? = null
+    var purchasePost: PurchasePost? = null
+    var purchaseUpdatePost: PurchaseUpdatePost? = null
     var supplierUpdatePost: SupplierUpdatePost? = null
     var typeUpdatePost: CategoryUpdate? = null
 
@@ -138,6 +140,44 @@ class HomeViewModel(
 
             } catch (e: NoInternetException) {
 
+            }
+        }
+
+    }
+    fun postPurchase(header:String,purchaseName:String,purchaseDetails:String,purchaseNo:String,purchaseDate:String,stock:Int,item:Int,quantity:Int,rate:Double,discount:Double,total:Double,grandTotal:Double,unitId:Int,shopId:Int,created:String,status:Int) {
+        createPurchaseListener?.started()
+        Coroutines.main {
+            try {
+                purchasePost = PurchasePost(purchaseName!!,purchaseDetails!!,purchaseNo!!,purchaseDate!!,stock!!,item!!,quantity!!, rate!!,discount!!, total!!,grandTotal!!, unitId!!,shopId!!,created!!,status!!)
+                Log.e("response", "response" + Gson().toJson(purchasePost))
+                val response = repository.postPurchase(header,purchasePost!!)
+                createPurchaseListener?.show(response?.message!!)
+                createPurchaseListener?.end()
+                Log.e("response", "response" + Gson().toJson(response))
+
+            } catch (e: ApiException) {
+                createPurchaseListener?.end()
+            } catch (e: NoInternetException) {
+                createPurchaseListener?.end()
+            }
+        }
+
+    }
+    fun updatePurchase(header:String,id: Int,purchaseName:String,purchaseDetails:String,purchaseNo:String,purchaseDate:String,stock:Int,item:Int,quantity:Int,rate:Double,discount:Double,total:Double,grandTotal:Double,unitId:Int,shopId:Int,created:String,status:Int) {
+        createPurchaseListener?.started()
+        Coroutines.main {
+            try {
+                purchaseUpdatePost = PurchaseUpdatePost(id!!,purchaseName!!,purchaseDetails!!,purchaseNo!!,purchaseDate!!,stock!!,item!!,quantity!!, rate!!,discount!!, total!!,grandTotal!!, unitId!!,shopId!!,created!!,status!!)
+                Log.e("response", "response" + Gson().toJson(purchaseUpdatePost))
+                val response = repository.updatePurchase(header,purchaseUpdatePost!!)
+                createPurchaseListener?.show(response?.message!!)
+                createPurchaseListener?.end()
+                Log.e("response", "response" + Gson().toJson(response))
+
+            } catch (e: ApiException) {
+                createPurchaseListener?.end()
+            } catch (e: NoInternetException) {
+                createPurchaseListener?.end()
             }
         }
 

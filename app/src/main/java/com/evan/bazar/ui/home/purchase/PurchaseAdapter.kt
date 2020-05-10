@@ -54,9 +54,9 @@ class AlertViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         if (purchase != null)
         {
 
-//            itemView.text_update.setOnClickListener {
-//                listener.onUpdate(purchase)
-//            }
+            itemView.text_update.setOnClickListener {
+                listener.onUpdate(purchase)
+            }
 //            Glide.with(context)
 //                .load(purchase?.PurchaseImage)
 //                .into(itemView.img_icon!!)
