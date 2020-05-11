@@ -17,7 +17,9 @@ class HomeRepository (
     suspend fun getCategoryType(header:String): CategoryTypeResponse {
         return apiRequest { api.getCategoryType(header) }
     }
-
+    suspend fun getCategorySearchType(header:String,searchPost: SearchCategoryPost): CategoryTypeResponse {
+        return apiRequest { api.getCategorySearchType(header,searchPost) }
+    }
     suspend fun getCategoryTypePagination(header:String,post:CategoryPost): CategoryTypeResponse {
         return apiRequest { api.categoryPagination(header,post) }
     }

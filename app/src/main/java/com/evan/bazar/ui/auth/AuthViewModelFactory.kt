@@ -3,9 +3,10 @@ package com.evan.bazar.ui.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.evan.bazar.data.repositories.UserRepository
+import com.evan.bazar.ui.auth.AuthViewModel
 
 
-@Suppress("UNCHECKED_CAST")
+
 class AuthViewModelFactory(
     private val repository: UserRepository
 ) : ViewModelProvider.NewInstanceFactory() {

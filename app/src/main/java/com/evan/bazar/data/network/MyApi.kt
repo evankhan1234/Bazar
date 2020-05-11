@@ -58,6 +58,11 @@ interface MyApi {
     suspend fun getCategoryType(
         @Header("Authorization") Authorization:String
     ): Response<CategoryTypeResponse>
+    @POST("searching-pagination.php")
+    suspend fun getCategorySearchType(
+        @Header("Authorization") Authorization:String,
+        @Body searchPost: SearchCategoryPost
+    ): Response<CategoryTypeResponse>
     @GET("supplier-get.php")
     suspend fun getSuppliers(
         @Header("Authorization") Authorization:String

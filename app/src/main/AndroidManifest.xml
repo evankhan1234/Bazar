@@ -10,23 +10,41 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-            android:requestLegacyExternalStorage="true"
             android:name=".MVVMApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:networkSecurityConfig="@xml/network_security_config"
+            android:requestLegacyExternalStorage="true"
             android:roundIcon="@mipmap/ic_launcher"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".ui.auth.CreateAccountActivity"></activity>
-        <activity android:name=".ui.auth.ImageUpdateActivity"></activity>
-        <activity android:name=".ui.home.HomeActivity"
+        <activity android:name=".ui.auth.LoginActivity"></activity>
+        <activity android:name=".ui.auth.CreateAccountActivity" />
+        <activity android:name=".ui.auth.ImageUpdateActivity" />
+        <activity
+                android:name=".ui.home.HomeActivity"
                 android:screenOrientation="fullSensor"
-                android:windowSoftInputMode="stateHidden|adjustPan"
-                />
-        <activity android:name=".ui.auth.SignupActivity"></activity>
+                android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.auth.SignupActivity" />
+        <service
+                android:name="com.evan.bazar.ui.firebase.ReceiveNotificationService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service> <!-- Set custom default icon. This is used when no icon is set for incoming notification messages. -->
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/email" />
+        <!--
+                 Set color used with incoming notification messages. This is used when no color is set for the incoming
+                 notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/link_color" />
         <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="${applicationId}"
@@ -37,7 +55,7 @@
                     android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ui.auth.LoginActivity">
+        <activity android:name=".ui.spalash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

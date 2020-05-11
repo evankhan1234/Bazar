@@ -14,7 +14,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class CategoryAdapter (val context: Context, val shops: MutableList<CategoryType>?) : RecyclerView.Adapter<CategoryAdapter.CustomViewHolder>() {
+class CategoryAdapter (val context: Context, val shops: MutableList<CategoryType>?,val iCategoryUpdateListener: ICategoryUpdateListener) : RecyclerView.Adapter<CategoryAdapter.CustomViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -32,7 +32,9 @@ class CategoryAdapter (val context: Context, val shops: MutableList<CategoryType
     override fun onBindViewHolder(holder:CustomViewHolder, position: Int) {
 
 
-
+        holder.itemView.text_update.setOnClickListener {
+            iCategoryUpdateListener.onUpdate(shops?.get(position)!!)
+        }
 //            Glide.with(context)
 //                .load(shops?.get(position)?.icon_path)
 //                .into( holder.itemView?.img_event_image)
