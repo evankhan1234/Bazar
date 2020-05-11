@@ -1,27 +1,19 @@
 package com.evan.bazar.ui.home
 
-import android.content.Intent
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModel
 import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.repositories.HomeRepository
-import com.evan.bazar.data.repositories.UserRepository
-import com.evan.bazar.interfaces.Listener
-import com.evan.bazar.ui.auth.AuthListener
-import com.evan.bazar.ui.auth.LoginActivity
-import com.evan.bazar.ui.auth.SignupActivity
 import com.evan.bazar.ui.home.category.ICategoryListener
 import com.evan.bazar.ui.home.category.ICreateCategoryListener
+import com.evan.bazar.ui.home.product.ICategoryTypeListener
+import com.evan.bazar.ui.home.product.ICreateProductListener
+import com.evan.bazar.ui.home.product.ISupplierListener
 import com.evan.bazar.ui.home.purchase.ICreatePurchaseListener
 import com.evan.bazar.ui.home.purchase.IUnitListener
 import com.evan.bazar.ui.home.supplier.ICreateSupplierListener
-import com.evan.bazar.ui.interfaces.ShopTypeInterface
-import com.evan.bazar.ui.interfaces.SignUpInterface
 import com.evan.bazar.util.*
 import com.google.gson.Gson
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 class HomeViewModel(
     private val repository: HomeRepository
@@ -30,10 +22,15 @@ class HomeViewModel(
     var createCategoryListener: ICreateCategoryListener?=null
     var createSupplierListener: ICreateSupplierListener?=null
     var createPurchaseListener: ICreatePurchaseListener?=null
+    var createProductListener: ICreateProductListener?=null
     var unitListener: IUnitListener?=null
+    var supplierListener: ISupplierListener?=null
+    var categoryTypeListener: ICategoryTypeListener?=null
     var typePost: CategoryType? = null
     var supplierPost: SupplierPost? = null
     var purchasePost: PurchasePost? = null
+    var productPost: ProductPost? = null
+    var productUpdatePost: ProductUpdatePost? = null
     var purchaseUpdatePost: PurchaseUpdatePost? = null
     var supplierUpdatePost: SupplierUpdatePost? = null
     var typeUpdatePost: CategoryUpdate? = null
@@ -178,6 +175,74 @@ class HomeViewModel(
                 createPurchaseListener?.end()
             } catch (e: NoInternetException) {
                 createPurchaseListener?.end()
+            }
+        }
+
+    }
+    fun getCategory(token:String) {
+        Coroutines.main {
+            try {
+                val authResponse = repository.getCategory(token)
+                categoryTypeListener?.category(authResponse?.data!!)
+                Log.e("response", "response" + Gson().toJson(authResponse))
+
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun getSupplier(token:String) {
+        Coroutines.main {
+            try {
+                val authResponse = repository.getSupplier(token)
+                supplierListener?.supplier(authResponse?.data!!)
+                Log.e("response", "response" + Gson().toJson(authResponse))
+
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun postProduct(header:String,name:String,details:String,productCode:String,productImage:String,unitId:Int,sellPrice:Double,supplierPrice:Double,supplierId:Int,shopId:Int,stock:Int,discount:Double,created:String,categoryId:Int,status:Int) {
+        createProductListener?.started()
+        Coroutines.main {
+            try {
+                productPost = ProductPost(name!!,details!!,productCode!!,productImage!!,unitId!!,sellPrice!!,supplierPrice!!, supplierId!!,shopId!!, stock!!,discount!!, created!!,categoryId!!,status!!)
+                Log.e("response", "response" + Gson().toJson(productPost))
+                val response = repository.postProduct(header,productPost!!)
+                createProductListener?.show(response?.message!!)
+                createProductListener?.end()
+                Log.e("response", "response" + Gson().toJson(response))
+
+            } catch (e: ApiException) {
+                createProductListener?.end()
+            } catch (e: NoInternetException) {
+                createProductListener?.end()
+            }
+        }
+
+    }
+    fun postUpdateProduct(header:String,id:Int,name:String,details:String,productCode:String,productImage:String,unitId:Int,sellPrice:Double,supplierPrice:Double,supplierId:Int,shopId:Int,stock:Int,discount:Double,created:String,categoryId:Int,status:Int) {
+        createProductListener?.started()
+        Coroutines.main {
+            try {
+                productUpdatePost = ProductUpdatePost(id!!,name!!,details!!,productCode!!,productImage!!,unitId!!,sellPrice!!,supplierPrice!!, supplierId!!,shopId!!, stock!!,discount!!, created!!,categoryId!!,status!!)
+                Log.e("response", "response" + Gson().toJson(productUpdatePost))
+                val response = repository.postUpdateProduct(header,productUpdatePost!!)
+                createProductListener?.show(response?.message!!)
+                createProductListener?.end()
+                Log.e("response", "response" + Gson().toJson(response))
+
+            } catch (e: ApiException) {
+                createProductListener?.end()
+            } catch (e: NoInternetException) {
+                createProductListener?.end()
             }
         }
 

@@ -134,6 +134,7 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
                     }
 
 
+
                 }, 300)
                 Log.e("data","data"+ Gson().toJson(purchase))
             }
