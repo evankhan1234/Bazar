@@ -25,7 +25,7 @@ class CategoryDataSource (val context: Context,val alertRepository: HomeReposito
 
             try {
                 networkState.postValue(NetworkState.LOADING)
-                categoryPost = CategoryPost(2, 1)
+                categoryPost = CategoryPost(10, 1)
                 val response = alertRepository.getCategoryTypePagination(SharedPreferenceUtil.getShared(context!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,categoryPost!!)
                 Log.e("response","response"+response)
                 response.success.let { isSuccessful ->
@@ -56,7 +56,7 @@ class CategoryDataSource (val context: Context,val alertRepository: HomeReposito
         Coroutines.main {
             try {
                 networkState.postValue(NetworkState.LOADING)
-                categoryPost = CategoryPost(2, params.key)
+                categoryPost = CategoryPost(10, params.key)
                 val response =
                     alertRepository.getCategoryTypePagination(SharedPreferenceUtil.getShared(context!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,categoryPost!!)
                 response.success.let { isSuccessful ->

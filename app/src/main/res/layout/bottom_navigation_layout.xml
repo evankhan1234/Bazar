@@ -158,7 +158,7 @@
                     android:paddingRight="1dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/settings"
+                    android:text="@string/mypage"
                     android:textColor="@color/color_menu_selector"
                     />
         </RelativeLayout>

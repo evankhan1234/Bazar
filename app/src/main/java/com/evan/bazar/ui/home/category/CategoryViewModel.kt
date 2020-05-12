@@ -64,6 +64,7 @@ class CategoryViewModel (
 
             } catch (e: ApiException) {
                 categoryListener?.end()
+                categoryListener?.exit()
             } catch (e: NoInternetException) {
                 categoryListener?.end()
             }

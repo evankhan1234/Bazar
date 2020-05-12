@@ -24,7 +24,7 @@ class PurchaseDataSource (val context: Context, val alertRepository: HomeReposit
 
             try {
                 networkState.postValue(NetworkState.LOADING)
-                limitPost = LimitPost(2, 1)
+                limitPost = LimitPost(10, 1)
                 val response = alertRepository.getPurchasePagination(SharedPreferenceUtil.getShared(context!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,limitPost!!)
                 Log.e("response","response"+ Gson().toJson(response))
                 response.success.let { isSuccessful ->
@@ -55,7 +55,7 @@ class PurchaseDataSource (val context: Context, val alertRepository: HomeReposit
         Coroutines.main {
             try {
                 networkState.postValue(NetworkState.LOADING)
-                limitPost = LimitPost(2, params.key)
+                limitPost = LimitPost(10, params.key)
                 val response =
                     alertRepository.getPurchasePagination(SharedPreferenceUtil.getShared(context!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,limitPost!!)
                 response.success.let { isSuccessful ->

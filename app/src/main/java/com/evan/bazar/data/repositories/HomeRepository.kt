@@ -68,4 +68,18 @@ class HomeRepository (
     suspend fun getCategory(header:String): CategoryTypeResponse {
         return apiRequest { api.getCategory(header) }
     }
+
+    suspend fun getSupplierSearch(header:String,searchPost: SearchCategoryPost): SupplierResponses {
+        return apiRequest { api.getSupplierSearch(header,searchPost) }
+    }
+    suspend fun getPurchaseSearch(header:String,searchPost: SearchCategoryPost): PurchaseResponses {
+        return apiRequest { api.getPurchaseSearch(header,searchPost) }
+    }
+    suspend fun getProductSearch(header:String,searchPost: SearchCategoryPost): ProductResponses {
+        return apiRequest { api.getProductSearch(header,searchPost) }
+    }
+    suspend fun getShopUserDetails(header:String): ShopUserResponse {
+        return apiRequest { api.getShopUserDetails(header) }
+    }
+
 }

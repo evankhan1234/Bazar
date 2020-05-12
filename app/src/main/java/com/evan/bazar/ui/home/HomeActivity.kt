@@ -479,7 +479,7 @@ class HomeActivity : AppCompatActivity() {
             }
             FRAG_SETTINGS -> {
                 ll_back_header?.visibility = View.GONE
-                rlt_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
                 tv_title.text = resources.getString(R.string.settings)
                 btn_footer_settings.setSelected(true)
 
