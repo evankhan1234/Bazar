@@ -1,11 +1,14 @@
 package com.evan.bazar.ui.home.category
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.lifecycle.Observer
@@ -33,12 +36,15 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener,ICategoryUpd
     private val factory : CategoryModelFactory by instance()
 
     var categoryAdapter:CategoryListAdapter?=null
+    var categoryTypeAdapter:CategoryAdapter?=null
 
     private lateinit var viewModel: CategoryViewModel
 
     var rcv_category:RecyclerView?=null
+    var rcv_category_search:RecyclerView?=null
     var progress_bar:ProgressBar?=null
     var btn_category_new:ImageView?=null
+    var edit_content:EditText?=null
     var token:String?=""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +52,16 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener,ICategoryUpd
     ): View? {
         // Inflate the layout for this fragment
         val root= inflater.inflate(R.layout.fragment_category, container, false)
+        rcv_category_search=root?.findViewById(R.id.rcv_category_search)
         progress_bar=root?.findViewById(R.id.progress_bar)
         rcv_category=root?.findViewById(R.id.rcv_category)
         btn_category_new=root?.findViewById(R.id.btn_category_new)
-         viewModel = ViewModelProviders.of(this, factory).get(CategoryViewModel::class.java)
+        edit_content=root?.findViewById(R.id.edit_content)
+        viewModel = ViewModelProviders.of(this, factory).get(CategoryViewModel::class.java)
 
+        viewModel.categoryListener=this
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
-
+        edit_content?.addTextChangedListener(keyword)
         //viewModel.categoryListener=this
 
         btn_category_new?.setOnClickListener {
@@ -80,9 +89,12 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener,ICategoryUpd
         rcv_category?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rcv_category?.adapter = categoryAdapter
         startListening()
+
     }
 
     private fun startListening() {
+        rcv_category_search?.visibility=View.GONE
+        rcv_category?.visibility=View.VISIBLE
 
         viewModel.listOfAlerts?.observe(this, Observer {
             categoryAdapter?.submitList(it)
@@ -121,12 +133,15 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener,ICategoryUpd
     }
 
     override fun show(data: MutableList<CategoryType>) {
-//        categoryAdapter = CategoryAdapter(context!!,data!!)
-//        rcv_category?.apply {
-//            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-//            setHasFixedSize(true)
-//            adapter = categoryAdapter
-//        }
+        viewModel.replaceSubscription(this)
+        rcv_category_search?.visibility=View.VISIBLE
+        rcv_category?.visibility=View.GONE
+        categoryTypeAdapter = CategoryAdapter(context!!,data!!,this)
+        rcv_category_search?.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+            setHasFixedSize(true)
+            adapter = categoryTypeAdapter
+        }
     }
 
     override fun started() {
@@ -142,6 +157,34 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener,ICategoryUpd
             (activity as HomeActivity).goToUpdateCategoryFragment(category)
         }
     }
+    var keyword: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
 
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+            try {
+                if (s.toString().equals("")){
+                    startListening()
+                }
+                else{
+                    var keyword:String?=""
+                    keyword=s.toString()+"%"
+                    viewModel.getCategoryType(token!!,keyword)
+                }
+
+            } catch (e: Exception) {
+
+            }
+
+
+        }
+
+    }
 
 }

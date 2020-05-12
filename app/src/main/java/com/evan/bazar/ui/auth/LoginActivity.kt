@@ -34,21 +34,22 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
     var et_mobile: EditText? = null
     var radio_email: RadioButton? = null
     var radio_mobile: RadioButton? = null
+    var viewModel:AuthViewModel?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        val viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
-        binding.viewmodel = viewModel
+        viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
+         binding.viewmodel = viewModel
         et_email=findViewById(R.id.et_email)
         et_mobile=findViewById(R.id.et_mobile)
         radio_email=findViewById(R.id.radio_email)
         tv_sign_in=findViewById(R.id.tv_sign_in)
         radio_mobile=findViewById(R.id.radio_mobile)
         radio_email?.setOnClickListener{
-            et_mobile?.visibility=View.GONE
+            et_mobile?.visibility= View.GONE
             et_email?.visibility=View.VISIBLE
             et_mobile?.setText("")
         }
@@ -63,7 +64,7 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
                 startActivity(it)
             }
         }
-        viewModel.authListener = this
+        viewModel?.authListener = this
 
         var token:String?=""
         token = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
