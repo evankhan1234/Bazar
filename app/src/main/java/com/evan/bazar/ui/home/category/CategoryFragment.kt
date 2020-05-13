@@ -186,5 +186,9 @@ class CategoryFragment : Fragment() , KodeinAware,ICategoryListener,ICategoryUpd
         }
 
     }
-
+    override fun exit(){
+        rcv_category_search?.visibility=View.GONE
+        rcv_category?.visibility=View.GONE
+        viewModel.replaceSubscription(this)
+    }
 }

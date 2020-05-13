@@ -66,16 +66,16 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
         }
         viewModel?.authListener = this
 
-        var token:String?=""
-        token = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
-        if (token != null && !token?.trim().equals("") && !token.isNullOrEmpty()) {
-            Intent(this, HomeActivity::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(it)
-            }
-        } else {
-           // gotoLoginPage()
-        }
+//        var token:String?=""
+//        token = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
+//        if (token != null && !token?.trim().equals("") && !token.isNullOrEmpty()) {
+//            Intent(this, HomeActivity::class.java).also {
+//                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                startActivity(it)
+//            }
+//        } else {
+//           // gotoLoginPage()
+//        }
 //        viewModel.getLoggedInUser().observe(this, Observer { user ->
 //            if(user != null){
 //                Intent(this, HomeActivity::class.java).also {

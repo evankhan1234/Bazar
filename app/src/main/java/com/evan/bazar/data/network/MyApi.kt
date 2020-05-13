@@ -63,10 +63,31 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body searchPost: SearchCategoryPost
     ): Response<CategoryTypeResponse>
+    @POST("searching-supplier.php")
+    suspend fun getSupplierSearch(
+        @Header("Authorization") Authorization:String,
+        @Body searchPost: SearchCategoryPost
+    ): Response<SupplierResponses>
+    @POST("searching-purchase.php")
+    suspend fun getPurchaseSearch(
+        @Header("Authorization") Authorization:String,
+        @Body searchPost: SearchCategoryPost
+    ): Response<PurchaseResponses>
+    @POST("searching-product.php")
+    suspend fun getProductSearch(
+        @Header("Authorization") Authorization:String,
+        @Body searchPost: SearchCategoryPost
+    ): Response<ProductResponses>
+
     @GET("supplier-get.php")
     suspend fun getSuppliers(
         @Header("Authorization") Authorization:String
     ): Response<SupplierResponses>
+    @GET("shop-user-details.php")
+    suspend fun getShopUserDetails(
+        @Header("Authorization") Authorization:String
+    ): Response<ShopUserResponse>
+
     @GET("category-get.php")
         suspend fun getCategory(
         @Header("Authorization") Authorization:String

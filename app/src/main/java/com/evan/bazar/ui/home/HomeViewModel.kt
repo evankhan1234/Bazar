@@ -11,6 +11,7 @@ import com.evan.bazar.ui.home.product.ICreateProductListener
 import com.evan.bazar.ui.home.product.ISupplierListener
 import com.evan.bazar.ui.home.purchase.ICreatePurchaseListener
 import com.evan.bazar.ui.home.purchase.IUnitListener
+import com.evan.bazar.ui.home.settings.IShopUserListener
 import com.evan.bazar.ui.home.supplier.ICreateSupplierListener
 import com.evan.bazar.util.*
 import com.google.gson.Gson
@@ -26,6 +27,7 @@ class HomeViewModel(
     var unitListener: IUnitListener?=null
     var supplierListener: ISupplierListener?=null
     var categoryTypeListener: ICategoryTypeListener?=null
+    var shopUserListener: IShopUserListener?=null
     var typePost: CategoryType? = null
     var supplierPost: SupplierPost? = null
     var purchasePost: PurchasePost? = null
@@ -247,5 +249,20 @@ class HomeViewModel(
         }
 
     }
+    fun getShopUserDetails(token:String) {
+        shopUserListener?.onStarted()
+        Coroutines.main {
+            try {
+                val authResponse = repository.getShopUserDetails(token)
+                shopUserListener?.show(authResponse?.data!!)
+                Log.e("response", "response" + Gson().toJson(authResponse))
+                shopUserListener?.onEnd()
+            } catch (e: ApiException) {
+                shopUserListener?.onEnd()
+            } catch (e: NoInternetException) {
+                shopUserListener?.onEnd()
+            }
+        }
 
+    }
 }

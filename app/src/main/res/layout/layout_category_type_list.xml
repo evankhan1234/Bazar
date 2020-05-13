@@ -18,7 +18,7 @@
             app:cardBackgroundColor="@color/white"
             android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="80dp">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                         android:maxLines="1"
                         android:text="Coca-Cola"
                         android:textColor="@color/black_again"
-                        android:textSize="19sp" />
+                        android:textSize="13sp" />
 
                 <TextView
                         android:textStyle="bold"
@@ -60,7 +60,7 @@
                         android:maxLines="1"
                         android:text=""
                         android:textColor="@color/black_again"
-                        android:textSize="19sp" />
+                        android:textSize="14sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -79,7 +79,7 @@
                         android:maxLines="1"
                         android:text="02,January,2020"
                         android:textColor="@color/black_again"
-                        android:textSize="19sp" />
+                        android:textSize="15sp" />
                 <TextView
                         android:layout_alignParentRight="true"
                         android:textAlignment="center"

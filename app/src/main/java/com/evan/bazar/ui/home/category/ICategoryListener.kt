@@ -6,4 +6,5 @@ interface ICategoryListener {
     fun show(data:MutableList<CategoryType>)
     fun started()
     fun end()
+    fun exit()
 }
