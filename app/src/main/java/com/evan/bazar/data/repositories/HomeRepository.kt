@@ -82,4 +82,8 @@ class HomeRepository (
         return apiRequest { api.getShopUserDetails(header) }
     }
 
+    suspend fun getOrders(header:String): OrderListResponses {
+        return apiRequest { api.getOrders(header) }
+    }
+
 }

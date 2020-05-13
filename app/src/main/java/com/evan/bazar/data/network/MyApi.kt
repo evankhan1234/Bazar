@@ -51,6 +51,10 @@ interface MyApi {
         @Field("password") password: String
     ): Response<AuthResponse>
 
+    @GET("order-get.php")
+    suspend fun getOrders(
+        @Header("Authorization") Authorization:String
+    ): Response<OrderListResponses>
     @GET("shop-type.php")
     suspend fun getShopType(
     ): Response<ShopTypeResponses>
