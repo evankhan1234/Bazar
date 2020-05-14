@@ -64,17 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" />
-        <ImageView
 
-                android:layout_width="180px"
-                android:layout_height="181px"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="39px"
-                android:layout_marginBottom="0px"
-                android:alpha="1.5"
-                android:id="@+id/btn_product_new"
-                android:src="@drawable/add" />
     </RelativeLayout>
 
     <ProgressBar
