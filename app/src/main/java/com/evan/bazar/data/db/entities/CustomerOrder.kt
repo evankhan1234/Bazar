@@ -28,8 +28,8 @@ data class CustomerOrder (
     var Price: Double?,
     @SerializedName("Picture")
     var Picture: String?,
-    @SerializedName("created")
-    var created: String?,
+    @SerializedName("Created")
+    var Created: String?,
     @SerializedName("ShopUserId")
     var ShopUserId: Int?
 ): Parcelable

@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Orders (
     @SerializedName("Id")
-    var Id: String?,
+    var Id: Int?,
     @SerializedName("OrderAddress")
     var OrderAddress: String?,
     @SerializedName("OrderLatitude")

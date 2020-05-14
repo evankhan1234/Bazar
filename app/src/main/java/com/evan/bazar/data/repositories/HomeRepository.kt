@@ -85,7 +85,7 @@ class HomeRepository (
     suspend fun getOrders(header:String): OrderListResponses {
         return apiRequest { api.getOrders(header) }
     }
-    suspend fun getCustomerOrders(header:String): CustomerOrderResponses {
-        return apiRequest { api.getCustomerOrder(header) }
+    suspend fun getCustomerOrders(header:String,customerOrderPost: CustomerOrderPost): CustomerOrderResponses {
+        return apiRequest { api.getCustomerOrder(header,customerOrderPost) }
     }
 }
