@@ -10,7 +10,7 @@
     <ImageView
             android:id="@+id/app_logo"
             android:layout_centerInParent="true"
-            android:src="@drawable/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:src="@drawable/d_letter_big"
+            android:layout_width="130dp"
+            android:layout_height="130dp"/>
 </RelativeLayout>

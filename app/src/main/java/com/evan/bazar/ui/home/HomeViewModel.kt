@@ -6,6 +6,7 @@ import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.repositories.HomeRepository
 import com.evan.bazar.ui.home.category.ICategoryListener
 import com.evan.bazar.ui.home.category.ICreateCategoryListener
+import com.evan.bazar.ui.home.order.IOrdersListListener
 import com.evan.bazar.ui.home.product.ICategoryTypeListener
 import com.evan.bazar.ui.home.product.ICreateProductListener
 import com.evan.bazar.ui.home.product.ISupplierListener
@@ -27,6 +28,7 @@ class HomeViewModel(
     var unitListener: IUnitListener?=null
     var supplierListener: ISupplierListener?=null
     var categoryTypeListener: ICategoryTypeListener?=null
+    var orderListListener: IOrdersListListener?=null
     var shopUserListener: IShopUserListener?=null
     var typePost: CategoryType? = null
     var supplierPost: SupplierPost? = null
@@ -261,6 +263,23 @@ class HomeViewModel(
                 shopUserListener?.onEnd()
             } catch (e: NoInternetException) {
                 shopUserListener?.onEnd()
+            }
+        }
+
+    }
+
+    fun getOrders(token:String) {
+        orderListListener?.onStarted()
+        Coroutines.main {
+            try {
+                val authResponse = repository.getOrders(token)
+                orderListListener?.order(authResponse?.data!!)
+                Log.e("response", "response" + Gson().toJson(authResponse))
+                orderListListener?.onEnd()
+            } catch (e: ApiException) {
+                orderListListener?.onEnd()
+            } catch (e: NoInternetException) {
+                orderListListener?.onEnd()
             }
         }
 

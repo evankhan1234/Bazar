@@ -59,8 +59,8 @@ class ReceiveNotificationService : FirebaseMessagingService() {
          notificationBuilder
              .setDefaults(Notification.DEFAULT_ALL)
              .setWhen(System.currentTimeMillis())
-             .setSmallIcon(R.drawable.email)
-             .setColor(ContextCompat.getColor(getApplicationContext(), R.color.link_color))
+             .setSmallIcon(R.drawable.alphabet)
+             .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary))
             .setContentTitle(title)
             .setContentText(body)
 
