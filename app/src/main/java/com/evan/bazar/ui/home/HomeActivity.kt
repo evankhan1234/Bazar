@@ -565,7 +565,7 @@ class HomeActivity : AppCompatActivity() {
                 ll_back_header?.visibility = View.VISIBLE
                 rlt_header?.visibility = View.GONE
                 tv_details.text = resources.getString(R.string.delivery)
-                btn_footer_store.setSelected(true)
+                btn_footer_orders.setSelected(true)
 
             }
             FRAG_UPDATE_PURCHASE -> {

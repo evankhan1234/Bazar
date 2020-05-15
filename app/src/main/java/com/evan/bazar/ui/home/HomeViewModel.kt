@@ -40,6 +40,7 @@ class HomeViewModel(
     var supplierUpdatePost: SupplierUpdatePost? = null
     var customerOrderListener: ICustomerOrderListListener? = null
     var typeUpdatePost: CategoryUpdate? = null
+    var customerOrderPost: CustomerOrderPost? = null
 
     fun getCategoryType(header:String) {
         categoryListener?.started()
@@ -287,11 +288,12 @@ class HomeViewModel(
 
     }
 
-    fun getCustomerOrders(token:String) {
+    fun getCustomerOrders(token:String,id: Int) {
         customerOrderListener?.onStarted()
         Coroutines.main {
             try {
-                val authResponse = repository.getCustomerOrders(token)
+                customerOrderPost= CustomerOrderPost(id)
+                val authResponse = repository.getCustomerOrders(token,customerOrderPost!!)
                 customerOrderListener?.order(authResponse?.data!!)
                 Log.e("response", "response" + Gson().toJson(authResponse))
                 customerOrderListener?.onEnd()

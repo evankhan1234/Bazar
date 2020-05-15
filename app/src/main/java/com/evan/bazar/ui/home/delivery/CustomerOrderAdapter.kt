@@ -41,9 +41,9 @@ class CustomerOrderAdapter (val context: Context, val order: MutableList<Custome
         Glide.with(context)
             .load(order?.get(position)?.Picture)
             .into(holder.itemView.img_image!!)
-//        holder.itemView.text_name.setText(order?.get(position)?.Name)
-//        holder.itemView.text_phone_number.setText(order?.get(position)?.MobileNumber)
-//        holder.itemView.text_email.setText(order?.get(position)?.Email)
+       holder.itemView.tv_price.setText("Price: "+order?.get(position)?.Price.toString()+" Tk")
+        holder.itemView.tv_product_name.setText(order?.get(position)?.Name)
+       holder.itemView.text_quantity.setText(order?.get(position)?.Quantity?.toString())
 //        var order_address:String=""
 //        var order_area:String=""
 //
@@ -52,7 +52,7 @@ class CustomerOrderAdapter (val context: Context, val order: MutableList<Custome
 //        holder.itemView.tv_order_address.text= Html.fromHtml(order_address)
 //        holder.itemView.tv_order_area.text= Html.fromHtml(order_area)
 //
-//        holder.itemView.tv_date.text=getStartDate(order?.get(position)?.Created)
+        holder.itemView.tv_date.text=getStartDate(order?.get(position)?.Created)
 
 
     }

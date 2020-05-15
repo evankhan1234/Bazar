@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content">
 
             <LinearLayout
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
@@ -31,27 +31,341 @@
                         android:layout_marginTop="8dp"
                         android:id="@+id/rcv_orders"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="220dp"
                         android:visibility="visible" />
 
+                <androidx.cardview.widget.CardView
+                        android:layout_centerInParent="true"
+                        android:id="@+id/line1"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="visible"
+                        android:layout_marginRight="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="5dp"
+                        app:cardBackgroundColor="@color/white"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="vertical">
+                        <RelativeLayout
+                                android:layout_marginTop="10dp"
 
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
+                            <TextView
+                                    android:layout_alignParentLeft="true"
+                                    android:id="@+id/tv_stock"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="Sub Total"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+
+                            <TextView
+
+                                    android:layout_alignParentRight="true"
+                                    android:id="@+id/tv_sub_total"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="1dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="150 Tk"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+                        </RelativeLayout>
+                        <View
+                                android:background="@color/black_opacity_30"
+                                android:layout_marginTop="7dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />
+
+                        <RelativeLayout
+                                android:layout_marginTop="10dp"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <TextView
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="Discount"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+
+                            <EditText
+                                    android:inputType="numberDecimal"
+                                    android:id="@+id/et_discount"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_width="80dp"
+                                    android:background="@drawable/edit_drawable"
+                                    android:layout_height="40dp"
+                                    android:layout_marginRight="1dp"
+                                    android:gravity="end"
+                                    android:paddingRight="10dp"
+                                    android:paddingTop="10dp"
+                                    android:hint="Tk"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+                        </RelativeLayout>
+                        <View
+                                android:background="@color/black_opacity_30"
+                                android:layout_marginTop="7dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />
+                        <RelativeLayout
+                                android:layout_marginTop="10dp"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <TextView
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="Total"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+
+                            <TextView
+
+                                    android:layout_alignParentRight="true"
+                                    android:id="@+id/tv_total"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="1dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="150 Tk"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+                        </RelativeLayout>
+                        <View
+                                android:background="@color/black_opacity_30"
+                                android:layout_marginTop="7dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />
+                        <RelativeLayout
+                                android:layout_marginTop="10dp"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <TextView
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="Paid Amount"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+
+                            <EditText
+                                    android:inputType="numberDecimal"
+
+                                    android:id="@+id/tv_paid_amount"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_width="80dp"
+                                    android:background="@drawable/edit_drawable"
+                                    android:layout_height="40dp"
+                                    android:layout_marginRight="1dp"
+                                    android:gravity="end"
+                                    android:paddingRight="10dp"
+                                    android:paddingTop="10dp"
+                                    android:hint="Tk"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+                        </RelativeLayout>
+                        <View
+                                android:background="@color/black_opacity_30"
+                                android:layout_marginTop="7dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />
+                        <RelativeLayout
+                                android:layout_marginTop="10dp"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <TextView
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="Due Amount"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+
+                            <EditText
+                                    android:inputType="numberDecimal"
+                                    android:id="@+id/tv_due_amount"
+                                    android:layout_width="80dp"
+                                    android:layout_height="40dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="1dp"
+                                    android:background="@drawable/edit_drawable"
+                                    android:gravity="end"
+                                    android:hint="Tk"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:paddingTop="10dp"
+                                    android:paddingRight="10dp"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+                        </RelativeLayout>
+                        <View
+                                android:background="@color/black_opacity_30"
+                                android:layout_marginTop="7dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />
+                        <RelativeLayout
+                                android:layout_marginTop="10dp"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <TextView
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="Grand Total"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+
+                            <TextView
+
+                                    android:layout_alignParentRight="true"
+                                    android:id="@+id/tv_grand_total"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="1dp"
+                                    android:gravity="center_vertical"
+                                    android:letterSpacing=".00"
+                                    android:maxLines="1"
+                                    android:text="150 Tk"
+                                    android:textColor="@color/black_again"
+                                    android:textSize="13sp" />
+                        </RelativeLayout>
+                        <View
+                                android:background="@color/black_opacity_30"
+                                android:layout_marginTop="7dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />
+
+                        <View
+                                android:layout_width="match_parent"
+                                android:layout_height="20dp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                        android:textStyle="bold"
+                       android:layout_gravity="center_horizontal"
+                        android:id="@+id/tv_invoice_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center_vertical"
+                        android:letterSpacing=".00"
+                        android:maxLines="1"
+                        android:text="Invoice Number : 2019#143"
+                        android:textColor="@color/black_again"
+                        android:textSize="15sp" />
+                <EditText
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:inputType="numberDecimal"
+                        android:id="@+id/tv_delivery_charge"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/edit_drawable"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="start"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="18dp"
+                        android:hint="Delivery Charge"
+                        android:letterSpacing=".00"
+                        android:maxLines="1"
+                        android:textColor="@color/black_again"
+                        android:textSize="13sp" />
+                <EditText
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:inputType="text"
+                        android:id="@+id/tv_delivery_details"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/edit_drawable"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="start"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="18dp"
+                        android:hint="Delivery Details"
+                        android:letterSpacing=".00"
+                        android:maxLines="3"
+                        android:textColor="@color/black_again"
+                        android:textSize="13sp" />
                 <Button
                         android:id="@+id/btn_ok"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="11dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="11dp"
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/black_capsul"
                         android:stateListAnimator="@null"
-                        android:text="Done"
+                        android:text="Delivery"
                         android:textColor="#fff"
                         android:textSize="15sp" />
                 <View
                         android:layout_width="match_parent"
-                        android:layout_height="25dp"/>
+                        android:layout_height="15dp"/>
             </LinearLayout>
 
 
