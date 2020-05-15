@@ -62,6 +62,7 @@ class ReceiveNotificationService : FirebaseMessagingService() {
              .setSmallIcon(R.drawable.alphabet)
              .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary))
             .setContentTitle(title)
+             .setStyle( NotificationCompat.BigTextStyle().bigText(body))
             .setContentText(body)
 
         notificationManager.notify(0, notificationBuilder.build())

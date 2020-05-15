@@ -194,7 +194,7 @@
                             <EditText
                                     android:inputType="numberDecimal"
 
-                                    android:id="@+id/tv_paid_amount"
+                                    android:id="@+id/et_paid_amount"
                                     android:layout_alignParentRight="true"
                                     android:layout_width="80dp"
                                     android:background="@drawable/edit_drawable"
@@ -235,7 +235,7 @@
 
                             <EditText
                                     android:inputType="numberDecimal"
-                                    android:id="@+id/tv_due_amount"
+                                    android:id="@+id/et_due_amount"
                                     android:layout_width="80dp"
                                     android:layout_height="40dp"
                                     android:layout_alignParentRight="true"
@@ -316,7 +316,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:inputType="numberDecimal"
-                        android:id="@+id/tv_delivery_charge"
+                        android:id="@+id/et_delivery_charge"
                         android:layout_alignParentRight="true"
                         android:layout_width="match_parent"
                         android:background="@drawable/edit_drawable"
@@ -335,7 +335,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:inputType="text"
-                        android:id="@+id/tv_delivery_details"
+                        android:id="@+id/et_delivery_details"
                         android:layout_alignParentRight="true"
                         android:layout_width="match_parent"
                         android:background="@drawable/edit_drawable"

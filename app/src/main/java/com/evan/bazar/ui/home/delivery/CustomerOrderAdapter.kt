@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.layout_customer_order_list.view.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class CustomerOrderAdapter (val context: Context, val order: MutableList<CustomerOrder>?, val iCustomerOrderListener: ICustomerOrderListListener) : RecyclerView.Adapter<CustomerOrderAdapter.CustomViewHolder>() {
+class CustomerOrderAdapter (val context: Context, val order: MutableList<CustomerOrder>?, val iCustomerOrderListener: ICustomerOrderListListener, val deleteIdListener:IDeleteIdListener,val itemClickListener:IItemClickListener) : RecyclerView.Adapter<CustomerOrderAdapter.CustomViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -35,9 +35,20 @@ class CustomerOrderAdapter (val context: Context, val order: MutableList<Custome
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
 
-//        holder.itemView.text_view.setOnClickListener {
-//            iOrdersUpdateListener.onUpdate(order?.get(position)!!)
-//        }
+        holder.itemView.img_plus.setOnClickListener {
+            order?.get(position)?.Quantity= order?.get(position)?.Quantity!!+1
+            order?.set(position,order?.get(position))
+            itemClickListener?.onClick(order?.get(position)?.Quantity!!,order?.get(position)!!.Price,order?.get(position)!!.Id,1)
+        }
+        holder.itemView.img_minus.setOnClickListener {
+            order?.get(position)?.Quantity= order?.get(position)?.Quantity!!-1
+            order?.set(position,order?.get(position))
+            itemClickListener?.onClick(order?.get(position)?.Quantity!!,order?.get(position)!!.Price,order?.get(position)!!.Id,2)
+        }
+        holder.itemView.btn_delete.setOnClickListener {
+            deleteIdListener.onId(order?.get(position)!!.Id!!,order?.get(position)!!.Price,position,order?.get(position)!!.Quantity)
+            order?.remove(order?.get(position)!!)
+        }
         Glide.with(context)
             .load(order?.get(position)?.Picture)
             .into(holder.itemView.img_image!!)
