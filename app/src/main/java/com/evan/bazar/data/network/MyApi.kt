@@ -50,7 +50,10 @@ interface MyApi {
         @Field("email") email: String,
         @Field("password") password: String
     ): Response<AuthResponse>
-
+    @GET("order-get-shop.php")
+    suspend fun getCustomerOrder(
+        @Header("Authorization") Authorization:String
+    ): Response<CustomerOrderResponses>
     @GET("order-get.php")
     suspend fun getOrders(
         @Header("Authorization") Authorization:String

@@ -22,17 +22,16 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.evan.bazar.BuildConfig
 import com.evan.bazar.R
-import com.evan.bazar.data.db.entities.CategoryType
-import com.evan.bazar.data.db.entities.Product
-import com.evan.bazar.data.db.entities.Purchase
-import com.evan.bazar.data.db.entities.Supplier
+import com.evan.bazar.data.db.entities.*
 import com.evan.bazar.interfaces.DialogActionListener
 import com.evan.bazar.ui.auth.ImageUpdateActivity
 import com.evan.bazar.ui.fragments.StepOneFragment
 import com.evan.bazar.ui.home.category.CategoryFragment
 import com.evan.bazar.ui.home.category.CreateCategoryFragment
 import com.evan.bazar.ui.home.dashboard.DashboardFragment
+import com.evan.bazar.ui.home.delivery.CreateDeliveryFragment
 import com.evan.bazar.ui.home.order.OrderFragment
+import com.evan.bazar.ui.home.orderdelivery.OrderDeliveryFragment
 import com.evan.bazar.ui.home.product.CreateProductFragment
 import com.evan.bazar.ui.home.product.ProductFragment
 import com.evan.bazar.ui.home.purchase.CreatePurchaseFragment
@@ -102,7 +101,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         val f = getVisibleFragment()
-        val f1 = getLastParentFragment()
         if (f != null)
         {
             if (f is StoreFragment) {
@@ -110,6 +108,12 @@ class HomeActivity : AppCompatActivity() {
                     mFragManager?.findFragmentByTag(FRAG_STORE.toString()) as StoreFragment
                 storeFragment.removeChild()
                 setUpHeader(FRAG_STORE)
+            }
+            if (f is OrderDeliveryFragment) {
+                val orderDeliveryFragment: OrderDeliveryFragment =
+                    mFragManager?.findFragmentByTag(FRAG_ORDER.toString()) as OrderDeliveryFragment
+                orderDeliveryFragment.removeChild()
+                setUpHeader(FRAG_ORDER)
             }
             if (f is CategoryFragment) {
                 val storeFragment: CategoryFragment =
@@ -368,6 +372,51 @@ class HomeActivity : AppCompatActivity() {
         fragTransaction!!.commit()
 
     }
+    fun goToViewDeliveryFragment(orders: Orders) {
+        setUpHeader(FRAG_VIEW_DELIVERY)
+        mFragManager = supportFragmentManager
+        // create transaction
+        var fragId:Int?=0
+        fragId=FRAG_VIEW_DELIVERY
+        fragTransaction = mFragManager?.beginTransaction()
+        //check if there is any backstack if yes then remove it
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+            //this will clear the back stack and displays no animation on the screen
+            // mFragManager?.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        // check current fragment is wanted fragment
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+        var newFrag: Fragment? = null
+
+        // identify which fragment will be called
+
+        newFrag = CreateDeliveryFragment()
+        val b= Bundle()
+        b.putParcelable(Orders::class.java?.getSimpleName(), orders)
+
+        newFrag.setArguments(b)
+
+        mCurrentFrag = newFrag
+
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
+
+        // param 1: container id, param 2: new fragment, param 3: fragment id
+
+        fragTransaction?.replace(R.id.main_container, newFrag!!, fragId.toString())
+        // prevent showed when user press back fabReview
+        fragTransaction?.addToBackStack(fragId.toString())
+        //  fragTransaction?.hide(active).show(guideFragment).commit();
+        fragTransaction!!.commit()
+
+    }
     fun addFragment(fragId: Int, isHasAnimation: Boolean, obj: Any?) {
         // init fragment manager
         mFragManager = supportFragmentManager
@@ -393,7 +442,7 @@ class HomeActivity : AppCompatActivity() {
                 newFrag = StoreFragment()
             }
             FRAG_ORDER -> {
-                newFrag = OrderFragment()
+                newFrag = OrderDeliveryFragment()
             }
             FRAG_SETTINGS -> {
                 newFrag = SettingsFragment()
@@ -509,6 +558,13 @@ class HomeActivity : AppCompatActivity() {
                 ll_back_header?.visibility = View.VISIBLE
                 rlt_header?.visibility = View.GONE
                 tv_details.text = resources.getString(R.string.purchase)
+                btn_footer_store.setSelected(true)
+
+            }
+            FRAG_VIEW_DELIVERY -> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.delivery)
                 btn_footer_store.setSelected(true)
 
             }
