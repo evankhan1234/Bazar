@@ -42,7 +42,10 @@ interface MyApi {
     suspend fun createProfileImage(
         @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
     ): Response<ImageResponse>
-
+    @GET("delivery-get-shop.php")
+    suspend fun getDeliveryList(
+        @Header("Authorization") Authorization:String
+    ): Response<DeliveryResponses>
     @FormUrlEncoded
     @POST("signup")
     suspend fun userSignup(
@@ -50,6 +53,31 @@ interface MyApi {
         @Field("email") email: String,
         @Field("password") password: String
     ): Response<AuthResponse>
+    @POST("update_customer_order_quantity.php")
+    suspend fun updateQuantityStatus(
+        @Header("Authorization") Authorization:String,
+        @Body quantityPost: QuantityPost
+    ): Response<BasicResponses>
+    @POST("update_customer_order_status_details.php")
+    suspend fun updateOrderDetailsStatus(
+        @Header("Authorization") Authorization:String,
+        @Body customerOrderDetailsStatus: CustomerOrderDetailsStatus
+    ): Response<BasicResponses>
+    @POST("delete_customer_order_items.php")
+    suspend fun deleteCustomerOrderItem(
+        @Header("Authorization") Authorization:String,
+        @Body customerOrderItem: CustomerOrderItem
+    ): Response<BasicResponses>
+    @POST("update_customer_order_status.php")
+    suspend fun updateCustomerOrderStatus(
+        @Header("Authorization") Authorization:String,
+        @Body customerOrderStatus: CustomerOrderStatus
+    ): Response<BasicResponses>
+    @POST("create-delivery-api.php")
+    suspend fun postDelivery(
+        @Header("Authorization") Authorization:String,
+        @Body deliveryOrderPost: DeliveryOrderPost
+    ): Response<BasicResponses>
     @POST("order-get-shop.php")
     suspend fun getCustomerOrder(
         @Header("Authorization") Authorization:String,

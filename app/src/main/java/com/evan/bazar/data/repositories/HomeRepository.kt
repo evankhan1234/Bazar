@@ -88,4 +88,21 @@ class HomeRepository (
     suspend fun getCustomerOrders(header:String,customerOrderPost: CustomerOrderPost): CustomerOrderResponses {
         return apiRequest { api.getCustomerOrder(header,customerOrderPost) }
     }
+
+    suspend fun postDelivery(header:String,post:DeliveryOrderPost): BasicResponses {
+        return apiRequest { api.postDelivery(header,post) }
+    }
+    suspend fun updateCustomerOrderStatus(header:String,post:CustomerOrderStatus): BasicResponses {
+        return apiRequest { api.updateCustomerOrderStatus(header,post) }
+    }
+    suspend fun deleteCustomerOrderItem(header:String,post:CustomerOrderItem): BasicResponses {
+        return apiRequest { api.deleteCustomerOrderItem(header,post) }
+    }
+    suspend fun updateOrderDetailsStatus(header:String,post:CustomerOrderDetailsStatus): BasicResponses {
+        return apiRequest { api.updateOrderDetailsStatus(header,post) }
+    }
+    suspend fun updateQuantityStatus(header:String,post:QuantityPost): BasicResponses {
+        return apiRequest { api.updateQuantityStatus(header,post) }
+    }
+
 }

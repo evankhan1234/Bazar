@@ -7,6 +7,8 @@ import com.evan.bazar.data.repositories.HomeRepository
 import com.evan.bazar.ui.home.category.ICategoryListener
 import com.evan.bazar.ui.home.category.ICreateCategoryListener
 import com.evan.bazar.ui.home.delivery.ICustomerOrderListListener
+import com.evan.bazar.ui.home.delivery.IDeleteListener
+import com.evan.bazar.ui.home.delivery.IDeliveryPostListener
 import com.evan.bazar.ui.home.order.IOrdersListListener
 import com.evan.bazar.ui.home.product.ICategoryTypeListener
 import com.evan.bazar.ui.home.product.ICreateProductListener
@@ -26,15 +28,22 @@ class HomeViewModel(
     var createSupplierListener: ICreateSupplierListener?=null
     var createPurchaseListener: ICreatePurchaseListener?=null
     var createProductListener: ICreateProductListener?=null
+    var deliveryPostListener: IDeliveryPostListener?=null
     var unitListener: IUnitListener?=null
     var supplierListener: ISupplierListener?=null
     var categoryTypeListener: ICategoryTypeListener?=null
     var orderListListener: IOrdersListListener?=null
     var shopUserListener: IShopUserListener?=null
+    var deleteListener: IDeleteListener?=null
     var typePost: CategoryType? = null
     var supplierPost: SupplierPost? = null
     var purchasePost: PurchasePost? = null
     var productPost: ProductPost? = null
+    var deliveryOrderPost: DeliveryOrderPost? = null
+    var customerOrderStatus: CustomerOrderStatus? = null
+    var customerOrderDetailsStatus: CustomerOrderDetailsStatus? = null
+    var quantityPost: QuantityPost? = null
+    var customerOrderItem: CustomerOrderItem? = null
     var productUpdatePost: ProductUpdatePost? = null
     var purchaseUpdatePost: PurchaseUpdatePost? = null
     var supplierUpdatePost: SupplierUpdatePost? = null
@@ -301,6 +310,97 @@ class HomeViewModel(
                 customerOrderListener?.onEnd()
             } catch (e: NoInternetException) {
                 customerOrderListener?.onEnd()
+            }
+        }
+
+    }
+
+    fun postDelivery(header:String,customerId:Int,orderId:Int,discount:Double,grandTotal:Double,paidAmount:Double,dueAmount:Double,total:Double,status:Int,invoiceNumber:String,created:String,orderDetails:String,deliveryCharge:Double) {
+        deliveryPostListener?.started()
+        Coroutines.main {
+            try {
+                deliveryOrderPost = DeliveryOrderPost(customerId!!,orderId!!,discount!!,grandTotal!!,paidAmount!!,dueAmount!!,total!!, status!!,invoiceNumber!!, created!!,orderDetails!!, deliveryCharge!!)
+                Log.e("response", "response" + Gson().toJson(deliveryOrderPost))
+                val response = repository.postDelivery(header,deliveryOrderPost!!)
+                deliveryPostListener?.show(response?.message!!)
+                deliveryPostListener?.end()
+                Log.e("response", "response" + Gson().toJson(response))
+
+            } catch (e: ApiException) {
+                deliveryPostListener?.end()
+            } catch (e: NoInternetException) {
+                deliveryPostListener?.end()
+            }
+        }
+
+    }
+    fun updateCustomerOrderStatus(header:String,orderId:Int) {
+        Coroutines.main {
+            try {
+                customerOrderStatus= CustomerOrderStatus(orderId,2)
+                Log.e("response", "response" + Gson().toJson(customerOrderStatus))
+                val response = repository.updateCustomerOrderStatus(header,customerOrderStatus!!)
+                Log.e("response", "response" + Gson().toJson(response))
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun deleteCustomerOrderItem(header:String,id:Int) {
+        deleteListener?.onStartedView()
+        Coroutines.main {
+            try {
+                customerOrderItem= CustomerOrderItem(id)
+                Log.e("response", "response" + Gson().toJson(customerOrderItem))
+                val response = repository.deleteCustomerOrderItem(header,customerOrderItem!!)
+                if (response.success!!){
+                    deleteListener?.onSuccess(response?.message!!)
+                    deleteListener?.onEndView()
+                }
+                else{
+                    deleteListener?.onFailure(response?.message!!)
+                    deleteListener?.onEndView()
+                }
+                Log.e("response", "response" + Gson().toJson(response))
+            } catch (e: ApiException) {
+                deleteListener?.onFailure(e?.message!!)
+                deleteListener?.onEndView()
+            } catch (e: NoInternetException) {
+                deleteListener?.onFailure(e?.message!!)
+                deleteListener?.onEndView()
+            }
+        }
+
+    }
+    fun updateOrderDetailsStatus(header:String,data: MutableList<CustomerOrderStatus>?) {
+        Coroutines.main {
+            try {
+                customerOrderDetailsStatus= CustomerOrderDetailsStatus(data)
+                Log.e("response", "response" + Gson().toJson(customerOrderDetailsStatus))
+                val response = repository.updateOrderDetailsStatus(header,customerOrderDetailsStatus!!)
+                Log.e("response", "response" + Gson().toJson(response))
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun updateQuantityStatus(header:String,id:Int,quantity:Int) {
+        Coroutines.main {
+            try {
+                quantityPost= QuantityPost(id,quantity)
+                Log.e("response", "response" + Gson().toJson(quantityPost))
+                val response = repository.updateQuantityStatus(header,quantityPost!!)
+                Log.e("response", "response" + Gson().toJson(response))
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
             }
         }
 
