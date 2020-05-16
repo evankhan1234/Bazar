@@ -4,6 +4,7 @@
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
     <string name="name">Name</string>
+    <string name="dashboard">Name</string>
     <string name="purchase_name">Purchase Name</string>
     <string name="product_name">Product Name</string>
     <string name="category_name">Category Name</string>

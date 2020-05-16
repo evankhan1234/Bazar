@@ -37,14 +37,21 @@ interface MyApi {
 //        @Header("Authorization") test:String,
 //        @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
 //    ) : Response<ImageResponse>
+
+    @POST("update-delivery-api.php")
+    suspend fun updateDeliveryStatus(
+        @Header("Authorization") Authorization:String,
+        @Body deliveryStatusPost: DeliveryStatusPost
+    ): Response<BasicResponses>
     @Multipart
     @POST("create-sign-up-image.php")
     suspend fun createProfileImage(
         @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
     ): Response<ImageResponse>
-    @GET("delivery-get-shop.php")
+    @POST("deliveriess-pagination.php")
     suspend fun getDeliveryList(
-        @Header("Authorization") Authorization:String
+        @Header("Authorization") Authorization:String,
+        @Body limitPost: LimitPost
     ): Response<DeliveryResponses>
     @FormUrlEncoded
     @POST("signup")
