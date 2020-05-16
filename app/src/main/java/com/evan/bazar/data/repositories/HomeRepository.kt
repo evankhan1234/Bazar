@@ -104,5 +104,8 @@ class HomeRepository (
     suspend fun updateQuantityStatus(header:String,post:QuantityPost): BasicResponses {
         return apiRequest { api.updateQuantityStatus(header,post) }
     }
+    suspend fun getDeliveryList(header:String,post:LimitPost): DeliveryResponses {
+        return apiRequest { api.getDeliveryList(header,post) }
+    }
 
 }

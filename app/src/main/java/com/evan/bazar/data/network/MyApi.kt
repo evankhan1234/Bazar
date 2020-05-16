@@ -42,9 +42,10 @@ interface MyApi {
     suspend fun createProfileImage(
         @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
     ): Response<ImageResponse>
-    @GET("delivery-get-shop.php")
+    @POST("deliveriess-pagination.php")
     suspend fun getDeliveryList(
-        @Header("Authorization") Authorization:String
+        @Header("Authorization") Authorization:String,
+        @Body limitPost: LimitPost
     ): Response<DeliveryResponses>
     @FormUrlEncoded
     @POST("signup")

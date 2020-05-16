@@ -334,10 +334,10 @@ class HomeViewModel(
         }
 
     }
-    fun updateCustomerOrderStatus(header:String,orderId:Int) {
+    fun updateCustomerOrderStatus(header:String,orderId:Int,status:Int) {
         Coroutines.main {
             try {
-                customerOrderStatus= CustomerOrderStatus(orderId,2)
+                customerOrderStatus= CustomerOrderStatus(orderId,status)
                 Log.e("response", "response" + Gson().toJson(customerOrderStatus))
                 val response = repository.updateCustomerOrderStatus(header,customerOrderStatus!!)
                 Log.e("response", "response" + Gson().toJson(response))

@@ -14,6 +14,10 @@ import com.evan.bazar.ui.home.category.CategoryDataSource
 import com.evan.bazar.ui.home.category.CategoryModelFactory
 import com.evan.bazar.ui.home.category.CategorySourceFactory
 import com.evan.bazar.ui.home.category.CategoryViewModel
+import com.evan.bazar.ui.home.delivery.DeliveryDataSource
+import com.evan.bazar.ui.home.delivery.DeliveryModelFactory
+import com.evan.bazar.ui.home.delivery.DeliverySourceFactory
+import com.evan.bazar.ui.home.delivery.DeliveryViewModel
 import com.evan.bazar.ui.home.product.ProductDataSource
 import com.evan.bazar.ui.home.product.ProductModelFactory
 import com.evan.bazar.ui.home.product.ProductSourceFactory
@@ -53,19 +57,23 @@ class MVVMApplication : Application(), KodeinAware {
         bind() from provider { CategoryModelFactory(instance(),instance()) }
         bind() from provider { PurchaseModelFactory(instance(),instance()) }
         bind() from provider { SupplierModelFactory(instance(),instance()) }
+        bind() from provider { DeliveryModelFactory(instance(),instance()) }
         bind() from provider { ProductModelFactory(instance(),instance()) }
         bind() from provider { CategoryDataSource(instance(),instance()) }
         bind() from provider { PurchaseDataSource(instance(),instance()) }
         bind() from provider { SupplierDataSource(instance(),instance()) }
+        bind() from provider { DeliveryDataSource(instance(),instance()) }
         bind() from provider { ProductDataSource(instance(),instance()) }
         bind() from provider { CategorySourceFactory(instance()) }
         bind() from provider { PurchaseSourceFactory(instance()) }
         bind() from provider { SupplierSourceFactory(instance()) }
+        bind() from provider { DeliverySourceFactory(instance()) }
         bind() from provider { ProductSourceFactory(instance()) }
         bind() from provider { HomeViewModelFactory(instance()) }
         bind() from provider { CategoryViewModel(instance(),instance()) }
         bind() from provider { PurchaseViewModel(instance(),instance()) }
         bind() from provider { SupplierViewModel(instance(),instance()) }
+        bind() from provider { DeliveryViewModel(instance(),instance()) }
         bind() from provider { ProductViewModel(instance(),instance()) }
         bind() from provider { ProfileViewModelFactory(instance()) }
         bind() from provider{ QuotesViewModelFactory(instance()) }
