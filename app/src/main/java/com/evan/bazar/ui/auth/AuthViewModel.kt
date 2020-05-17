@@ -49,19 +49,25 @@ class AuthViewModel(
             try {
                 authPost = AuthPost(email!!, password!!, mobile!!)
                 val authResponse = repository.userLoginFor(authPost!!)
-                Log.e("response", "response" + authResponse.message)
-                SharedPreferenceUtil.saveShared(
-                    view.context,
-                    SharedPreferenceUtil.TYPE_AUTH_TOKEN,
-                    authResponse.jwt!!
-                )
-                SharedPreferenceUtil.saveShared(
-                    view.context,
-                    SharedPreferenceUtil.TYPE_SHOP_ID,
-                    authResponse.shopId!!.Id!!
-                )
-                authListener?.onSuccess(authResponse.data!!)
-                repository.saveUser(authResponse.data!!)
+                if(authResponse.success!!){
+                    Log.e("response", "response" + authResponse.message)
+                    SharedPreferenceUtil.saveShared(
+                        view.context,
+                        SharedPreferenceUtil.TYPE_AUTH_TOKEN,
+                        authResponse.jwt!!
+                    )
+                    SharedPreferenceUtil.saveShared(
+                        view.context,
+                        SharedPreferenceUtil.TYPE_SHOP_ID,
+                        authResponse.shopId!!.Id!!
+                    )
+                    authListener?.onSuccess(authResponse.data!!)
+                    repository.saveUser(authResponse.data!!)
+                }
+                else{
+                    authListener?.onFailure(authResponse.message!!)
+                }
+
 //                authResponse.user?.let {
 //                    authListener?.onSuccess(it)
 //                    repository.saveUser(it)

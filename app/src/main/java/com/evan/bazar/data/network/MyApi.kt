@@ -37,6 +37,12 @@ interface MyApi {
 //        @Header("Authorization") test:String,
 //        @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
 //    ) : Response<ImageResponse>
+
+    @POST("update-delivery-api.php")
+    suspend fun updateDeliveryStatus(
+        @Header("Authorization") Authorization:String,
+        @Body deliveryStatusPost: DeliveryStatusPost
+    ): Response<BasicResponses>
     @Multipart
     @POST("create-sign-up-image.php")
     suspend fun createProfileImage(

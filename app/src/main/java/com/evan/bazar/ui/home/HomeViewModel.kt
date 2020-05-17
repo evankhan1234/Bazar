@@ -43,6 +43,7 @@ class HomeViewModel(
     var customerOrderStatus: CustomerOrderStatus? = null
     var customerOrderDetailsStatus: CustomerOrderDetailsStatus? = null
     var quantityPost: QuantityPost? = null
+
     var customerOrderItem: CustomerOrderItem? = null
     var productUpdatePost: ProductUpdatePost? = null
     var purchaseUpdatePost: PurchaseUpdatePost? = null
@@ -111,11 +112,20 @@ class HomeViewModel(
                 supplierPost = SupplierPost(name!!,phone!!,email!!,address!!,details!!,image!!,status!!, shopId!!,created!!)
                 Log.e("response", "response" + Gson().toJson(supplierPost))
                 val response = repository.postSupplier(header,supplierPost!!)
-                createSupplierListener?.show(response?.message!!)
-                createSupplierListener?.end()
-                Log.e("response", "response" + Gson().toJson(response))
+                if(response.status==200){
+                    createSupplierListener?.show(response?.message!!)
+                    createSupplierListener?.end()
+                    Log.e("response", "response" + Gson().toJson(response))
+                }
+                else{
+                    createSupplierListener?.failure(response?.message!!)
+                    createSupplierListener?.end()
+                    Log.e("response", "response" + Gson().toJson(response))
+                }
+
 
             } catch (e: ApiException) {
+                createSupplierListener?.failure(e?.message!!)
                 createSupplierListener?.end()
             } catch (e: NoInternetException) {
                 createSupplierListener?.end()
@@ -170,6 +180,7 @@ class HomeViewModel(
 
             } catch (e: ApiException) {
                 createPurchaseListener?.end()
+                createPurchaseListener?.failue(e?.message!!)
             } catch (e: NoInternetException) {
                 createPurchaseListener?.end()
             }
@@ -238,6 +249,7 @@ class HomeViewModel(
 
             } catch (e: ApiException) {
                 createProductListener?.end()
+                createProductListener?.failure(e?.message!!)
             } catch (e: NoInternetException) {
                 createProductListener?.end()
             }
@@ -405,4 +417,7 @@ class HomeViewModel(
         }
 
     }
+
+
+
 }

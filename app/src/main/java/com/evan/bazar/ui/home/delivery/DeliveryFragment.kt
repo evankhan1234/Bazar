@@ -1,13 +1,15 @@
 package com.evan.bazar.ui.home.delivery
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ProgressBar
+import android.widget.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,11 +17,14 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.Delivery
+import com.evan.bazar.ui.custom.CustomDialog
 import com.evan.bazar.ui.home.supplier.SupplierAdapter
 import com.evan.bazar.ui.home.supplier.SupplierModelFactory
 import com.evan.bazar.ui.home.supplier.SupplierViewModel
+import com.evan.bazar.util.DialogActionListener
 import com.evan.bazar.util.NetworkState
 import com.evan.bazar.util.SharedPreferenceUtil
+import com.google.gson.Gson
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
@@ -30,7 +35,7 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
 
     private val factory : DeliveryModelFactory by instance()
     private lateinit var viewModel: DeliveryViewModel
-
+    var token: String? = ""
     var rcv_search: RecyclerView?=null
     var delivery_Adapter: DeliveryAdapter?=null
     var edit_content: EditText?=null
@@ -47,7 +52,7 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
         progress_bar=root?.findViewById(R.id.progress_bar)
         viewModel = ViewModelProviders.of(this, factory).get(DeliveryViewModel::class.java)
 
-
+        token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         return root
     }
     fun replace(){
@@ -95,8 +100,85 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
     }
 
     override fun onUpdate(delivery: Delivery) {
-
+        showDialog(context!!,delivery)
     }
 
+    fun showDialog(mContext: Context,delivery: Delivery) {
+        val infoDialog = CustomDialog(mContext, R.style.CustomDialogTheme)
+        val inflator =
+            mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val v: View = inflator.inflate(R.layout.layout_delivery_update_status, null)
+        infoDialog.setContentView(v)
+        infoDialog.getWindow()?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
 
+        val btnOK = infoDialog.findViewById(R.id.btn_ok) as Button
+        val linear_delivery = infoDialog.findViewById(R.id.linear_delivery) as LinearLayout
+        val btn_success = infoDialog.findViewById(R.id.btn_success) as Button
+        val btn_cancel = infoDialog.findViewById(R.id.btn_cancel) as Button
+        val et_delivery_charge = infoDialog.findViewById(R.id.et_delivery_charge) as EditText
+        val et_delivery_details = infoDialog.findViewById(R.id.et_delivery_details) as EditText
+        val switch_status = infoDialog.findViewById(R.id.switch_status) as SwitchCompat
+        switch_status?.isChecked = delivery?.Status==3
+        if (delivery?.Status==3){
+            btn_success?.visibility=View.VISIBLE
+            linear_delivery?.visibility=View.GONE
+        }
+
+        et_delivery_charge.setText(delivery?.DeliveryCharge.toString())
+        et_delivery_details.setText(delivery?.OrderDetails)
+        btnOK.setOnClickListener {
+            var delivery_charge: Double? = 0.0
+            var delivery_charges: String? = ""
+            var delivery_details: String? = ""
+            delivery_details=et_delivery_details?.text.toString()
+            delivery_charges=et_delivery_charge?.text.toString()
+            if(delivery_details.isNullOrEmpty() && delivery_charges.isNullOrEmpty() ){
+               Toast.makeText(mContext,"All fields Empty",Toast.LENGTH_SHORT).show()
+            }
+            else if(delivery_details.isNullOrEmpty()){
+                Toast.makeText(mContext,"Delivery Details fields Empty",Toast.LENGTH_SHORT).show()
+            }
+            else if(delivery_charges.isNullOrEmpty()){
+                Toast.makeText(mContext,"Delivery Charge fields Empty",Toast.LENGTH_SHORT).show()
+            }
+            else{
+                var status: Int? = 0
+                if (switch_status?.isChecked!!){
+                    status=3
+                }
+                else{
+                    status=2
+                }
+
+                try {
+                    delivery_charge=et_delivery_charge?.text.toString().toDouble()
+                } catch (e: Exception) {
+                    delivery_charge=0.0            }
+                Log.e("delivery_charge","delivery_charge"+delivery_charge)
+                Log.e("delivery_details","delivery_details"+delivery_details)
+                Log.e("delivery_id","delivery_id"+delivery?.Id)
+                Log.e("status","status"+status)
+                viewModel.updateDeliveryStatus(token!!,delivery?.Id!!,status,delivery_details,delivery_charge!!)
+
+                Handler().postDelayed({
+                    replace()
+                }, 300)
+                infoDialog.dismiss()
+            }
+
+           //
+
+
+        }
+        btn_success?.setOnClickListener {
+            infoDialog.dismiss()
+        }
+        btn_cancel?.setOnClickListener {
+            infoDialog.dismiss()
+        }
+        infoDialog.show()
+    }
 }

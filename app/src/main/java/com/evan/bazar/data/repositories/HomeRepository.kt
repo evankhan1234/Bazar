@@ -107,5 +107,8 @@ class HomeRepository (
     suspend fun getDeliveryList(header:String,post:LimitPost): DeliveryResponses {
         return apiRequest { api.getDeliveryList(header,post) }
     }
+    suspend fun updateDeliveryStatus(header:String,post:DeliveryStatusPost): BasicResponses {
+        return apiRequest { api.updateDeliveryStatus(header,post) }
+    }
 
 }

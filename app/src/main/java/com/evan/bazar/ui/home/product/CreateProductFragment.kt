@@ -431,6 +431,10 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
         }
     }
 
+    override fun failure(value: String) {
+        Toast.makeText(activity, value, Toast.LENGTH_LONG).show()
+    }
+
     override fun started() {
         progress_bar?.show()
     }

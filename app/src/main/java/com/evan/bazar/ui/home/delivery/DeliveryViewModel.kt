@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.evan.bazar.data.db.entities.Delivery
+import com.evan.bazar.data.network.post.DeliveryStatusPost
 import com.evan.bazar.data.network.post.SearchCategoryPost
 import com.evan.bazar.data.repositories.HomeRepository
 import com.evan.bazar.ui.home.supplier.ISupplierListener
@@ -23,7 +24,7 @@ class DeliveryViewModel (
     val repository: HomeRepository,
     val alertListSourceFactory: DeliverySourceFactory
 ) : ViewModel() {
-
+    var deliveryStatusPost: DeliveryStatusPost? = null
     var listOfAlerts: LiveData<PagedList<Delivery>>? = null
     private val pageSize = 7
 
@@ -51,6 +52,20 @@ class DeliveryViewModel (
             alertListSourceFactory.mutableLiveData,
             DeliveryDataSource::networkState
         )
+    fun updateDeliveryStatus(header:String,deliveryId:Int,status:Int,details:String,charge:Double) {
+        Coroutines.main {
+            try {
+                deliveryStatusPost= DeliveryStatusPost(deliveryId,status,details,charge)
+                Log.e("response", "response" + Gson().toJson(deliveryStatusPost))
+                val response = repository.updateDeliveryStatus(header,deliveryStatusPost!!)
+                Log.e("response", "response" + Gson().toJson(response))
+            } catch (e: ApiException) {
 
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
 
 }

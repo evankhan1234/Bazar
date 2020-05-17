@@ -311,6 +311,10 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
         }
     }
 
+    override fun failue(value: String) {
+        Toast.makeText(activity, value, Toast.LENGTH_LONG).show()
+    }
+
     override fun started() {
         progress_bar?.show()
     }

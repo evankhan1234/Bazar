@@ -217,7 +217,7 @@
 
                     <EditText
 
-                            android:inputType="numberDecimal"
+                            android:inputType="number"
                             android:layout_alignParentLeft="true"
                             android:visibility="visible"
                             android:id="@+id/et_stock"
