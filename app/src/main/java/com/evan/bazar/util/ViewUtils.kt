@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.app.ActivityCompat
@@ -47,6 +48,7 @@ fun Context.toast(message: String){
 
 fun ProgressBar.show(){
     visibility = View.VISIBLE
+
 }
 
 fun ProgressBar.hide(){
@@ -375,6 +377,54 @@ fun showDialogSuccessfull(
     )
     val main_root =
         infoDialog.findViewById(R.id.main_root) as RelativeLayout
+    val btnOK = infoDialog.findViewById(R.id.btn_ok) as Button
+    val btnCancel =
+        infoDialog.findViewById(R.id.btn_cancel) as Button
+    val tv_info =
+        infoDialog.findViewById(R.id.tv_info) as TextView
+    if (body == null) {
+        tv_info.visibility = View.GONE
+    } else {
+        tv_info.visibility = View.VISIBLE
+        tv_info.text = body
+    }
+    if (positiveAction != null) {
+        btnOK.text = positiveAction
+    }
+    if (negetiveAction != null) {
+        btnCancel.text = negetiveAction
+    }
+    btnOK.setOnClickListener {
+        //your business logic
+
+        dialogCallback?.onPositiveClick()
+        infoDialog.dismiss()
+    }
+    btnCancel.setOnClickListener {
+        //your business logic
+
+        dialogCallback?.onNegativeClick()
+        infoDialog.dismiss()
+    }
+    infoDialog.show()
+}
+fun showDialogSetUp(
+    mContext: Context,
+    body: String?,
+    positiveAction: String?,
+    negetiveAction: String?,
+    dialogCallback: com.evan.bazar.util.DialogActionListener
+) {
+    val infoDialog = CustomDialog(mContext, R.style.CustomDialogTheme)
+    val inflator =
+        mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    val v: View = inflator.inflate(R.layout.layout_dialog_popup_set_up, null)
+    infoDialog.setContentView(v)
+    infoDialog.getWindow()?.setLayout(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT
+    )
+
     val btnOK = infoDialog.findViewById(R.id.btn_ok) as Button
     val btnCancel =
         infoDialog.findViewById(R.id.btn_cancel) as Button
