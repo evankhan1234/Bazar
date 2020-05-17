@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import com.evan.bazar.R
 import com.evan.bazar.ui.auth.LoginActivity
+import com.evan.bazar.ui.boarding.BoardingActivity
 import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.util.SharedPreferenceUtil
 import com.google.android.gms.tasks.OnCompleteListener
@@ -60,7 +61,7 @@ class SplashActivity : AppCompatActivity(), Animator.AnimatorListener {
                 startActivity(it)
             }
         } else {
-            Intent(this, LoginActivity::class.java).also {
+            Intent(this, BoardingActivity::class.java).also {
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(it)
             }

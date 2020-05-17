@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -53,9 +54,41 @@ class HomeActivity : AppCompatActivity() {
     var fragTransaction: FragmentTransaction? = null
     var mCurrentFrag: Fragment? = null
     var CURRENT_PAGE: Int? = 1
+    private var fresh: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        fresh = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_FRESH)
+        Log.e("TAG", fresh!! + "")
+        if (fresh != null && !fresh?.trim().equals("") && !fresh.isNullOrEmpty()) {
+
+
+        } else {
+            progress_circular_home?.show()
+            Handler().postDelayed(Runnable {
+                SharedPreferenceUtil.saveShared(
+                    this,
+                    SharedPreferenceUtil.TYPE_FRESH,
+                    "Fresh"
+                )
+
+                showDialogSetUp(this,
+                    "Set Up Completed",
+                    "OK",
+                    "OK",
+                    object :
+                        com.evan.bazar.util.DialogActionListener {
+                        override fun onPositiveClick() {
+
+                        }
+
+                        override fun onNegativeClick() {
+
+                        }
+                    })
+                progress_circular_home?.hide()
+            },5000)
+        }
 
         setUpHeader(FRAG_TOP)
         afterClickTabItem(FRAG_TOP, null)

@@ -6,6 +6,7 @@ object SharedPreferenceUtil {
     private const val mSharedName = "workers_app"
     const val TYPE_AUTH_TOKEN = "auth_token"
     const val TYPE_SHOP_ID = "shop_id"
+    const val TYPE_FRESH = "fresh"
     const val TYPE_AUTH_REFRESH_TOKEN = "refresh_token"
     const val TYPE_PUSH_TOKEN = "firebase_push_token"
 
