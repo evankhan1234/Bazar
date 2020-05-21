@@ -33,38 +33,48 @@
             android:layout_width="match_parent"
             android:layout_height="107dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="47dp"
-            android:layout_marginRight="55dp"
+
+
             android:layout_marginBottom="40dp"
             android:orientation="horizontal">
-
-        <TextView
-                android:id="@+id/btn_cancel"
+        <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
-                android:layout_height="110dp"
-                android:layout_alignParentLeft="true"
-                android:background="@null"
-                android:gravity="center"
-                android:onClick="onCancelPressed"
-                android:stateListAnimator="@null"
-                android:text="@string/cancel"
-                android:textColor="@color/white"
-                android:textSize="23sp" />
+                android:layout_height="wrap_content"
+                android:weightSum="2"
 
-        <TextView
-                android:id="@+id/btn_confirm_ok"
-                android:layout_width="wrap_content"
-                android:layout_height="110dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="0dp"
-                android:background="@null"
-                android:gravity="center"
-                android:onClick="afterClickUpdate"
-                android:stateListAnimator="@null"
+                android:orientation="horizontal">
 
-                android:text="@string/ok"
-                android:textColor="@color/white"
-                android:textSize="23sp" />
+            <Button
+                    android:onClick="onCancelPressed"
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15px"
+                    android:stateListAnimator="@null"
+                    android:text="no"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    />
+
+            <Button
+                    android:onClick="afterClickUpdate"
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/btn_confirm_ok"
+                    android:textAllCaps="false"
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:stateListAnimator="@null"
+                    android:text="Yes"
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
+
+
+        </LinearLayout>
+
 
 
     </RelativeLayout>

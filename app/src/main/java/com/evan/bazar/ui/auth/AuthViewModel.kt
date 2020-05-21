@@ -40,7 +40,11 @@ class AuthViewModel(
 
     fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
-        if ( password.isNullOrEmpty()) {
+        if ( email.isNullOrEmpty()) {
+            authListener?.onFailure("Email is Empty")
+            return
+        }
+        else if ( password.isNullOrEmpty()) {
             authListener?.onFailure("Password is Empty")
             return
         }
