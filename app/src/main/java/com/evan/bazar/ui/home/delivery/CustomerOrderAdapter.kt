@@ -42,8 +42,14 @@ class CustomerOrderAdapter (val context: Context, val order: MutableList<Custome
         }
         holder.itemView.img_minus.setOnClickListener {
             order?.get(position)?.Quantity= order?.get(position)?.Quantity!!-1
-            order?.set(position,order?.get(position))
-            itemClickListener?.onClick(order?.get(position)?.Quantity!!,order?.get(position)!!.Price,order?.get(position)!!.Id,2)
+            if(order?.get(position)?.Quantity!!<1){
+                order?.get(position)?.Quantity=1
+            }
+            else{
+                order?.set(position,order?.get(position))
+                itemClickListener?.onClick(order?.get(position)?.Quantity!!,order?.get(position)!!.Price,order?.get(position)!!.Id,2)
+            }
+
         }
         holder.itemView.btn_delete.setOnClickListener {
             deleteIdListener.onId(order?.get(position)!!.Id!!,order?.get(position)!!.Price,position,order?.get(position)!!.Quantity)
