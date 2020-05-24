@@ -3,6 +3,7 @@ package com.evan.bazar.data.repositories
 import com.evan.bazar.data.db.AppDatabase
 import com.evan.bazar.data.db.entities.User
 import com.evan.bazar.data.network.MyApi
+import com.evan.bazar.data.network.PushApi
 import com.evan.bazar.data.network.SafeApiRequest
 import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.network.responses.*
@@ -11,6 +12,7 @@ import okhttp3.RequestBody
 
 class HomeRepository (
     private val api: MyApi,
+    private val apis: PushApi,
     private val db: AppDatabase
 ) : SafeApiRequest() {
 
