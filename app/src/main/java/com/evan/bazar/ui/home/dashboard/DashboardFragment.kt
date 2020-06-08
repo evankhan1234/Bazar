@@ -54,6 +54,8 @@ class DashboardFragment : Fragment() {
         l.yEntrySpace = 5f
         l.form = Legend.LegendForm.CIRCLE
         l.position = Legend.LegendPosition.RIGHT_OF_CHART
+        xdata?.clear()
+        ydata?.clear()
         xdata?.add("Evan")
         xdata?.add("Evan")
         xdata?.add("Evan")
@@ -65,7 +67,9 @@ class DashboardFragment : Fragment() {
         addDataSet()
         chart!!.setDescription("")
         var data: BarData? = null
+        valueSet1?.clear()
         try {
+
             data = BarData(
                 getXAxisValues(),
                 getDataSet(

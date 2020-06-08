@@ -112,5 +112,49 @@ class HomeRepository (
     suspend fun updateDeliveryStatus(header:String,post:DeliveryStatusPost): BasicResponses {
         return apiRequest { api.updateDeliveryStatus(header,post) }
     }
-
+    suspend fun getNotice(header:String,post: NoticePost): NoticeResponses {
+        return apiRequest { api.getNotice(header,post) }
+    }
+    suspend fun getPublicPostPagination(header:String,post: PublicForPost): PostResponses {
+        return apiRequest { api.getPublicPostPagination(header,post) }
+    }
+    suspend fun getOwnPostPagination(header:String,post: OwnForPost): PostResponses {
+        return apiRequest { api.getOwnPostPagination(header,post) }
+    }
+    suspend fun updatedLikeCount(header:String,post: LikeCountPost): BasicResponses {
+        return apiRequest { api.updatedLikeCount(header,post) }
+    }
+    suspend fun createdLove(header:String,post: LovePost): BasicResponses {
+        return apiRequest { api.createdLove(header,post) }
+    }
+    suspend fun deletedLove(header:String,post: LovePost): BasicResponses {
+        return apiRequest { api.deletedLove(header,post) }
+    }
+    suspend fun createdNewsFeedPost(header:String,post: NewsfeedPost): BasicResponses {
+        return apiRequest { api.createdNewsFeedPost(header,post) }
+    }
+    suspend fun getComments(header:String,post: CommentsPost): CommentsResponse {
+        return apiRequest { api.getComments(header,post) }
+    }
+    suspend fun createComments(header:String,post: CommentsForPost): BasicResponses {
+        return apiRequest { api.createComments(header,post) }
+    }
+    suspend fun updateOwnPost(header:String,post: OwnUpdatedPost): BasicResponses {
+        return apiRequest { api.updateOwnPost(header,post) }
+    }
+    suspend fun createdLike(header:String,post: CommentsPost): BasicResponses {
+        return apiRequest { api.createdLike(header,post) }
+    }
+    suspend fun deletedLike(header:String,post: CommentsPost): BasicResponses {
+        return apiRequest { api.deletedLike(header,post) }
+    }
+    suspend fun updatedCommentsLikeCount(header:String,post: LikeCountPost): BasicResponses {
+        return apiRequest { api.updatedCommentsLikeCount(header,post) }
+    }
+    suspend fun createReply(header:String,post: ReplyForPost): BasicResponses {
+        return apiRequest { api.createReply(header,post) }
+    }
+    suspend fun getReply(header:String,post: ReplyPost): ReplyResponses {
+        return apiRequest { api.getReply(header,post) }
+    }
 }

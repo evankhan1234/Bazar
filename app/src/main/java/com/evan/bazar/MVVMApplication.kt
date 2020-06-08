@@ -19,6 +19,14 @@ import com.evan.bazar.ui.home.delivery.DeliveryDataSource
 import com.evan.bazar.ui.home.delivery.DeliveryModelFactory
 import com.evan.bazar.ui.home.delivery.DeliverySourceFactory
 import com.evan.bazar.ui.home.delivery.DeliveryViewModel
+import com.evan.bazar.ui.home.newsfeed.ownpost.OwnPostDataSource
+import com.evan.bazar.ui.home.newsfeed.ownpost.OwnPostModelFactory
+import com.evan.bazar.ui.home.newsfeed.ownpost.OwnPostSourceFactory
+import com.evan.bazar.ui.home.newsfeed.ownpost.OwnPostViewModel
+import com.evan.bazar.ui.home.newsfeed.publicpost.PublicPostDataSource
+import com.evan.bazar.ui.home.newsfeed.publicpost.PublicPostModelFactory
+import com.evan.bazar.ui.home.newsfeed.publicpost.PublicPostSourceFactory
+import com.evan.bazar.ui.home.newsfeed.publicpost.PublicPostViewModel
 import com.evan.bazar.ui.home.product.ProductDataSource
 import com.evan.bazar.ui.home.product.ProductModelFactory
 import com.evan.bazar.ui.home.product.ProductSourceFactory
@@ -33,6 +41,10 @@ import com.evan.bazar.ui.home.supplier.SupplierDataSource
 import com.evan.bazar.ui.home.supplier.SupplierModelFactory
 import com.evan.bazar.ui.home.supplier.SupplierSourceFactory
 import com.evan.bazar.ui.home.supplier.SupplierViewModel
+import com.evan.dokan.ui.home.notice.NoticeDataSource
+import com.evan.dokan.ui.home.notice.NoticeModelFactory
+import com.evan.dokan.ui.home.notice.NoticeSourceFactory
+import com.evan.dokan.ui.home.notice.NoticeViewModel
 
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -57,26 +69,38 @@ class MVVMApplication : Application(), KodeinAware {
         bind() from singleton { QuotesRepository(instance(), instance(), instance()) }
         bind() from provider { AuthViewModelFactory(instance()) }
         bind() from provider { CategoryModelFactory(instance(),instance()) }
+        bind() from provider { OwnPostModelFactory(instance(),instance()) }
+        bind() from provider { PublicPostModelFactory(instance(),instance()) }
+        bind() from provider { NoticeModelFactory(instance(),instance()) }
         bind() from provider { PurchaseModelFactory(instance(),instance()) }
         bind() from provider { SupplierModelFactory(instance(),instance()) }
         bind() from provider { DeliveryModelFactory(instance(),instance()) }
         bind() from provider { ProductModelFactory(instance(),instance()) }
         bind() from provider { CategoryDataSource(instance(),instance()) }
+        bind() from provider { NoticeDataSource(instance(),instance()) }
+        bind() from provider { OwnPostDataSource(instance(),instance()) }
+        bind() from provider { PublicPostDataSource(instance(),instance()) }
         bind() from provider { PurchaseDataSource(instance(),instance()) }
         bind() from provider { SupplierDataSource(instance(),instance()) }
         bind() from provider { DeliveryDataSource(instance(),instance()) }
         bind() from provider { ProductDataSource(instance(),instance()) }
         bind() from provider { CategorySourceFactory(instance()) }
+        bind() from provider { OwnPostSourceFactory(instance()) }
+        bind() from provider { PublicPostSourceFactory(instance()) }
+        bind() from provider { NoticeSourceFactory(instance()) }
         bind() from provider { PurchaseSourceFactory(instance()) }
         bind() from provider { SupplierSourceFactory(instance()) }
         bind() from provider { DeliverySourceFactory(instance()) }
         bind() from provider { ProductSourceFactory(instance()) }
         bind() from provider { HomeViewModelFactory(instance()) }
         bind() from provider { CategoryViewModel(instance(),instance()) }
+        bind() from provider { OwnPostViewModel(instance(),instance()) }
+        bind() from provider { PublicPostViewModel(instance(),instance()) }
         bind() from provider { PurchaseViewModel(instance(),instance()) }
         bind() from provider { SupplierViewModel(instance(),instance()) }
         bind() from provider { DeliveryViewModel(instance(),instance()) }
         bind() from provider { ProductViewModel(instance(),instance()) }
+        bind() from provider { NoticeViewModel(instance(),instance()) }
         bind() from provider { ProfileViewModelFactory(instance()) }
         bind() from provider{ QuotesViewModelFactory(instance()) }
 
