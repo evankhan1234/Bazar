@@ -12,7 +12,7 @@ const val FRAG_DASHBOARD: Int = 0
 const val FRAG_CUSTOMER_LIST: Int = 1
 var PAGE_INDICATOR: Int = 0
 var IS_FILTER_TANSITION: Boolean = false
-
+var is_like:Boolean= false
 var PAGE_PREV_INDICATOR: Int = 0
 val RESULT_CAR_QR_SCAN_TAB = 2222
 val RESULT_LINE_QR_SCAN = 1111
@@ -22,7 +22,7 @@ val RESULT_CAR_QR_SCAN_FROM_CUSTOMER_EDIT = 4444
 var fragmentStack: Fragment? =  null
  var mFragManager: FragmentManager? = null
  var fragTransaction: FragmentTransaction? = null
-
+var image_update:String?=""
 const val FRAG_TOP: Int = 1
 const val FRAG_STORE: Int = 2
 const val FRAG_CATEGORY: Int = 6
@@ -37,11 +37,14 @@ const val FRAG_PRODUCT: Int = 14
 const val FRAG_CREATE_PRODUCT: Int = 15
 const val FRAG_UPDATE_PRODUCT: Int = 16
 const val FRAG_VIEW_DELIVERY: Int = 17
+const val FRAG_NOTICE_DETAILS: Int = 18
+const val FRAG_NEWSFEED: Int = 19
 const val FRAG_ORDER: Int = 3
 const val FRAG_SETTINGS: Int = 4
 const val FRAG_NOTICE: Int = 5
 //deep link paramenters
-const val TAG_ACTION: String = "action"
+//
+var TAG_ACTION: String = ""
 const val ACTION_OPEN_APP: String = "open"
 
 

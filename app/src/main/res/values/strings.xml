@@ -51,10 +51,14 @@
     <string name="category">Category</string>
     <string name="change_password">Change Password</string>
     <string name="product">Product</string>
+    <string name="notice">Notice</string>
     <string name="supplier">Supplier</string>
     <string name="purchase">Purchase</string>
     <string name="online_customer">Online Customer</string>
     <string name="offline_customer">Offline Customer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="public_post">Public</string>
+    <string name="own_post">My Posts</string>
+    <string name="newsfeed">Newsfeed</string>
 </resources>
