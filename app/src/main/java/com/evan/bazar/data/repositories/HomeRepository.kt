@@ -157,4 +157,10 @@ class HomeRepository (
     suspend fun getReply(header:String,post: ReplyPost): ReplyResponses {
         return apiRequest { api.getReply(header,post) }
     }
+    suspend fun getStoreCount(header:String): StoreCountResponses {
+        return apiRequest { api.getStoreCount(header) }
+    }
+    suspend fun getLasFive(header:String): LastFiveSalesCountResponses {
+        return apiRequest { api.getLasFive(header) }
+    }
 }

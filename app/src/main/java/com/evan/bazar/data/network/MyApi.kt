@@ -195,11 +195,18 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body searchPost: SearchCategoryPost
     ): Response<ProductResponses>
-
     @GET("supplier-get.php")
     suspend fun getSuppliers(
         @Header("Authorization") Authorization:String
     ): Response<SupplierResponses>
+    @GET("get-shopuser-store.php")
+    suspend fun getStoreCount(
+        @Header("Authorization") Authorization:String
+    ): Response<StoreCountResponses>
+    @GET("get-last-five-sales.php")
+    suspend fun getLasFive(
+        @Header("Authorization") Authorization:String
+    ): Response<LastFiveSalesCountResponses>
     @GET("shop-user-details.php")
     suspend fun getShopUserDetails(
         @Header("Authorization") Authorization:String
