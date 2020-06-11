@@ -7,16 +7,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.evan.bazar.R
+import com.evan.bazar.data.db.entities.LastFiveSales
+import com.evan.bazar.data.db.entities.Store
+import com.evan.bazar.ui.home.HomeViewModel
+import com.evan.bazar.ui.home.HomeViewModelFactory
+import com.evan.bazar.ui.home.delivery.DeliveryModelFactory
+import com.evan.bazar.ui.home.delivery.DeliveryViewModel
+import com.evan.bazar.util.SharedPreferenceUtil
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.utils.ValueFormatter
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
 
 
-class DashboardFragment : Fragment() {
-
+class DashboardFragment : Fragment(),KodeinAware,ILastFiveSalesListener,IStoreCountListener {
+    override val kodein by kodein()
+    var token: String? = ""
+    private val factory : HomeViewModelFactory by instance()
+    private lateinit var viewModel: HomeViewModel
     var pieChart: PieChart?=null
     var chart: BarChart?=null
     var tv_store: TextView?=null
@@ -29,6 +43,12 @@ class DashboardFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val root= inflater.inflate(R.layout.fragment_dashboard, container, false)
+        viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
+        viewModel.lastFiveSalesListener=this
+        viewModel.storeCountListener=this
+        token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
+        viewModel.getStoreCount(token!!)
+        viewModel.getLasFive(token!!)
         chart=root?.findViewById(R.id.chart1)
         tv_store=root?.findViewById(R.id.tv_store)
         pieChart=root?.findViewById(R.id.pie)
@@ -36,7 +56,7 @@ class DashboardFragment : Fragment() {
         pieChart?.setDrawHoleEnabled(true)
         pieChart?.setDescription(
             resources.getString(
-                R.string.dashboard
+                R.string.store
             )
         )
         pieChart?.setDescriptionTextSize(13f)
@@ -44,7 +64,7 @@ class DashboardFragment : Fragment() {
         pieChart?.setHoleRadius(25f)
         pieChart?.setCenterText(
             resources.getString(
-                R.string.dashboard
+                R.string.store
             )
         )
         pieChart?.setCenterTextSize(10f)
@@ -54,51 +74,20 @@ class DashboardFragment : Fragment() {
         l.yEntrySpace = 5f
         l.form = Legend.LegendForm.CIRCLE
         l.position = Legend.LegendPosition.RIGHT_OF_CHART
-        xdata?.clear()
-        ydata?.clear()
-        xdata?.add("Evan")
-        xdata?.add("Evan")
-        xdata?.add("Evan")
-        xdata?.add("Evan")
-        ydata?.add(4)
-        ydata?.add(5)
-        ydata?.add(6)
-        ydata?.add(7)
-        addDataSet()
-        chart!!.setDescription("")
-        var data: BarData? = null
-        valueSet1?.clear()
-        try {
 
-            data = BarData(
-                getXAxisValues(),
-                getDataSet(
-                    10F,
-                   10F,
-                    10F,
-                    200F,
-                   25F,
-                    36F
-                )
-            )
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-        chart!!.data = data
-        chart!!.animateXY(1000, 1000)
-        chart!!.invalidate()
+        chart!!.setDescription("")
+
 
 
         return root
     }
     private fun getXAxisValues(): java.util.ArrayList<String>? {
         val xAxis = java.util.ArrayList<String>()
-        xAxis.add("Total")
-        xAxis.add("PRESENT")
-        xAxis.add("ABSENT")
-        xAxis.add("LATE")
-        xAxis.add("LEAVE")
-        xAxis.add("MOVEMENT")
+        xAxis.add("First")
+        xAxis.add("Second")
+        xAxis.add("Third")
+        xAxis.add("Fourth")
+        xAxis.add("Five")
         return xAxis
     }
 
@@ -107,8 +96,7 @@ class DashboardFragment : Fragment() {
         Present: Float,
         Absent: Float,
         Late: Float,
-        Leave: Float,
-        Movement: Float
+        Leave: Float
     ): java.util.ArrayList<BarDataSet?>? {
         var dataSets: ArrayList<BarDataSet?>? = null
         val v2e1 = BarEntry(Total, 0) // Feb
@@ -121,15 +109,13 @@ class DashboardFragment : Fragment() {
         valueSet1.add(v2e4)
         val v2e5 = BarEntry(Leave, 4) // May
         valueSet1.add(v2e5)
-        val v2e6 = BarEntry(Movement, 5) // May
-        valueSet1.add(v2e6)
         val colors = java.util.ArrayList<Int>()
         colors.add(Color.parseColor("#eab259"))
         colors.add(Color.parseColor("#21a839"))
         colors.add(Color.RED)
         colors.add(Color.BLUE)
         colors.add(Color.parseColor("#1daf89"))
-        val barDataSet2 = BarDataSet(valueSet1, " Daily Attendance Chart Values")
+        val barDataSet2 = BarDataSet(valueSet1, " Last Five Sales Statistics")
         barDataSet2.colors = colors
         dataSets = java.util.ArrayList()
         dataSets.add(barDataSet2)
@@ -182,6 +168,91 @@ class DashboardFragment : Fragment() {
         override fun getFormattedValue(value: Float): String {
             return "" + value.toInt()
         }
+    }
+
+    override fun onLast(data: MutableList<LastFiveSales>) {
+
+        var first:Float?=0F
+        var second:Float?=0F
+        var third:Float?=0F
+        var fourth:Float?=0F
+        var five:Float?=0F
+        if (data.size==5){
+            first=data.get(0).Total.toFloat()
+            second=data.get(1).Total.toFloat()
+            third=data.get(2).Total.toFloat()
+            fourth=data.get(3).Total.toFloat()
+            five=data.get(4).Total.toFloat()
+        }
+        else if (data.size==4){
+            first=data.get(0).Total.toFloat()
+            second=data.get(1).Total.toFloat()
+            third=data.get(2).Total.toFloat()
+            fourth=data.get(3).Total.toFloat()
+            five=0F
+        }
+        else if (data.size==3){
+            first=data.get(0).Total.toFloat()
+            second=data.get(1).Total.toFloat()
+            third=data.get(2).Total.toFloat()
+            fourth=0F
+            five=0F
+        }
+        else if (data.size==2){
+            first=data.get(0).Total.toFloat()
+            second=data.get(1).Total.toFloat()
+            third=0F
+            fourth=0F
+            five=0F
+        }
+        else if (data.size==1){
+            first=data.get(0).Total.toFloat()
+            second=0F
+            third=0F
+            fourth=0F
+            five=0F
+        }
+        else{
+            first=0F
+            second=0F
+            third=0F
+            fourth=0F
+            five=0F
+        }
+        var data: BarData? = null
+         valueSet1?.clear()
+        try {
+
+            data = BarData(
+                getXAxisValues(),
+                getDataSet(
+                    first!!,
+                    second!!,
+                    third!!,
+                    fourth!!,
+                    five!!
+                )
+            )
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        chart!!.data = data
+        chart!!.animateXY(1000, 1000)
+        chart!!.invalidate()
+    }
+
+    override fun onStore(store: Store) {
+        xdata?.clear()
+        ydata?.clear()
+        xdata?.add("Product")
+        xdata?.add("Supplier")
+        xdata?.add("Purchase")
+        xdata?.add("Category")
+        ydata?.add(store?.Product!!)
+        ydata?.add(store?.Supplier!!)
+        ydata?.add(store?.Purchase!!)
+        ydata?.add(store?.Category!!)
+        addDataSet()
     }
 
 }

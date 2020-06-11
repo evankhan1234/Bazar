@@ -6,6 +6,8 @@ import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.repositories.HomeRepository
 import com.evan.bazar.ui.home.category.ICategoryListener
 import com.evan.bazar.ui.home.category.ICreateCategoryListener
+import com.evan.bazar.ui.home.dashboard.ILastFiveSalesListener
+import com.evan.bazar.ui.home.dashboard.IStoreCountListener
 import com.evan.bazar.ui.home.delivery.ICustomerOrderListListener
 import com.evan.bazar.ui.home.delivery.IDeleteListener
 import com.evan.bazar.ui.home.delivery.IDeliveryPostListener
@@ -69,6 +71,8 @@ class HomeViewModel(
     var replyListener: IReplyListener?=null
     var replyPostListener: IReplyPostListener?=null
     var newsfeedPost:NewsfeedPost?=null
+    var storeCountListener: IStoreCountListener?=null
+    var lastFiveSalesListener: ILastFiveSalesListener?=null
     fun getCategoryType(header:String) {
         categoryListener?.started()
         Coroutines.main {
@@ -635,6 +639,41 @@ class HomeViewModel(
 
                 succeslistener?.onShow()
                 Log.e("Search", "Search" + Gson().toJson(response))
+
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+
+    fun getStoreCount(header:String) {
+
+        Coroutines.main {
+            try {
+                Log.e("Search", "Search" + Gson().toJson(replyPost))
+                val response = repository.getStoreCount(header)
+                Log.e("Search", "Search" + Gson().toJson(response))
+                storeCountListener?.onStore(response.data!!)
+
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun getLasFive(header:String) {
+
+        Coroutines.main {
+            try {
+                Log.e("Search", "Search" + Gson().toJson(replyPost))
+                val response = repository.getLasFive(header)
+                Log.e("Search", "Search" + Gson().toJson(response))
+                lastFiveSalesListener?.onLast(response.data!!)
 
             } catch (e: ApiException) {
 
