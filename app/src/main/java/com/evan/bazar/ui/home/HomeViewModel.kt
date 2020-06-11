@@ -6,6 +6,7 @@ import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.repositories.HomeRepository
 import com.evan.bazar.ui.home.category.ICategoryListener
 import com.evan.bazar.ui.home.category.ICreateCategoryListener
+import com.evan.bazar.ui.home.dashboard.ICustomerOrderCountListener
 import com.evan.bazar.ui.home.dashboard.ILastFiveSalesListener
 import com.evan.bazar.ui.home.dashboard.IStoreCountListener
 import com.evan.bazar.ui.home.delivery.ICustomerOrderListListener
@@ -73,6 +74,7 @@ class HomeViewModel(
     var newsfeedPost:NewsfeedPost?=null
     var storeCountListener: IStoreCountListener?=null
     var lastFiveSalesListener: ILastFiveSalesListener?=null
+    var customerOrderCountListener: ICustomerOrderCountListener?=null
     fun getCategoryType(header:String) {
         categoryListener?.started()
         Coroutines.main {
@@ -683,6 +685,25 @@ class HomeViewModel(
         }
 
     }
+    fun getCustomerOrderCount(header:String) {
+
+        Coroutines.main {
+            try {
+                Log.e("Search", "Search" + Gson().toJson(replyPost))
+                val response = repository.getCustomerOrderCount(header)
+                Log.e("Search", "Search" + Gson().toJson(response))
+                customerOrderCountListener?.onCount(response.data!!)
+
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+
+
 
 
 }

@@ -163,4 +163,8 @@ class HomeRepository (
     suspend fun getLasFive(header:String): LastFiveSalesCountResponses {
         return apiRequest { api.getLasFive(header) }
     }
+    suspend fun getCustomerOrderCount(header:String): CustomerOrderCountResponses {
+        return apiRequest { api.getCustomerOrderCount(header) }
+    }
+
 }

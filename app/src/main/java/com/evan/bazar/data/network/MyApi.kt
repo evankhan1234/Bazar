@@ -203,6 +203,10 @@ interface MyApi {
     suspend fun getStoreCount(
         @Header("Authorization") Authorization:String
     ): Response<StoreCountResponses>
+    @GET("get-order-count.php")
+    suspend fun getCustomerOrderCount(
+        @Header("Authorization") Authorization:String
+    ): Response<CustomerOrderCountResponses>
     @GET("get-last-five-sales.php")
     suspend fun getLasFive(
         @Header("Authorization") Authorization:String
