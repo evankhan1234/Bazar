@@ -543,6 +543,7 @@ class CreateAccountActivity : AppCompatActivity(),KodeinAware, SignUpInterface {
     override fun onSignUpSuccess(message: String) {
         progress_bar?.hide()
         root_layout?.snackbar(message)
+        Toast.makeText(this,"Successfully Register and Please wait for admin verify",Toast.LENGTH_SHORT).show()
         Intent(this, LoginActivity::class.java).also {
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(it)

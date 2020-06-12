@@ -6,6 +6,7 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -31,9 +32,11 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
     var text_building_name: String? = ""
     var tv_sign_in: TextView? = null
     var et_email: EditText? = null
+    var et_password: EditText? = null
     var et_mobile: EditText? = null
     var radio_email: RadioButton? = null
     var radio_mobile: RadioButton? = null
+    var show_pass: ImageView? = null
     var viewModel:AuthViewModel?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +51,8 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
         radio_email=findViewById(R.id.radio_email)
         tv_sign_in=findViewById(R.id.tv_sign_in)
         radio_mobile=findViewById(R.id.radio_mobile)
+        show_pass=findViewById(R.id.show_pass)
+        et_password=findViewById(R.id.et_password)
         radio_email?.setOnClickListener{
             et_mobile?.visibility= View.GONE
             et_email?.visibility=View.VISIBLE
@@ -63,6 +68,10 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
 
                 startActivity(it)
             }
+        }
+        et_password?.transformationMethod = MyPasswordTransformationMethod()
+        show_pass?.setOnClickListener {
+            onPasswordVisibleOrInvisible()
         }
         viewModel?.authListener = this
 
@@ -100,7 +109,19 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
     override fun onStarted() {
         progress_bar.show()
     }
+    fun onPasswordVisibleOrInvisible() {
+        val cursorPosition = et_password?.selectionStart
 
+        if (et_password?.transformationMethod == null) {
+            et_password?.transformationMethod = MyPasswordTransformationMethod()
+            show_pass?.isSelected = false
+        } else {
+
+            et_password?.transformationMethod = null
+            show_pass?.isSelected = true
+        }
+        et_password?.setSelection(cursorPosition!!)
+    }
     override fun onSuccess(user: User) {
         SharedPreferenceUtil.saveShared(
             this,

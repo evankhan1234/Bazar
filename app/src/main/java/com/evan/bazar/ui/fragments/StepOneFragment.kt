@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageButton
 import com.bumptech.glide.Glide
 
 import com.evan.bazar.R
 import com.evan.bazar.ui.auth.CreateAccountActivity
+import com.evan.bazar.util.MyPasswordTransformationMethod
 import com.evan.bazar.util.snackbar
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_login.*
@@ -29,6 +31,7 @@ class StepOneFragment : Fragment() {
     var et_email:EditText?=null
     var et_password:EditText?=null
     var et_address:EditText?=null
+    var show_pass:ImageView?=null
     var image_address:String?=""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +41,7 @@ class StepOneFragment : Fragment() {
         root= inflater.inflate(R.layout.fragment_step_one, container, false)
         root_layout=root?.findViewById(R.id.root_layout)
         et_name=root?.findViewById(R.id.et_name)
+        show_pass=root?.findViewById(R.id.show_pass)
         et_mobile=root?.findViewById(R.id.et_mobile)
         et_email=root?.findViewById(R.id.et_email)
         et_password=root?.findViewById(R.id.et_password)
@@ -46,6 +50,10 @@ class StepOneFragment : Fragment() {
         img_user_profile=root?.findViewById(R.id.img_user_profile)
         img_user_add?.setOnClickListener{
             (activity as CreateAccountActivity?)!!.openImageChooser()
+        }
+        et_password?.transformationMethod = MyPasswordTransformationMethod()
+        show_pass?.setOnClickListener {
+            onPasswordVisibleOrInvisible()
         }
         val args: Bundle? = arguments
         if (args != null) {
@@ -75,7 +83,19 @@ class StepOneFragment : Fragment() {
         return root
     }
 
+    fun onPasswordVisibleOrInvisible() {
+        val cursorPosition = et_password?.selectionStart
 
+        if (et_password?.transformationMethod == null) {
+            et_password?.transformationMethod = MyPasswordTransformationMethod()
+            show_pass?.isSelected = false
+        } else {
+
+            et_password?.transformationMethod = null
+            show_pass?.isSelected = true
+        }
+        et_password?.setSelection(cursorPosition!!)
+    }
     fun value(){
         var name: String=""
         var mobile: String=""

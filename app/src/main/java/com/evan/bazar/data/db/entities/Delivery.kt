@@ -29,6 +29,8 @@ data class Delivery (
     @SerializedName("Created")
     var Created: String?,
     @SerializedName("OrderDetails")
-    var OrderDetails: String?
+    var OrderDetails: String?,
+    @SerializedName("CustomerId")
+    var CustomerId: String?
 
 ):Parcelable

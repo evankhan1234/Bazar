@@ -12,7 +12,7 @@ import okhttp3.RequestBody
 
 class HomeRepository (
     private val api: MyApi,
-    private val apis: PushApi,
+    private val push_api: PushApi,
     private val db: AppDatabase
 ) : SafeApiRequest() {
 
@@ -166,5 +166,13 @@ class HomeRepository (
     suspend fun getCustomerOrderCount(header:String): CustomerOrderCountResponses {
         return apiRequest { api.getCustomerOrderCount(header) }
     }
-
+    suspend fun createToken(header:String,tokenPost: TokenPost): BasicResponses {
+        return apiRequest { api.createToken(header,tokenPost) }
+    }
+    suspend fun getToken(header:String,tokenPost: TokenPost): TokenResponses {
+        return apiRequest { api.getToken(header,tokenPost) }
+    }
+    suspend fun sendPush(header:String, post: PushPost): PushResponses {
+        return apiRequest { push_api.sendPush(header,post) }
+    }
 }

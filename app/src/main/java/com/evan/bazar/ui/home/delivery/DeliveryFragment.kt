@@ -17,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.Delivery
+import com.evan.bazar.data.network.post.Push
+import com.evan.bazar.data.network.post.PushPost
 import com.evan.bazar.ui.custom.CustomDialog
+import com.evan.bazar.ui.home.dashboard.IPushListener
 import com.evan.bazar.ui.home.supplier.SupplierAdapter
 import com.evan.bazar.ui.home.supplier.SupplierModelFactory
 import com.evan.bazar.ui.home.supplier.SupplierViewModel
@@ -30,7 +33,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 
-class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
+class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener,IPushListener{
     override val kodein by kodein()
 
     private val factory : DeliveryModelFactory by instance()
@@ -41,6 +44,8 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
     var edit_content: EditText?=null
     var rcv_deliveries: RecyclerView?=null
     var progress_bar: ProgressBar?=null
+    var pushPost: PushPost?=null
+    var push: Push?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,6 +57,7 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
         progress_bar=root?.findViewById(R.id.progress_bar)
         viewModel = ViewModelProviders.of(this, factory).get(DeliveryViewModel::class.java)
 
+        viewModel.pushListener=this
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         return root
     }
@@ -104,6 +110,8 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
     }
 
     fun showDialog(mContext: Context,delivery: Delivery) {
+        description=delivery?.Name+" your Invoice Number: "+delivery?.InvoiceNumber
+        viewModel.getToken(token!!,2,delivery?.CustomerId!!.toString())
         val infoDialog = CustomDialog(mContext, R.style.CustomDialogTheme)
         val inflator =
             mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -165,6 +173,9 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
 
                 Handler().postDelayed({
                     replace()
+                    push= Push("Orders",description+".Your Order is Delivered")
+                    pushPost= PushPost(tokenData,push)
+                    viewModel.sendPush("key=AAAAdCyJ2hw:APA91bGF6x20oQnuC2ZeAXsJju-OCAZ67dBpQvaLx7h18HSAnhl9CPWupCJaV0552qJvm1qIHL_LAZoOvv5oWA9Iraar_XQkWe3JEUmJ1v7iKq09QYyPB3ZGMeSinzC-GlKwpaJU_IvO",pushPost!!)
                 }, 300)
                 infoDialog.dismiss()
             }
@@ -180,5 +191,10 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener{
             infoDialog.dismiss()
         }
         infoDialog.show()
+    }
+    var tokenData:String?=""
+    var description:String?=""
+    override fun onLoad(data: String) {
+        tokenData=data
     }
 }

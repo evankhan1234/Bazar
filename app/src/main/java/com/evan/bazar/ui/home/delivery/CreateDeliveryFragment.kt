@@ -17,9 +17,12 @@ import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.CustomerOrder
 import com.evan.bazar.data.db.entities.Orders
 import com.evan.bazar.data.network.post.CustomerOrderStatus
+import com.evan.bazar.data.network.post.Push
+import com.evan.bazar.data.network.post.PushPost
 import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.HomeViewModel
 import com.evan.bazar.ui.home.HomeViewModelFactory
+import com.evan.bazar.ui.home.dashboard.IPushListener
 import com.evan.bazar.util.*
 import com.google.gson.Gson
 import org.kodein.di.KodeinAware
@@ -33,7 +36,7 @@ import kotlin.collections.ArrayList
 
 
 class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListener,
-    IDeliveryPostListener, IDeleteListener, IDeleteIdListener, IItemClickListener {
+    IDeliveryPostListener, IDeleteListener, IDeleteIdListener, IItemClickListener,IPushListener {
     override val kodein by kodein()
     var progress_bar: ProgressBar? = null
     var rcv_orders: RecyclerView? = null
@@ -54,7 +57,8 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
     var et_delivery_details: EditText? = null
     var root_layout: RelativeLayout? = null
     var btn_cancel: Button? = null
-
+    var pushPost: PushPost?=null
+    var push: Push?=null
     //  var data_for: ArrayList<CustomerOrderStatus>?=null
     var data_customer_status: MutableList<CustomerOrderStatus>? = null
     var list: ArrayList<CustomerOrderStatus> = arrayListOf()
@@ -68,6 +72,7 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
         viewModel.customerOrderListener = this
         viewModel.deliveryPostListener = this
         viewModel.deleteListener = this
+        viewModel.pushListener = this
         btn_cancel = root?.findViewById(R.id.btn_cancel)
         et_due_amount = root?.findViewById(R.id.et_due_amount)
         root_layout = root?.findViewById(R.id.root_layout)
@@ -95,6 +100,7 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
             }
         }
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
+        viewModel.getToken(token!!,2,order?.CustomerId!!.toString())
         viewModel.getCustomerOrders(token!!, order?.Id!!)
         btn_cancel?.setOnClickListener {
 //
@@ -281,6 +287,9 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
     }
 
     override fun show(value: String) {
+        push= Push("Orders","Your Order is processing")
+        pushPost= PushPost(tokenData,push)
+        viewModel.sendPush("key=AAAAdCyJ2hw:APA91bGF6x20oQnuC2ZeAXsJju-OCAZ67dBpQvaLx7h18HSAnhl9CPWupCJaV0552qJvm1qIHL_LAZoOvv5oWA9Iraar_XQkWe3JEUmJ1v7iKq09QYyPB3ZGMeSinzC-GlKwpaJU_IvO",pushPost!!)
         Toast.makeText(activity, value, Toast.LENGTH_LONG).show()
         showDialogSuccessfull(context!!,
             value,
@@ -289,6 +298,7 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
             object :
                 DialogActionListener {
                 override fun onPositiveClick() {
+
                     if (activity is HomeActivity) {
                         (activity as HomeActivity).backPress()
                     }
@@ -375,5 +385,9 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
         tv_total?.setText(number2digits.toString() + " Tk")
         tv_grand_total?.setText(number2digits.toString() + " Tk")
         ordersAdapter?.notifyDataSetChanged()
+    }
+    var tokenData:String?=""
+    override fun onLoad(data: String) {
+        tokenData=data
     }
 }

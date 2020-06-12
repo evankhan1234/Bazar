@@ -9,8 +9,11 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.evan.bazar.data.db.entities.Delivery
 import com.evan.bazar.data.network.post.DeliveryStatusPost
+import com.evan.bazar.data.network.post.PushPost
 import com.evan.bazar.data.network.post.SearchCategoryPost
+import com.evan.bazar.data.network.post.TokenPost
 import com.evan.bazar.data.repositories.HomeRepository
+import com.evan.bazar.ui.home.dashboard.IPushListener
 import com.evan.bazar.ui.home.supplier.ISupplierListener
 import com.evan.bazar.ui.home.supplier.SupplierDataSource
 import com.evan.bazar.ui.home.supplier.SupplierSourceFactory
@@ -26,6 +29,8 @@ class DeliveryViewModel (
 ) : ViewModel() {
     var deliveryStatusPost: DeliveryStatusPost? = null
     var listOfAlerts: LiveData<PagedList<Delivery>>? = null
+    var tokenPost:TokenPost?=null
+    var pushListener: IPushListener?=null
     private val pageSize = 7
 
     init {
@@ -67,5 +72,35 @@ class DeliveryViewModel (
         }
 
     }
+    fun getToken(header:String,type:Int,data:String) {
 
+        Coroutines.main {
+            try {
+                tokenPost= TokenPost(type,data)
+                Log.e("createToken", "createToken" + Gson().toJson(tokenPost))
+                val response = repository.getToken(header,tokenPost!!)
+                Log.e("createToken", "createToken" + Gson().toJson(response))
+                pushListener?.onLoad(response.data!!)
+            } catch (e: ApiException) {
+                Log.e("createToken", "createToken" +e?.message)
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun sendPush(header:String,pushPost: PushPost) {
+        Coroutines.main {
+            try {
+                Log.e("response", "response" + Gson().toJson(pushPost))
+                val response = repository.sendPush(header,pushPost!!)
+                Log.e("response", "response" + Gson().toJson(response))
+            } catch (e: ApiException) {
+                Log.e("response", "response" + e?.message)
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
 }

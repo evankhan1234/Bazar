@@ -747,6 +747,9 @@ class HomeActivity : AppCompatActivity() {
         }
         return null
     }
+    fun finishs(){
+        finishAffinity()
+    }
     fun getVisibleFragments(): Fragment? {
         val fragmentManager = mFragManager
         val fragments = fragmentManager!!.fragments

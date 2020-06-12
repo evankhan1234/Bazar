@@ -37,6 +37,11 @@ class SplashActivity : AppCompatActivity(), Animator.AnimatorListener {
                 // Get new Instance ID token
                 val token = task.result?.token
                 Log.e("Device_Token", token)
+                SharedPreferenceUtil.saveShared(
+                    this,
+                    SharedPreferenceUtil.TYPE_PUSH_TOKEN,
+                    token!!
+                )
 
             })
     }
