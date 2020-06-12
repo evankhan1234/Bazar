@@ -5,8 +5,13 @@
         android:background="@color/white"
         android:clickable="true"
         xmlns:android="http://schemas.android.com/apk/res/android">
+<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
     <LinearLayout
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -68,7 +73,7 @@
                 android:paddingBottom="20dp"
                 android:textColor="@color/black" />
     </LinearLayout>
-
+</ScrollView>
     <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
