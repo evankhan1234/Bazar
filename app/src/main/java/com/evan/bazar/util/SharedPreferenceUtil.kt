@@ -11,6 +11,7 @@ object SharedPreferenceUtil {
     const val TYPE_PUSH_TOKEN = "firebase_push_token"
     const val TYPE_NAME= "name"
     const val TYPE_IMAGE = "image"
+    const val TYPE_SHOP_NAME = "shop_name"
     fun saveShared(c: Context, type: String, value: String) {
         val ed = c.getSharedPreferences(mSharedName, Context.MODE_PRIVATE).edit()
         ed.putString(type, value)

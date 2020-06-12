@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.evan.bazar.R
+import com.evan.bazar.data.db.entities.CustomerOrderCount
 import com.evan.bazar.data.db.entities.LastFiveSales
 import com.evan.bazar.data.db.entities.Store
 import com.evan.bazar.ui.home.HomeViewModel
@@ -26,7 +27,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 
-class DashboardFragment : Fragment(),KodeinAware,ILastFiveSalesListener,IStoreCountListener {
+class DashboardFragment : Fragment(),KodeinAware,ILastFiveSalesListener,IStoreCountListener ,ICustomerOrderCountListener{
     override val kodein by kodein()
     var token: String? = ""
     private val factory : HomeViewModelFactory by instance()
@@ -37,6 +38,9 @@ class DashboardFragment : Fragment(),KodeinAware,ILastFiveSalesListener,IStoreCo
     private val xdata: ArrayList<String>?=arrayListOf()
     private val ydata: ArrayList<Int>?=arrayListOf()
     private val valueSet1: ArrayList<BarEntry>?=arrayListOf()
+    var tv_delivered:TextView?=null
+    var tv_processing:TextView?=null
+    var tv_pending:TextView?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,12 +50,17 @@ class DashboardFragment : Fragment(),KodeinAware,ILastFiveSalesListener,IStoreCo
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
         viewModel.lastFiveSalesListener=this
         viewModel.storeCountListener=this
+        viewModel.customerOrderCountListener=this
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         viewModel.getStoreCount(token!!)
         viewModel.getLasFive(token!!)
+        viewModel.getCustomerOrderCount(token!!)
         chart=root?.findViewById(R.id.chart1)
         tv_store=root?.findViewById(R.id.tv_store)
         pieChart=root?.findViewById(R.id.pie)
+        tv_delivered=root?.findViewById(R.id.tv_delivered)
+        tv_processing=root?.findViewById(R.id.tv_processing)
+        tv_pending=root?.findViewById(R.id.tv_pending)
         tv_store?.isSelected=true
         pieChart?.setDrawHoleEnabled(true)
         pieChart?.setDescription(
@@ -253,6 +262,12 @@ class DashboardFragment : Fragment(),KodeinAware,ILastFiveSalesListener,IStoreCo
         ydata?.add(store?.Purchase!!)
         ydata?.add(store?.Category!!)
         addDataSet()
+    }
+
+    override fun onCount(customerOrderCount: CustomerOrderCount) {
+        tv_pending?.text=customerOrderCount?.Pending?.toString()
+        tv_processing?.text=customerOrderCount?.Processing?.toString()
+        tv_delivered?.text=customerOrderCount?.Delivered?.toString()
     }
 
 }

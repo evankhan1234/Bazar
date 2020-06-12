@@ -65,6 +65,11 @@ class AuthViewModel(
                         SharedPreferenceUtil.TYPE_SHOP_ID,
                         authResponse.shopId!!.Id!!
                     )
+                    SharedPreferenceUtil.saveShared(
+                        view.context,
+                        SharedPreferenceUtil.TYPE_SHOP_NAME,
+                        authResponse?.shopId!!.Name!!
+                    )
                     authListener?.onSuccess(authResponse.data!!)
                     repository.saveUser(authResponse.data!!)
                 }

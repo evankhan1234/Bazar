@@ -52,11 +52,12 @@
                                 android:orientation="vertical">
 
                             <TextView
+                                    android:id="@+id/tv_pending"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginTop="8dp"
-                                    android:text="20"
+
                                     android:textColor="@color/white"
                                     android:textSize="19sp"
                                     android:textStyle="bold" />
@@ -95,11 +96,11 @@
                                 android:orientation="vertical">
 
                             <TextView
+                                    android:id="@+id/tv_processing"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginTop="8dp"
-                                    android:text="7"
                                     android:textColor="@color/white"
                                     android:textSize="19sp"
                                     android:textStyle="bold" />
@@ -145,11 +146,11 @@
                                     android:orientation="vertical">
 
                                 <TextView
+                                        android:id="@+id/tv_delivered"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_marginTop="8dp"
-                                        android:text="86"
                                         android:textColor="@color/white"
                                         android:textSize="19sp"
                                         android:textStyle="bold" />
