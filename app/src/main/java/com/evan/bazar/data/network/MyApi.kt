@@ -149,6 +149,16 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body customerOrderItem: CustomerOrderItem
     ): Response<BasicResponses>
+    @POST("user-token.php")
+    suspend fun createToken(
+        @Header("Authorization") Authorization:String,
+        @Body tokenPost: TokenPost
+    ): Response<BasicResponses>
+    @POST("get-token.php")
+    suspend fun getToken(
+        @Header("Authorization") Authorization:String,
+        @Body tokenPost: TokenPost
+    ): Response<TokenResponses>
     @POST("update_customer_order_status.php")
     suspend fun updateCustomerOrderStatus(
         @Header("Authorization") Authorization:String,

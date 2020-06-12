@@ -129,11 +129,7 @@ class AuthViewModel(
         }
     }
 
-    fun onSignup(view: View) {
-        Intent(view.context, SignupActivity::class.java).also {
-            view.context.startActivity(it)
-        }
-    }
+
 
 
     fun onSignupButtonClick(view: View) {

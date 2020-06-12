@@ -1,18 +1,23 @@
 package com.evan.bazar.ui.home.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.ShopUser
+import com.evan.bazar.ui.auth.LoginActivity
+import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.HomeViewModel
 import com.evan.bazar.ui.home.HomeViewModelFactory
 import com.evan.bazar.util.SharedPreferenceUtil
@@ -40,6 +45,7 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
     var tv_license:TextView?=null
     var tv_address:TextView?=null
     var img_avatar:CircleImageView?=null
+    var btn_log_out:Button?=null
     var token:String?=""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +59,7 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
         viewModel.getShopUserDetails(token!!)
         progress_circular=root?.findViewById(R.id.progress_circular)
         tv_name=root?.findViewById(R.id.tv_name)
+        btn_log_out=root?.findViewById(R.id.btn_log_out)
         tv_email=root?.findViewById(R.id.tv_email)
         tv_mobile=root?.findViewById(R.id.tv_mobile)
         tv_date=root?.findViewById(R.id.tv_date)
@@ -60,6 +67,16 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
         tv_license=root?.findViewById(R.id.tv_license)
         tv_address=root?.findViewById(R.id.tv_address)
         img_avatar=root?.findViewById(R.id.img_avatar)
+        btn_log_out?.setOnClickListener {
+            Toast.makeText(context!!,"Successfully Logout", Toast.LENGTH_SHORT).show()
+            SharedPreferenceUtil.saveShared(context!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN, "")
+            SharedPreferenceUtil.saveShared(context!!, SharedPreferenceUtil.TYPE_FRESH, "")
+            val intent= Intent(context!!, LoginActivity::class.java)
+            startActivity(intent)
+            if (activity is HomeActivity) {
+                (activity as HomeActivity).finishs()
+            }
+        }
         return root
     }
 

@@ -330,7 +330,7 @@
                                 android:orientation="vertical">
 
                             <Button
-                                    android:id="@+id/btn_log_out"
+                                    android:id="@+id/btn_update"
                                     android:layout_width="match_parent"
                                     android:layout_height="60dp"
                                     android:layout_marginLeft="20dp"
@@ -338,7 +338,7 @@
                                     android:layout_marginRight="20dp"
                                     android:background="@drawable/black_capsul"
                                     android:stateListAnimator="@null"
-                                    android:text="Logout"
+                                    android:text="Change Profile"
                                     android:textColor="#fff"
                                     android:textSize="15sp" />
                         </LinearLayout>
@@ -426,6 +426,26 @@
                         android:background="@color/black_opacity_30"
                         android:layout_width="match_parent"
                         android:layout_height="1dp" />
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:orientation="vertical">
+
+                    <Button
+                            android:id="@+id/btn_log_out"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginLeft="20dp"
+
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/black_capsul"
+                            android:stateListAnimator="@null"
+                            android:text="Logout"
+                            android:textColor="#fff"
+                            android:textSize="15sp" />
+                </LinearLayout>
+
 
             </LinearLayout>
 

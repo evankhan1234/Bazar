@@ -52,8 +52,8 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
     var spinner_category: Spinner?=null
     var progress_bar: ProgressBar?=null
     var id_unit: Int? = null
-    var id_supplier: Int? = null
-    var id_category: Int? = null
+    var id_supplier: Int? = 0
+    var id_category: Int? = 0
     var root_layout: RelativeLayout?=null
     var et_product_name: EditText?=null
     var et_details: EditText?=null
@@ -209,6 +209,12 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                 }  else if (image_address.isNullOrEmpty()) {
                 root_layout?.snackbar("Image is Empty")
                }
+                else if (id_supplier==0) {
+                    root_layout?.snackbar("Supplier is Empty.Please Add Supplier")
+                }
+                else if (id_category==0) {
+                    root_layout?.snackbar("Product Category is Empty.Please Add Product Category")
+                }
                 else {
                     Log.e("Evan", "Evan")
 
@@ -283,6 +289,12 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                 }
                 else if (image_address.isNullOrEmpty()) {
                     root_layout?.snackbar("Image is Empty")
+                }
+                else if (id_supplier==0) {
+                    root_layout?.snackbar("Supplier is Empty.Please Add Supplier")
+                }
+                else if (id_category==0) {
+                    root_layout?.snackbar("Product Category is Empty.Please Add Product Category")
                 }
                 else {
                     Log.e("Evan", "Evan")

@@ -30,6 +30,7 @@ import org.kodein.di.generic.instance
 class DashboardFragment : Fragment(),KodeinAware,ILastFiveSalesListener,IStoreCountListener ,ICustomerOrderCountListener{
     override val kodein by kodein()
     var token: String? = ""
+    var pushToken: String? = ""
     private val factory : HomeViewModelFactory by instance()
     private lateinit var viewModel: HomeViewModel
     var pieChart: PieChart?=null
@@ -52,9 +53,11 @@ class DashboardFragment : Fragment(),KodeinAware,ILastFiveSalesListener,IStoreCo
         viewModel.storeCountListener=this
         viewModel.customerOrderCountListener=this
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
+        pushToken = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_PUSH_TOKEN)
         viewModel.getStoreCount(token!!)
         viewModel.getLasFive(token!!)
         viewModel.getCustomerOrderCount(token!!)
+        viewModel.createToken(token!!,1,pushToken!!)
         chart=root?.findViewById(R.id.chart1)
         tv_store=root?.findViewById(R.id.tv_store)
         pieChart=root?.findViewById(R.id.pie)
