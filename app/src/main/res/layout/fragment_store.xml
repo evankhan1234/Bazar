@@ -151,18 +151,22 @@
                             android:visibility="visible">
 
 
-                        <RelativeLayout
+                        <LinearLayout
+                                android:orientation="horizontal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginTop="15dp"
                                 android:layout_marginRight="15dp"
                                 android:layout_marginBottom="10dp"
+                                android:weightSum="2"
                                 android:background="@color/transparent">
 
                             <androidx.cardview.widget.CardView
                                     android:id="@+id/breakfast_layout"
-                                    android:layout_width="160dp"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+
                                     android:layout_height="115dp"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginTop="5dp"
@@ -201,7 +205,8 @@
 
                             <androidx.cardview.widget.CardView
                                     android:id="@+id/category"
-                                    android:layout_width="160dp"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
                                     android:layout_height="115dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginTop="7dp"
@@ -238,9 +243,11 @@
                                 </LinearLayout>
 
                             </androidx.cardview.widget.CardView>
-                        </RelativeLayout>
+                        </LinearLayout>
 
-                        <RelativeLayout
+                        <LinearLayout
+                                android:weightSum="2"
+                                android:orientation="horizontal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
@@ -250,7 +257,8 @@
 
                             <androidx.cardview.widget.CardView
                                     android:id="@+id/breakfast_layout1"
-                                    android:layout_width="160dp"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
                                     android:layout_height="115dp"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginTop="5dp"
@@ -295,7 +303,8 @@
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
-                                    android:layout_width="160dp"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
                                     android:layout_height="115dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginTop="7dp"
@@ -331,9 +340,11 @@
                                 </LinearLayout>
 
                             </androidx.cardview.widget.CardView>
-                        </RelativeLayout>
+                        </LinearLayout>
 
-                        <RelativeLayout
+                        <LinearLayout
+                                android:orientation="horizontal"
+                                android:weightSum="2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
@@ -343,7 +354,8 @@
 
                             <androidx.cardview.widget.CardView
                                     android:id="@+id/breakfast_layout2"
-                                    android:layout_width="160dp"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
                                     android:layout_height="115dp"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginTop="5dp"
@@ -380,7 +392,8 @@
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
-                                    android:layout_width="160dp"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
                                     android:layout_height="115dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginTop="7dp"
@@ -416,7 +429,7 @@
                                 </LinearLayout>
 
                             </androidx.cardview.widget.CardView>
-                        </RelativeLayout>
+                        </LinearLayout>
 
                         <View
                                 android:layout_width="match_parent"
