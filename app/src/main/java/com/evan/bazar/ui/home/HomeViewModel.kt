@@ -26,6 +26,7 @@ import com.evan.bazar.ui.home.product.ISupplierListener
 import com.evan.bazar.ui.home.purchase.ICreatePurchaseListener
 import com.evan.bazar.ui.home.purchase.IUnitListener
 import com.evan.bazar.ui.home.settings.IShopUserListener
+import com.evan.bazar.ui.home.settings.profile.IProfileUpdateListener
 import com.evan.bazar.ui.home.supplier.ICreateSupplierListener
 import com.evan.bazar.util.*
 import com.google.gson.Gson
@@ -56,6 +57,7 @@ class HomeViewModel(
     var commentsPost:CommentsPost?=null
     var replyPost:ReplyPost?=null
     var tokenPost:TokenPost?=null
+    var userUpdatePost:UserUpdatePost?=null
     var ownUpdatedPost:OwnUpdatedPost?=null
     var likeCountPost:LikeCountPost?=null
     var commentsForPost:CommentsForPost?=null
@@ -78,6 +80,7 @@ class HomeViewModel(
     var lastFiveSalesListener: ILastFiveSalesListener?=null
     var customerOrderCountListener: ICustomerOrderCountListener?=null
     var pushListener: IPushListener?=null
+    var profileUpdateListener: IProfileUpdateListener?=null
     fun getCategoryType(header:String) {
         categoryListener?.started()
         Coroutines.main {
@@ -754,5 +757,21 @@ class HomeViewModel(
         }
 
     }
+    fun updateShopUser(header:String,name:String,picture:String,address:String) {
 
+        Coroutines.main {
+            try {
+                userUpdatePost= UserUpdatePost(name,picture,address)
+                Log.e("createToken", "createToken" + Gson().toJson(userUpdatePost))
+                val response = repository.updateShopUser(header,userUpdatePost!!)
+                Log.e("createToken", "createToken" + Gson().toJson(response))
+                profileUpdateListener?.onLoad(response?.message!!)
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
 }

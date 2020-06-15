@@ -44,9 +44,12 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
     var tv_shop_name:TextView?=null
     var tv_license:TextView?=null
     var tv_address:TextView?=null
+    var tv_owner_address:TextView?=null
     var img_avatar:CircleImageView?=null
     var btn_log_out:Button?=null
+    var btn_change_profile:Button?=null
     var token:String?=""
+    var shopUsers: ShopUser?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,6 +62,7 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
         viewModel.getShopUserDetails(token!!)
         progress_circular=root?.findViewById(R.id.progress_circular)
         tv_name=root?.findViewById(R.id.tv_name)
+        tv_owner_address=root?.findViewById(R.id.tv_owner_address)
         btn_log_out=root?.findViewById(R.id.btn_log_out)
         tv_email=root?.findViewById(R.id.tv_email)
         tv_mobile=root?.findViewById(R.id.tv_mobile)
@@ -67,6 +71,7 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
         tv_license=root?.findViewById(R.id.tv_license)
         tv_address=root?.findViewById(R.id.tv_address)
         img_avatar=root?.findViewById(R.id.img_avatar)
+        btn_change_profile=root?.findViewById(R.id.btn_change_profile)
         btn_log_out?.setOnClickListener {
             Toast.makeText(context!!,"Successfully Logout", Toast.LENGTH_SHORT).show()
             SharedPreferenceUtil.saveShared(context!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN, "")
@@ -77,11 +82,16 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
                 (activity as HomeActivity).finishs()
             }
         }
+        btn_change_profile?.setOnClickListener {
+            if (activity is HomeActivity) {
+                (activity as HomeActivity).goToUpdateProfileFragment(shopUsers!!)
+            }
+        }
         return root
     }
 
     override fun show(shopUser: ShopUser?) {
-
+        shopUsers=shopUser
         Log.e("shopUser","shopUser"+Gson().toJson(shopUser))
         tv_name?.text=shopUser?.OwnerName
         tv_email?.text=shopUser?.Email
@@ -89,6 +99,7 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
         tv_shop_name?.text=shopUser?.Name
         tv_license?.text=shopUser?.LicenseNumber
         tv_address?.text=shopUser?.Address
+        tv_owner_address?.text=shopUser?.OwnerAddress
         tv_date?.text=getStartDate(shopUser?.AgreementDate)
         Glide.with(context!!)
             .load(shopUser?.Picture)

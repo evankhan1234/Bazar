@@ -175,4 +175,8 @@ class HomeRepository (
     suspend fun sendPush(header:String, post: PushPost): PushResponses {
         return apiRequest { push_api.sendPush(header,post) }
     }
+    suspend fun updateShopUser(header:String, post: UserUpdatePost): BasicResponses {
+        return apiRequest { api.updateShopUser(header,post) }
+    }
+
 }

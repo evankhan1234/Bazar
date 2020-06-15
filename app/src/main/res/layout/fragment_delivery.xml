@@ -12,6 +12,7 @@
             android:visibility="visible"
             android:alpha="1.5">
         <androidx.cardview.widget.CardView
+                android:visibility="gone"
 
                 android:layout_marginTop="10dp"
 

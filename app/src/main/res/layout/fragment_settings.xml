@@ -275,7 +275,6 @@
                             android:textSize="14sp" />
 
                 </LinearLayout>
-
                 <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
@@ -288,7 +287,44 @@
                             android:layout_marginTop="17.3dp"
                             android:gravity="center_vertical"
                             android:maxLines="1"
-                            android:text="@string/address"
+                            android:text="@string/owner_address"
+                            android:textColor="@color/black_again"
+                            android:textSize="14sp" />
+                    <TextView
+                            android:textStyle="bold"
+                            android:text=":"
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="17.3dp"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/black_again"
+                            android:textSize="14sp" />
+                    <TextView
+                            android:id="@+id/tv_owner_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="17.3dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:maxLines="2"
+                            android:letterSpacing=".02"
+                            android:textColor="@color/black_again"
+                            android:textSize="14sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:textStyle="bold"
+                            android:layout_width="105dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="17.3dp"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:text="@string/shop_address"
                             android:textColor="@color/black_again"
                             android:textSize="14sp" />
                     <TextView
@@ -330,7 +366,7 @@
                                 android:orientation="vertical">
 
                             <Button
-                                    android:id="@+id/btn_update"
+                                    android:id="@+id/btn_change_profile"
                                     android:layout_width="match_parent"
                                     android:layout_height="60dp"
                                     android:layout_marginLeft="20dp"
@@ -461,7 +497,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:indeterminateDrawable="@drawable/progress"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     <RelativeLayout
             android:id="@+id/main_container"

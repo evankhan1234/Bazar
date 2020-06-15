@@ -205,6 +205,11 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body searchPost: SearchCategoryPost
     ): Response<ProductResponses>
+    @POST("update-shop-user-details.php")
+    suspend fun updateShopUser(
+        @Header("Authorization") Authorization:String,
+        @Body userUpdatePost: UserUpdatePost
+    ): Response<BasicResponses>
     @GET("supplier-get.php")
     suspend fun getSuppliers(
         @Header("Authorization") Authorization:String
