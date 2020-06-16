@@ -116,6 +116,9 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
                         viewModel.updateCustomerOrderStatus(token!!, order_id!!, 0)
                         Toast.makeText(activity, "Order Cancel Successfully", Toast.LENGTH_LONG)
                             .show()
+                        push= Push("Orders","Your Order is Cancel")
+                        pushPost= PushPost(tokenData,push)
+                        viewModel.sendPush("key=AAAAdCyJ2hw:APA91bGF6x20oQnuC2ZeAXsJju-OCAZ67dBpQvaLx7h18HSAnhl9CPWupCJaV0552qJvm1qIHL_LAZoOvv5oWA9Iraar_XQkWe3JEUmJ1v7iKq09QYyPB3ZGMeSinzC-GlKwpaJU_IvO",pushPost!!)
                         if (activity is HomeActivity) {
                             (activity as HomeActivity).backPress()
                         }

@@ -41,6 +41,7 @@ import com.evan.bazar.ui.home.product.ProductFragment
 import com.evan.bazar.ui.home.purchase.CreatePurchaseFragment
 import com.evan.bazar.ui.home.purchase.PurchaseFragment
 import com.evan.bazar.ui.home.settings.SettingsFragment
+import com.evan.bazar.ui.home.settings.profile.ProfileUpdateFragment
 import com.evan.bazar.ui.home.store.StoreFragment
 import com.evan.bazar.ui.home.supplier.CreateSupplierFragment
 import com.evan.bazar.ui.home.supplier.SupplierFragment
@@ -176,6 +177,12 @@ class HomeActivity : AppCompatActivity() {
                 storeFragment.removeChild()
                 setUpHeader(FRAG_STORE)
             }
+            if (f is SettingsFragment) {
+                val storeFragment: SettingsFragment =
+                    mFragManager?.findFragmentByTag(FRAG_SETTINGS.toString()) as SettingsFragment
+                //  storeFragment.removeChild()
+                setUpHeader(FRAG_SETTINGS)
+            }
             if (f is DashboardFragment) {
                 val storeFragment: DashboardFragment =
                     mFragManager?.findFragmentByTag(FRAG_TOP.toString()) as DashboardFragment
@@ -269,6 +276,51 @@ class HomeActivity : AppCompatActivity() {
     fun goToCreateProductFragment() {
         setUpHeader(FRAG_CREATE_PRODUCT)
         addFragment(FRAG_CREATE_PRODUCT, true, null)
+
+    }
+    fun goToUpdateProfileFragment(shopUser: ShopUser) {
+        setUpHeader(FRAG_UPDATE_PROFILE)
+        mFragManager = supportFragmentManager
+        // create transaction
+        var fragId:Int?=0
+        fragId=FRAG_UPDATE_PROFILE
+        fragTransaction = mFragManager?.beginTransaction()
+        //check if there is any backstack if yes then remove it
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+            //this will clear the back stack and displays no animation on the screen
+            // mFragManager?.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        // check current fragment is wanted fragment
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+        var newFrag: Fragment? = null
+
+        // identify which fragment will be called
+
+        newFrag = ProfileUpdateFragment()
+        val b= Bundle()
+        b.putParcelable(ShopUser::class.java?.getSimpleName(), shopUser)
+
+        newFrag.setArguments(b)
+
+        mCurrentFrag = newFrag
+
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
+
+        // param 1: container id, param 2: new fragment, param 3: fragment id
+
+        fragTransaction?.replace(R.id.main_container, newFrag!!, fragId.toString())
+        // prevent showed when user press back fabReview
+        fragTransaction?.addToBackStack(fragId.toString())
+        //  fragTransaction?.hide(active).show(guideFragment).commit();
+        fragTransaction!!.commit()
 
     }
     fun goToUpdateCategoryFragment(categoryType: CategoryType) {
@@ -731,6 +783,11 @@ class HomeActivity : AppCompatActivity() {
                 rlt_header?.visibility = View.GONE
                 tv_details.text = resources.getString(R.string.details)
             }
+            FRAG_UPDATE_PROFILE->{
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.update_profile)
+            }
             else -> {
 
             }
@@ -1064,6 +1121,10 @@ class HomeActivity : AppCompatActivity() {
                                         f.showImage(updated_image_url)
                                     }
                                     else if (f is CreateProductFragment) {
+
+                                        f.showImage(updated_image_url)
+                                    }
+                                    else if (f is ProfileUpdateFragment) {
 
                                         f.showImage(updated_image_url)
                                     }

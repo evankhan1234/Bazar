@@ -13,7 +13,10 @@
     <string name="agreement">Agreement Date</string>
     <string name="agreements">Agreement</string>
     <string name="address">Address</string>
+    <string name="shop_address">Shop Address</string>
+    <string name="owner_address">Owner Address</string>
     <string name="details">Details</string>
+    <string name="update_profile">Update Profile</string>
     <string name="purchase_details">Purchase Details</string>
     <string name="product_details">Product Details</string>
     <string name="license_number">License Number</string>
