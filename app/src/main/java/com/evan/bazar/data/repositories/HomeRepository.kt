@@ -178,5 +178,8 @@ class HomeRepository (
     suspend fun updateShopUser(header:String, post: UserUpdatePost): BasicResponses {
         return apiRequest { api.updateShopUser(header,post) }
     }
+    suspend fun updatePassword(header:String, post: PasswordPost): BasicResponses {
+        return apiRequest { api.updatePassword(header,post) }
+    }
 
 }

@@ -41,6 +41,7 @@ import com.evan.bazar.ui.home.product.ProductFragment
 import com.evan.bazar.ui.home.purchase.CreatePurchaseFragment
 import com.evan.bazar.ui.home.purchase.PurchaseFragment
 import com.evan.bazar.ui.home.settings.SettingsFragment
+import com.evan.bazar.ui.home.settings.password.ChangePasswordFragment
 import com.evan.bazar.ui.home.settings.profile.ProfileUpdateFragment
 import com.evan.bazar.ui.home.store.StoreFragment
 import com.evan.bazar.ui.home.supplier.CreateSupplierFragment
@@ -276,6 +277,51 @@ class HomeActivity : AppCompatActivity() {
     fun goToCreateProductFragment() {
         setUpHeader(FRAG_CREATE_PRODUCT)
         addFragment(FRAG_CREATE_PRODUCT, true, null)
+
+    }
+    fun goToUpdatePasswordFragment(shopUser: ShopUser) {
+        setUpHeader(FRAG_UPDATE_PASSWORD)
+        mFragManager = supportFragmentManager
+        // create transaction
+        var fragId:Int?=0
+        fragId=FRAG_UPDATE_PASSWORD
+        fragTransaction = mFragManager?.beginTransaction()
+        //check if there is any backstack if yes then remove it
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+            //this will clear the back stack and displays no animation on the screen
+            // mFragManager?.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        // check current fragment is wanted fragment
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+        var newFrag: Fragment? = null
+
+        // identify which fragment will be called
+
+        newFrag = ChangePasswordFragment()
+        val b= Bundle()
+        b.putParcelable(ShopUser::class.java?.getSimpleName(), shopUser)
+
+        newFrag.setArguments(b)
+
+        mCurrentFrag = newFrag
+
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
+
+        // param 1: container id, param 2: new fragment, param 3: fragment id
+
+        fragTransaction?.replace(R.id.main_container, newFrag!!, fragId.toString())
+        // prevent showed when user press back fabReview
+        fragTransaction?.addToBackStack(fragId.toString())
+        //  fragTransaction?.hide(active).show(guideFragment).commit();
+        fragTransaction!!.commit()
 
     }
     fun goToUpdateProfileFragment(shopUser: ShopUser) {
@@ -787,6 +833,11 @@ class HomeActivity : AppCompatActivity() {
                 ll_back_header?.visibility = View.VISIBLE
                 rlt_header?.visibility = View.GONE
                 tv_details.text = resources.getString(R.string.update_profile)
+            }
+            FRAG_UPDATE_PASSWORD->{
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.update_password)
             }
             else -> {
 

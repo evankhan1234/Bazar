@@ -200,6 +200,11 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body searchPost: SearchCategoryPost
     ): Response<PurchaseResponses>
+    @POST("update-shop-user-password.php")
+    suspend fun  updatePassword(
+        @Header("Authorization") Authorization:String,
+        @Body passwordPost: PasswordPost
+    ): Response<BasicResponses>
     @POST("searching-product.php")
     suspend fun getProductSearch(
         @Header("Authorization") Authorization:String,
