@@ -29,6 +29,9 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +48,21 @@ fun hideKeyboard(activity: Activity) {
 fun Context.toast(message: String){
     Toast.makeText(this, message, Toast.LENGTH_LONG ).show()
 }
-
+fun getHashPassWordMD5(password: String): String? {
+    var md: MessageDigest? = null
+    try {
+        md = MessageDigest.getInstance("MD5")
+    } catch (e: NoSuchAlgorithmException) {
+        e.printStackTrace()
+    }
+    val hashInBytes =
+        md!!.digest(password.toByteArray(StandardCharsets.UTF_8))
+    val sb = StringBuilder()
+    for (b in hashInBytes) {
+        sb.append(String.format("%02x", b))
+    }
+    return sb.toString()
+}
 fun ProgressBar.show(){
     visibility = View.VISIBLE
 

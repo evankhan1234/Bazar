@@ -26,6 +26,7 @@ import com.evan.bazar.ui.home.product.ISupplierListener
 import com.evan.bazar.ui.home.purchase.ICreatePurchaseListener
 import com.evan.bazar.ui.home.purchase.IUnitListener
 import com.evan.bazar.ui.home.settings.IShopUserListener
+import com.evan.bazar.ui.home.settings.password.IChangePasswordListener
 import com.evan.bazar.ui.home.settings.profile.IProfileUpdateListener
 import com.evan.bazar.ui.home.supplier.ICreateSupplierListener
 import com.evan.bazar.util.*
@@ -57,6 +58,7 @@ class HomeViewModel(
     var commentsPost:CommentsPost?=null
     var replyPost:ReplyPost?=null
     var tokenPost:TokenPost?=null
+    var passwordPost:PasswordPost?=null
     var userUpdatePost:UserUpdatePost?=null
     var ownUpdatedPost:OwnUpdatedPost?=null
     var likeCountPost:LikeCountPost?=null
@@ -81,6 +83,7 @@ class HomeViewModel(
     var customerOrderCountListener: ICustomerOrderCountListener?=null
     var pushListener: IPushListener?=null
     var profileUpdateListener: IProfileUpdateListener?=null
+    var changePasswordListener: IChangePasswordListener?=null
     fun getCategoryType(header:String) {
         categoryListener?.started()
         Coroutines.main {
@@ -770,6 +773,27 @@ class HomeViewModel(
 
             } catch (e: NoInternetException) {
 
+            }
+        }
+
+    }
+    fun updatePassword(header:String,password:String) {
+        changePasswordListener?.onStarted()
+        Coroutines.main {
+            try {
+                passwordPost= PasswordPost(password!!)
+                Log.e("Search", "Search" + Gson().toJson(passwordPost))
+                val response = repository.updatePassword(header,passwordPost!!)
+                Log.e("response", "response" + Gson().toJson(response))
+                changePasswordListener?.onUser(response?.message!!)
+                changePasswordListener?.onEnd()
+
+            } catch (e: ApiException) {
+                changePasswordListener?.onEnd()
+                changePasswordListener?.onFailure(e?.message!!)
+            } catch (e: NoInternetException) {
+                changePasswordListener?.onEnd()
+                changePasswordListener?.onFailure(e?.message!!)
             }
         }
 

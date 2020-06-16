@@ -39,6 +39,7 @@ const val FRAG_UPDATE_PRODUCT: Int = 16
 const val FRAG_VIEW_DELIVERY: Int = 17
 const val FRAG_NOTICE_DETAILS: Int = 18
 const val FRAG_UPDATE_PROFILE: Int = 20
+const val FRAG_UPDATE_PASSWORD: Int = 21
 const val FRAG_NEWSFEED: Int = 19
 const val FRAG_ORDER: Int = 3
 const val FRAG_SETTINGS: Int = 4

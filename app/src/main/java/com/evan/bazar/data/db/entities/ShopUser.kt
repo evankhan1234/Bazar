@@ -28,6 +28,6 @@ data class ShopUser (
     var ShopTypeId: Int?,
     @SerializedName("Picture")
     var Picture: String?,
-    @SerializedName("Cover")
-    var Cover: String?
+    @SerializedName("Password")
+    var Password: String?
     ): Parcelable

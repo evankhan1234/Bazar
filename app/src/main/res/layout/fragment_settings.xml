@@ -384,7 +384,7 @@
 
 
                 <RelativeLayout
-                        android:id="@+id/rlt_setting"
+                        android:id="@+id/rlt_change_password"
 
                         android:background="@android:color/transparent"
                         android:orientation="horizontal"

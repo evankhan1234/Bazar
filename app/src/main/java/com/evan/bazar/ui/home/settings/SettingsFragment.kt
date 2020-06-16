@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 
@@ -50,6 +47,7 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
     var btn_change_profile:Button?=null
     var token:String?=""
     var shopUsers: ShopUser?=null
+    var rlt_change_password: RelativeLayout?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +58,7 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
         viewModel.shopUserListener=this
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         viewModel.getShopUserDetails(token!!)
+        rlt_change_password=root?.findViewById(R.id.rlt_change_password)
         progress_circular=root?.findViewById(R.id.progress_circular)
         tv_name=root?.findViewById(R.id.tv_name)
         tv_owner_address=root?.findViewById(R.id.tv_owner_address)
@@ -85,6 +84,11 @@ class SettingsFragment : Fragment(),KodeinAware,IShopUserListener {
         btn_change_profile?.setOnClickListener {
             if (activity is HomeActivity) {
                 (activity as HomeActivity).goToUpdateProfileFragment(shopUsers!!)
+            }
+        }
+        rlt_change_password?.setOnClickListener {
+            if (activity is HomeActivity) {
+                (activity as HomeActivity).goToUpdatePasswordFragment(shopUsers!!)
             }
         }
         return root
