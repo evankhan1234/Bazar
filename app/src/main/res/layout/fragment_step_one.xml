@@ -107,7 +107,7 @@
                         android:layout_alignParentRight="true"
 
                         android:paddingRight="10dp"
-                        android:src="@drawable/hidden_password" />
+                        android:src="@drawable/btn_login_selector" />
             </RelativeLayout>
             <EditText
                     android:visibility="visible"
