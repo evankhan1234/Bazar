@@ -181,5 +181,10 @@ class HomeRepository (
     suspend fun updatePassword(header:String, post: PasswordPost): BasicResponses {
         return apiRequest { api.updatePassword(header,post) }
     }
-
+    suspend fun createFirebaseId(header:String,tokenPost: TokenPost): BasicResponses {
+        return apiRequest { api.createFirebaseId(header,tokenPost) }
+    }
+    suspend fun getFirebaseId(header:String,tokenPost: TokenPost): TokenResponses {
+        return apiRequest { api.getFirebaseId(header,tokenPost) }
+    }
 }
