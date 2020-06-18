@@ -49,6 +49,7 @@ import com.evan.bazar.ui.home.supplier.SupplierFragment
 import com.evan.bazar.util.*
 import com.evan.dokan.ui.home.notice.NoticeFragment
 import com.evan.dokan.ui.home.notice.NoticeViewFragment
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_layout.*
 import kotlinx.android.synthetic.main.bottom_navigation_layout.*
@@ -96,6 +97,9 @@ class HomeActivity : AppCompatActivity() {
                 progress_circular_home?.hide()
             },5000)
         }
+       var  fuser = FirebaseAuth.getInstance().currentUser
+        val data = fuser!!.uid
+        Toast.makeText(this,data,Toast.LENGTH_SHORT).show()
         setUpHeader(FRAG_TOP)
         afterClickTabItem(FRAG_TOP, null)
         setUpFooter(FRAG_TOP)

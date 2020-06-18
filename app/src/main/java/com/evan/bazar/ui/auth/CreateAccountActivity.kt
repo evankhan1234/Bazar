@@ -32,6 +32,9 @@ import com.evan.bazar.ui.fragments.StepTwoFragment
 import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.interfaces.SignUpInterface
 import com.evan.bazar.util.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
 import org.kodein.di.KodeinAware
@@ -69,10 +72,13 @@ class CreateAccountActivity : AppCompatActivity(),KodeinAware, SignUpInterface {
     var shopName: String=""
     var license: String=""
     var root_layout: RelativeLayout?=null
+    var auth: FirebaseAuth? = null
+    var reference: DatabaseReference? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
         viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
+        auth = FirebaseAuth.getInstance()
         viewModel.signUpInterface=this
         root_layout=findViewById(R.id.root_layout)
         progress_bar=findViewById(R.id.progress_bar)
@@ -544,12 +550,42 @@ class CreateAccountActivity : AppCompatActivity(),KodeinAware, SignUpInterface {
         progress_bar?.hide()
         root_layout?.snackbar(message)
         Toast.makeText(this,"Successfully Register and Please wait for admin verify",Toast.LENGTH_SHORT).show()
-        Intent(this, LoginActivity::class.java).also {
-            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(it)
-        }
+        register()
     }
-
+    open fun register() {
+        auth!!.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val firebaseUser = auth!!.currentUser!!
+                    val userid = firebaseUser.uid
+                    reference =
+                        FirebaseDatabase.getInstance().getReference("Users").child(userid)
+                    val hashMap =
+                        HashMap<String, String>()
+                    hashMap["id"] = userid
+                    hashMap["username"] = email
+                    hashMap["imageURL"] = image
+                    hashMap["status"] = "offline"
+                    hashMap["search"] = email.toLowerCase()
+                    reference!!.setValue(hashMap)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Intent(this, LoginActivity::class.java).also {
+                                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(it)
+                                    finish()
+                                }
+                            }
+                        }
+                } else {
+                    Toast.makeText(
+                        this@CreateAccountActivity,
+                        "You can't register with this email or password",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
     override fun onSignUpFailed(message: String) {
         progress_bar?.hide()
         root_layout?.snackbar(message)
