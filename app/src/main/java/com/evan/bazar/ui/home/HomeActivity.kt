@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.evan.bazar.BuildConfig
@@ -53,20 +54,31 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_layout.*
 import kotlinx.android.synthetic.main.bottom_navigation_layout.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
 import java.io.File
 import java.io.IOException
 import java.util.*
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(),KodeinAware {
     var mFragManager: FragmentManager? = null
     var fragTransaction: FragmentTransaction? = null
     var mCurrentFrag: Fragment? = null
     var CURRENT_PAGE: Int? = 1
     private var fresh: String? = ""
+    private var token: String? = ""
+    override val kodein by kodein()
+
+    private val factory : HomeViewModelFactory by instance()
+    private lateinit var viewModel: HomeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         fresh = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_FRESH)
+        viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
+        token = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         Log.e("TAG", fresh!! + "")
         if (fresh != null && !fresh?.trim().equals("") && !fresh.isNullOrEmpty()) {
 
@@ -87,7 +99,9 @@ class HomeActivity : AppCompatActivity() {
                     object :
                         com.evan.bazar.util.DialogActionListener {
                         override fun onPositiveClick() {
-
+                            var fuser = FirebaseAuth.getInstance().currentUser
+                            val data = fuser!!.uid
+                            viewModel.createFirebaseId(token!!,1,data)
                         }
 
                         override fun onNegativeClick() {
@@ -97,9 +111,8 @@ class HomeActivity : AppCompatActivity() {
                 progress_circular_home?.hide()
             },5000)
         }
-       var  fuser = FirebaseAuth.getInstance().currentUser
-        val data = fuser!!.uid
-        Toast.makeText(this,data,Toast.LENGTH_SHORT).show()
+
+
         setUpHeader(FRAG_TOP)
         afterClickTabItem(FRAG_TOP, null)
         setUpFooter(FRAG_TOP)
@@ -119,7 +132,9 @@ class HomeActivity : AppCompatActivity() {
         setUpHeader(FRAG_TOP)
         afterClickTabItem(FRAG_TOP, null)
         setUpFooter(FRAG_TOP)
-
+        var fuser = FirebaseAuth.getInstance().currentUser
+        val data = fuser!!.uid
+        viewModel.createFirebaseId(token!!,1,data)
     }
 
     fun btn_store_clicked(view: View) {
@@ -127,7 +142,9 @@ class HomeActivity : AppCompatActivity() {
         afterClickTabItem(FRAG_STORE, null)
         setUpFooter(FRAG_STORE)
         //ccheckPP()
-
+        var fuser = FirebaseAuth.getInstance().currentUser
+        val data = fuser!!.uid
+        viewModel.createFirebaseId(token!!,1,data)
 
     }
 
@@ -135,13 +152,18 @@ class HomeActivity : AppCompatActivity() {
         setUpHeader(FRAG_ORDER)
         afterClickTabItem(FRAG_ORDER, null)
         setUpFooter(FRAG_ORDER)
-
+        var fuser = FirebaseAuth.getInstance().currentUser
+        val data = fuser!!.uid
+        viewModel.createFirebaseId(token!!,1,data)
     }
 
     fun btn_settings_clicked(view: View) {
         setUpHeader(FRAG_SETTINGS)
         afterClickTabItem(FRAG_SETTINGS, null)
         setUpFooter(FRAG_SETTINGS)
+        var fuser = FirebaseAuth.getInstance().currentUser
+        val data = fuser!!.uid
+        viewModel.createFirebaseId(token!!,1,data)
     }
 
     @Suppress("UNUSED_PARAMETER")

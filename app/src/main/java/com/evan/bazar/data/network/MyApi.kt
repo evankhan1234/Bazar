@@ -154,8 +154,18 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body tokenPost: TokenPost
     ): Response<BasicResponses>
+    @POST("user-firebaseid.php")
+    suspend fun createFirebaseId(
+        @Header("Authorization") Authorization:String,
+        @Body tokenPost: TokenPost
+    ): Response<BasicResponses>
     @POST("get-token.php")
     suspend fun getToken(
+        @Header("Authorization") Authorization:String,
+        @Body tokenPost: TokenPost
+    ): Response<TokenResponses>
+    @POST("get-firebase-id.php")
+    suspend fun getFirebaseId(
         @Header("Authorization") Authorization:String,
         @Body tokenPost: TokenPost
     ): Response<TokenResponses>
