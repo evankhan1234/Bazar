@@ -187,4 +187,17 @@ class HomeRepository (
     suspend fun getFirebaseId(header:String,tokenPost: TokenPost): TokenResponses {
         return apiRequest { api.getFirebaseId(header,tokenPost) }
     }
+
+    suspend fun getChatList(header:String,post: LimitPost): ChatListResponses {
+        return apiRequest { api.getChatList(header,post) }
+    }
+    suspend fun getChatSearch(header:String,post: SearchCategoryPost): ChatListResponses {
+        return apiRequest { api.getChatSearch(header,post) }
+    }
+    suspend fun getChatCount(header:String): CountResponses {
+        return apiRequest { api.getChatCount(header) }
+    }
+    suspend fun updateChatCount(header:String,post: CustomerIdPost): BasicResponses {
+        return apiRequest { api.updateChatCount(header,post) }
+    }
 }

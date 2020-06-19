@@ -28,4 +28,10 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+    <style name="MenuStyle" parent="Theme.AppCompat.Light">
+        <item name="android:background">@android:color/white</item>
+    </style>
+    <style name="Theme.MyFancyTheme" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/img_arrow_left</item>
+    </style>
 </resources>

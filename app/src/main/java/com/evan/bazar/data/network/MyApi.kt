@@ -200,6 +200,28 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body searchPost: SearchCategoryPost
     ): Response<CategoryTypeResponse>
+
+    @POST("searching-chat-list.php")
+    suspend fun getChatSearch(
+        @Header("Authorization") Authorization:String,
+        @Body searchPost: SearchCategoryPost
+    ): Response<ChatListResponses>
+
+    @GET("chat-list-count.php")
+    suspend fun getChatCount(
+        @Header("Authorization") Authorization:String
+    ): Response<CountResponses>
+
+    @POST("update-chat-seen.php")
+    suspend fun updateChatCount(
+        @Header("Authorization") Authorization:String,
+        @Body customerIdPost: CustomerIdPost
+    ): Response<BasicResponses>
+    @POST("chatlist-pagination.php")
+    suspend fun getChatList(
+        @Header("Authorization") Authorization:String,
+        @Body limitPost: LimitPost
+    ): Response<ChatListResponses>
     @POST("searching-supplier.php")
     suspend fun getSupplierSearch(
         @Header("Authorization") Authorization:String,
