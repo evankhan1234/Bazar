@@ -30,6 +30,8 @@ import com.evan.bazar.ui.auth.ImageUpdateActivity
 import com.evan.bazar.ui.fragments.StepOneFragment
 import com.evan.bazar.ui.home.category.CategoryFragment
 import com.evan.bazar.ui.home.category.CreateCategoryFragment
+import com.evan.bazar.ui.home.chat.ChatListFragment
+import com.evan.bazar.ui.home.chat.IChatCountListener
 import com.evan.bazar.ui.home.dashboard.DashboardFragment
 import com.evan.bazar.ui.home.delivery.CreateDeliveryFragment
 import com.evan.bazar.ui.home.newsfeed.NewsfeedFragment
@@ -62,7 +64,7 @@ import java.io.File
 import java.io.IOException
 import java.util.*
 
-class HomeActivity : AppCompatActivity(),KodeinAware {
+class HomeActivity : AppCompatActivity(),KodeinAware,IChatCountListener {
     var mFragManager: FragmentManager? = null
     var fragTransaction: FragmentTransaction? = null
     var mCurrentFrag: Fragment? = null
@@ -78,7 +80,9 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
         setContentView(R.layout.activity_home)
         fresh = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_FRESH)
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
+        viewModel.chatCountListener=this
         token = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
+        onCount()
         Log.e("TAG", fresh!! + "")
         if (fresh != null && !fresh?.trim().equals("") && !fresh.isNullOrEmpty()) {
 
@@ -123,9 +127,16 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
             setUpHeader(FRAG_NOTICE)
             afterClickTabItem(FRAG_NOTICE, null)
             setUpFooter(FRAG_NOTICE)
+            onCount()
+        }
+        btn_chat?.setOnClickListener {
+            setUpHeader(FRAG_CHAT)
+            afterClickTabItem(FRAG_CHAT, null)
+
         }
         btn_foods?.setOnClickListener {
            goToNewsfeedFragment()
+            onCount()
         }
     }
     fun btn_home_clicked(view: View) {
@@ -135,8 +146,12 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
         var fuser = FirebaseAuth.getInstance().currentUser
         val data = fuser!!.uid
         viewModel.createFirebaseId(token!!,1,data)
+        onCount()
     }
 
+    fun onCount(){
+        viewModel.getChatCount(token!!)
+    }
     fun btn_store_clicked(view: View) {
         setUpHeader(FRAG_STORE)
         afterClickTabItem(FRAG_STORE, null)
@@ -145,7 +160,7 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
         var fuser = FirebaseAuth.getInstance().currentUser
         val data = fuser!!.uid
         viewModel.createFirebaseId(token!!,1,data)
-
+        onCount()
     }
 
     fun btn_orders_clicked(view: View) {
@@ -155,6 +170,7 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
         var fuser = FirebaseAuth.getInstance().currentUser
         val data = fuser!!.uid
         viewModel.createFirebaseId(token!!,1,data)
+        onCount()
     }
 
     fun btn_settings_clicked(view: View) {
@@ -164,11 +180,12 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
         var fuser = FirebaseAuth.getInstance().currentUser
         val data = fuser!!.uid
         viewModel.createFirebaseId(token!!,1,data)
+        onCount()
     }
 
     @Suppress("UNUSED_PARAMETER")
     fun afterClickTabItem(fragId: Int, obj: Any?) {
-        if(fragId==5 || fragId==19){
+        if(fragId==5 || fragId==19 || fragId==22){
             addFragment(fragId, true, obj)
         }
         else{
@@ -711,6 +728,9 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
             FRAG_NEWSFEED->{
                 newFrag = NewsfeedFragment()
             }
+            FRAG_CHAT->{
+                newFrag = ChatListFragment()
+            }
         }
         mCurrentFrag = newFrag
         // init argument
@@ -864,6 +884,11 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
                 ll_back_header?.visibility = View.VISIBLE
                 rlt_header?.visibility = View.GONE
                 tv_details.text = resources.getString(R.string.update_password)
+            }
+            FRAG_CHAT->{
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.chatlist)
             }
             else -> {
 
@@ -1246,4 +1271,16 @@ class HomeActivity : AppCompatActivity(),KodeinAware {
             )
         }
     }
+
+    override fun onCount(count: Int) {
+        if (count>0){
+            tv_cart_count?.visibility=View.VISIBLE
+            tv_cart_count?.text=count?.toString()
+        }
+        else{
+            tv_cart_count?.visibility=View.GONE
+        }
+    }
+
+
 }

@@ -6,6 +6,7 @@ import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.repositories.HomeRepository
 import com.evan.bazar.ui.home.category.ICategoryListener
 import com.evan.bazar.ui.home.category.ICreateCategoryListener
+import com.evan.bazar.ui.home.chat.IChatCountListener
 import com.evan.bazar.ui.home.dashboard.ICustomerOrderCountListener
 import com.evan.bazar.ui.home.dashboard.ILastFiveSalesListener
 import com.evan.bazar.ui.home.dashboard.IPushListener
@@ -58,6 +59,7 @@ class HomeViewModel(
     var commentsPost:CommentsPost?=null
     var replyPost:ReplyPost?=null
     var tokenPost:TokenPost?=null
+    var customerIdPost:CustomerIdPost?=null
     var passwordPost:PasswordPost?=null
     var userUpdatePost:UserUpdatePost?=null
     var ownUpdatedPost:OwnUpdatedPost?=null
@@ -82,6 +84,7 @@ class HomeViewModel(
     var lastFiveSalesListener: ILastFiveSalesListener?=null
     var customerOrderCountListener: ICustomerOrderCountListener?=null
     var pushListener: IPushListener?=null
+    var chatCountListener: IChatCountListener?=null
     var profileUpdateListener: IProfileUpdateListener?=null
     var changePasswordListener: IChangePasswordListener?=null
     fun getCategoryType(header:String) {
@@ -826,6 +829,35 @@ class HomeViewModel(
                 pushListener?.onLoad(response.data!!)
             } catch (e: ApiException) {
                 Log.e("createToken", "createToken" +e?.message)
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun getChatCount(header:String) {
+        Coroutines.main {
+            try {
+
+                val response = repository.getChatCount(header!!)
+                Log.e("response", "response" + Gson().toJson(response))
+                chatCountListener?.onCount(response?.count!!)
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun updateChatCount(header:String,customerId:Int) {
+        Coroutines.main {
+            try {
+                customerIdPost= CustomerIdPost(customerId)
+                val response = repository.updateChatCount(header!!,customerIdPost!!)
+                Log.e("response", "response" + Gson().toJson(response))
+            } catch (e: ApiException) {
+
             } catch (e: NoInternetException) {
 
             }
