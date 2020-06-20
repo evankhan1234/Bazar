@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class FIrebaseUser (
+class FIrebaseUsers (
     @SerializedName("id")
     var id: String?="",
     @SerializedName("username")

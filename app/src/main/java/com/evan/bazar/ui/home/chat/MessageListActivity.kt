@@ -16,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.Chat
-import com.evan.bazar.data.db.entities.FIrebaseUser
+import com.evan.bazar.data.db.entities.FIrebaseUsers
+import com.evan.bazar.data.network.post.Push
+import com.evan.bazar.data.network.post.PushPost
 import com.evan.bazar.ui.home.HomeViewModel
 import com.evan.bazar.ui.home.HomeViewModelFactory
+import com.evan.bazar.ui.home.dashboard.IPushListener
 import com.evan.bazar.util.SharedPreferenceUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -30,7 +33,7 @@ import org.kodein.di.generic.instance
 import java.util.ArrayList
 import java.util.HashMap
 
-class MessageListActivity : AppCompatActivity(),KodeinAware {
+class MessageListActivity : AppCompatActivity(),KodeinAware ,IPushListener{
 
     var profile_image: CircleImageView? = null
     var username: TextView? = null
@@ -57,13 +60,15 @@ class MessageListActivity : AppCompatActivity(),KodeinAware {
     override val kodein by kodein()
     private val factory : HomeViewModelFactory by instance()
     private lateinit var viewModel: HomeViewModel
-
+    var pushPost: PushPost?=null
+    var push: Push?=null
     var notify = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message_list)
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
+        viewModel.pushListener=this
         val toolbar: Toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         getSupportActionBar()!!.setTitle("")
@@ -72,7 +77,8 @@ class MessageListActivity : AppCompatActivity(),KodeinAware {
             finish()
         }
         token = SharedPreferenceUtil.getShared(this, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
-        //  apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService::class.java)
+
+
         recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView!!.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(getApplicationContext())
@@ -87,7 +93,7 @@ class MessageListActivity : AppCompatActivity(),KodeinAware {
         name = intent!!.getStringExtra("name")
         id = intent!!.getStringExtra("id")
         viewModel.updateChatCount(token!!,id!!.toInt())
-
+        viewModel.getToken(token!!,2,id!!)
 
         username!!.setText(name)
         fuser = FirebaseAuth.getInstance().currentUser
@@ -111,7 +117,7 @@ class MessageListActivity : AppCompatActivity(),KodeinAware {
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid!!)
         reference!!.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user: FIrebaseUser? = dataSnapshot.getValue(FIrebaseUser::class.java)
+                val user: FIrebaseUsers? = dataSnapshot.getValue(FIrebaseUsers::class.java)
                 // username!!.setText(user!!.username)
                 if (user?.imageURL.equals("default")) {
                     profile_image!!.setImageResource(R.mipmap.ic_launcher)
@@ -186,7 +192,9 @@ class MessageListActivity : AppCompatActivity(),KodeinAware {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 if (notify) {
-                    //  sendNotifiaction(receiver, user!!.username!!, message)
+                    push= Push("New Message",message)
+                    pushPost= PushPost(tokenData,push)
+                    viewModel.sendPush("key=AAAAdCyJ2hw:APA91bGF6x20oQnuC2ZeAXsJju-OCAZ67dBpQvaLx7h18HSAnhl9CPWupCJaV0552qJvm1qIHL_LAZoOvv5oWA9Iraar_XQkWe3JEUmJ1v7iKq09QYyPB3ZGMeSinzC-GlKwpaJU_IvO",pushPost!!)
                 }
                 notify = false
             }
@@ -296,6 +304,11 @@ class MessageListActivity : AppCompatActivity(),KodeinAware {
         reference!!.removeEventListener(seenListener!!)
         status("offline")
         currentUser("none")
+    }
+
+    var tokenData:String?=""
+    override fun onLoad(data: String) {
+        tokenData=data
     }
 }
 

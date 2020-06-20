@@ -108,10 +108,10 @@ class PublicPostFragment : Fragment() ,KodeinAware,IPublicPostUpdateListener,IPu
         publicPostAdapter?.notifyDataSetChanged()
         viewModel?.updatedLikeCount(token!!,id,count!!)
         if(type==1){
-            viewModel?.createdLove(token!!,id,2)
+            viewModel?.createdLove(token!!,id,1)
         }
         else{
-            viewModel?.deletedLove(token!!,id,2)
+            viewModel?.deletedLove(token!!,id,1)
         }
         Log.e("count","count"+count)
     }
