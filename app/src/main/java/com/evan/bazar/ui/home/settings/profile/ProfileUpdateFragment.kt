@@ -19,9 +19,14 @@ import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.HomeViewModel
 import com.evan.bazar.ui.home.HomeViewModelFactory
 import com.evan.bazar.util.SharedPreferenceUtil
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
+import java.util.HashMap
 
 
 class ProfileUpdateFragment : Fragment() ,KodeinAware,IProfileUpdateListener{
@@ -94,9 +99,19 @@ class ProfileUpdateFragment : Fragment() ,KodeinAware,IProfileUpdateListener{
             .into(img_user_profile!!)
       //  img_user_add?.visibility=View.INVISIBLE
     }
-
+    var reference: DatabaseReference? = null
     override fun onLoad(message: String) {
         Toast.makeText(context!!,message, Toast.LENGTH_SHORT).show()
         (activity as HomeActivity?)!!.onBackPressed()
+        status(image_address!!)
+    }
+    open fun status(status: String) {
+        var fuser: FirebaseUser? = null
+        fuser = FirebaseAuth.getInstance().currentUser
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser!!.uid)
+        val hashMap =
+            HashMap<String, Any>()
+        hashMap["imageURL"] = status
+        reference!!.updateChildren(hashMap)
     }
 }

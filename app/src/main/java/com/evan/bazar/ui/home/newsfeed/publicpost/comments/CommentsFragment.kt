@@ -216,10 +216,10 @@ class CommentsFragment(posts: Post) : BottomSheetDialogFragment() ,KodeinAware,I
         commentsAdapter?.notifyDataSetChanged()
         viewModel?.updatedCommentsLikeCount(token!!,id,count!!)
         if(type==1){
-            viewModel?.createdLike(token!!,id,2)
+            viewModel?.createdLike(token!!,id,1)
         }
         else{
-            viewModel?.deletedLike(token!!,id,2)
+            viewModel?.deletedLike(token!!,id,1)
         }
     }
 
