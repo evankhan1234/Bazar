@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -19,6 +16,7 @@ import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.User
 import com.evan.bazar.databinding.ActivityLoginBinding
 import com.evan.bazar.util.*
+import com.google.firebase.auth.FirebaseAuth
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -42,7 +40,7 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+        auth = FirebaseAuth.getInstance()
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
          binding.viewmodel = viewModel
@@ -122,6 +120,7 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
         }
         et_password?.setSelection(cursorPosition!!)
     }
+    var auth: FirebaseAuth? = null
     override fun onSuccess(user: User) {
         SharedPreferenceUtil.saveShared(
             this,
@@ -133,12 +132,24 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
             SharedPreferenceUtil.TYPE_IMAGE,
             user?.Picture!!
         )
+        auth!!.signInWithEmailAndPassword(user.Email!!, et_password?.text.toString())
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    progress_bar.hide()
+                    Intent(this, HomeActivity::class.java).also {
+                        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(it)
+                    }
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Authentication failed!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
 
-        progress_bar.hide()
-        Intent(this, HomeActivity::class.java).also {
-            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(it)
-        }
 
     }
 
