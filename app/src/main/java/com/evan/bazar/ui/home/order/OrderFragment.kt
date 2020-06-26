@@ -42,10 +42,14 @@ class OrderFragment : Fragment(),KodeinAware,IOrdersListListener,IOrderUpdateLis
         progress_bar=root?.findViewById(R.id.progress_bar)
         rcv_orders=root?.findViewById(R.id.rcv_orders)
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
-        viewModel.getOrders(token!!)
+
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getOrders(token!!)
+    }
     override fun order(data: MutableList<Orders>?) {
         ordersAdapter = OrdersAdapter(context!!,data!!,this)
         rcv_orders?.apply {

@@ -49,6 +49,7 @@ import com.evan.dokan.ui.home.notice.NoticeDataSource
 import com.evan.dokan.ui.home.notice.NoticeModelFactory
 import com.evan.dokan.ui.home.notice.NoticeSourceFactory
 import com.evan.dokan.ui.home.notice.NoticeViewModel
+import com.google.firebase.database.FirebaseDatabase
 
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -114,5 +115,8 @@ class MVVMApplication : Application(), KodeinAware {
 
 
     }
-
+    override fun onCreate() {
+        super.onCreate()
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
 }
