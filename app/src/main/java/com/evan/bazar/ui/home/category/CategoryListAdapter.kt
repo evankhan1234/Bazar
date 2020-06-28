@@ -10,6 +10,7 @@ import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.CategoryType
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.android.synthetic.main.layout_category_type_list.view.*
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -84,10 +85,9 @@ class AlertViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
     fun getStartDate(startDate: String?): String? {
-        val inputFormat =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val outputFormat =
-            DateTimeFormatter.ofPattern("dd,MMMM yyyy")
-        return LocalDate.parse(startDate, inputFormat).format(outputFormat)
+        val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val formatter = SimpleDateFormat("dd,MMMM yyyy")
+        val output: String = formatter.format(parser.parse(startDate!!))
+        return output
     }
 }

@@ -15,6 +15,7 @@ import com.evan.bazar.ui.home.supplier.ISupplierUpdateListener
 import com.evan.bazar.ui.home.supplier.SupplierSearchAdapter
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.layout_product_list.view.*
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -74,11 +75,10 @@ class ProductSearchAdapter (val context: Context, val product: MutableList<Produ
 
     }
     fun getStartDate(startDate: String?): String? {
-        val inputFormat =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val outputFormat =
-            DateTimeFormatter.ofPattern("dd,MMMM yyyy")
-        return LocalDate.parse(startDate, inputFormat).format(outputFormat)
+        val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val formatter = SimpleDateFormat("dd,MMMM yyyy")
+        val output: String = formatter.format(parser.parse(startDate!!))
+        return output
     }
     inner class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 

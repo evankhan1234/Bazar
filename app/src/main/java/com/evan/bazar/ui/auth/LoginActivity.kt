@@ -122,6 +122,7 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
     }
     var auth: FirebaseAuth? = null
     override fun onSuccess(user: User) {
+        Log.e("response1","response1")
         SharedPreferenceUtil.saveShared(
             this,
             SharedPreferenceUtil.TYPE_NAME,
@@ -135,6 +136,7 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
         auth!!.signInWithEmailAndPassword(user.Email!!, et_password?.text.toString())
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    Log.e("response2","response2")
                     progress_bar.hide()
                     Intent(this, HomeActivity::class.java).also {
                         it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -142,6 +144,7 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
                     }
                     finish()
                 } else {
+                    Log.e("response3","response3")
                     Toast.makeText(
                         this@LoginActivity,
                         "Authentication failed!",
