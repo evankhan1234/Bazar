@@ -121,22 +121,6 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
                 et_total?.setText(purchase?.Total!!.toString())
                 et_grand_total?.setText(purchase?.GrandTotal!!.toString())
                 switch_status?.isChecked = purchase?.Status==1
-                Handler().postDelayed({
-
-                    try {
-                        Log.e("unit","unit"+ Gson().toJson(unit))
-                        for (i in unit!!.indices) {
-                            if (unit!!.get(i).Id!!.equals(purchase?.UnitId)) {
-                                spinner_unit?.setSelection(i)
-                            }
-                        }
-                    } catch (e: Exception) {
-                    }
-
-
-
-                }, 300)
-                Log.e("data","data"+ Gson().toJson(purchase))
             }
         }
 
@@ -345,6 +329,15 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
                         id: Long
                     ) {
                         id_ = units.get(position).Id
+                        try {
+                            Log.e("unit","unit"+ Gson().toJson(unit))
+                            for (i in unit!!.indices) {
+                                if (unit!!.get(i).Id!!.equals(purchase?.UnitId)) {
+                                    spinner_unit?.setSelection(i)
+                                }
+                            }
+                        } catch (e: Exception) {
+                        }
                         Log.e("shop", "shop" + units.get(position).Id)
                     }
 
@@ -387,11 +380,10 @@ class CreatePurchaseFragment : Fragment(),KodeinAware,ICreatePurchaseListener,IU
         dpd.show()
     }
     fun getStartDate(startDate: String?): String? {
-        val inputFormat =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val outputFormat =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        return LocalDate.parse(startDate, inputFormat).format(outputFormat)
+        val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val formatter = SimpleDateFormat("dd,MMMM yyyy")
+        val output: String = formatter.format(parser.parse(startDate!!))
+        return output
     }
     var quantity: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {

@@ -123,45 +123,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                 Glide.with(this)
                     .load(product?.ProductImage)
                     .into(img_background_mypage!!)
-                Handler().postDelayed({
-                    try {
-                        Log.e("unit_for","unit_for"+ Gson().toJson(unit))
-                        for (i in unit!!.indices) {
-                            Log.e("unit_id","unit_id"+ unit!!.get(i).Id!!)
-                            Log.e("unit_id_","unit_id_"+ product?.UnitId)
-                            if (unit!!.get(i).Id!!.equals(product?.UnitId)) {
-                                spinner_unit?.setSelection(i)
-                                Log.e("trues","trues")
-                            }
-                        }
-                    } catch (e: Exception) {
-                    }
-
-                }, 300)
-                Handler().postDelayed({
-                    try {
-                        Log.e("category","category"+ Gson().toJson(category))
-                        for (i in category!!.indices) {
-                            if (category!!.get(i).Id!!.equals(product?.ProductCategoryId.toString())) {
-                                spinner_category?.setSelection(i)
-                            }
-                        }
-                    } catch (e: Exception) {
-                    }
-
-                }, 300)
-                Handler().postDelayed({
-                    try {
-                        Log.e("unit","unit"+ Gson().toJson(supplier))
-                        for (i in supplier!!.indices) {
-                            if (supplier!!.get(i).Id!!.equals(product?.SupplierId)) {
-                                spinner_supplier?.setSelection(i)
-                            }
-                        }
-                    } catch (e: Exception) {
-                    }
-
-                }, 300)
+                
                 Log.e("data","data"+ Gson().toJson(product))
             }
         }
@@ -354,6 +316,14 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                         id: Long
                     ) {
                         id_unit = units.get(position).Id
+                        for (i in unit!!.indices) {
+                            Log.e("unit_id","unit_id"+ unit!!.get(i).Id!!)
+                            Log.e("unit_id_","unit_id_"+ product?.UnitId)
+                            if (unit!!.get(i).Id!!.equals(product?.UnitId)) {
+                                spinner_unit?.setSelection(i)
+                                Log.e("trues","trues")
+                            }
+                        }
                         Log.e("shop", "shop" + units.get(position).Id)
                     }
 
@@ -389,6 +359,11 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                         id: Long
                     ) {
                         id_category = categories!!.get(position).Id!!.toInt()
+                        for (i in category!!.indices) {
+                            if (category!!.get(i).Id!!.equals(product?.ProductCategoryId.toString())) {
+                                spinner_category?.setSelection(i)
+                            }
+                        }
                         Log.e("shop", "shop" + categories.get(position).Id)
                     }
 
@@ -423,10 +398,14 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                         position: Int,
                         id: Long
                     ) {
-                        id_supplier = suppliers!!.get(position).Id
+                        id_supplier = suppliers.get(position).Id
                         Log.e("supplier", "supplier" + suppliers.get(position).Id)
+                        for (i in supplier!!.indices) {
+                            if (supplier!!.get(i).Id!!.equals(product?.SupplierId)) {
+                                spinner_supplier?.setSelection(i)
+                            }
+                        }
                     }
-
                     override fun onNothingSelected(parent: AdapterView<*>) {
                         // Another interface callback
                         Log.e("sdf", "S")
