@@ -100,7 +100,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
 
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         viewModel.getUnit()
-        viewModel.getSupplier(token!!)
+       // viewModel.getSupplier(token!!)
         viewModel.getCategory(token!!)
         img_user_add=root?.findViewById(R.id.img_user_add)
         img_user_add?.setOnClickListener{
@@ -171,9 +171,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                 }  else if (image_address.isNullOrEmpty()) {
                 root_layout?.snackbar("Image is Empty")
                }
-                else if (id_supplier==0) {
-                    root_layout?.snackbar("Supplier is Empty.Please Add Supplier")
-                }
+
                 else if (id_category==0) {
                     root_layout?.snackbar("Product Category is Empty.Please Add Product Category")
                 }
@@ -192,7 +190,6 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                         id_unit!!,
                         sell_price!!.toDouble(),
                         supplier_price!!.toDouble(),
-                        id_supplier!!,
                         SharedPreferenceUtil.getShared(
                             activity!!,
                             SharedPreferenceUtil.TYPE_SHOP_ID
@@ -252,9 +249,6 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                 else if (image_address.isNullOrEmpty()) {
                     root_layout?.snackbar("Image is Empty")
                 }
-                else if (id_supplier==0) {
-                    root_layout?.snackbar("Supplier is Empty.Please Add Supplier")
-                }
                 else if (id_category==0) {
                     root_layout?.snackbar("Product Category is Empty.Please Add Product Category")
                 }
@@ -273,7 +267,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                         id_unit!!,
                         sell_price!!.toDouble(),
                         supplier_price!!.toDouble(),
-                        id_supplier!!,
+
                         SharedPreferenceUtil.getShared(
                             activity!!,
                             SharedPreferenceUtil.TYPE_SHOP_ID

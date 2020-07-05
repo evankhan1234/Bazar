@@ -18,8 +18,6 @@ data class ProductPost (
     var SellPrice: Double?,
     @SerializedName("SupplierPrice")
     var SupplierPrice: Double?,
-    @SerializedName("SupplierId")
-    var SupplierId: Int?,
     @SerializedName("ShopId")
     var ShopId: Int?,
     @SerializedName("Stock")
