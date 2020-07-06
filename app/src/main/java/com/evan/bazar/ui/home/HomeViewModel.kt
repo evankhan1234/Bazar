@@ -271,11 +271,11 @@ class HomeViewModel(
         }
 
     }
-    fun postProduct(header:String,name:String,details:String,productCode:String,productImage:String,unitId:Int,sellPrice:Double,supplierPrice:Double,supplierId:Int,shopId:Int,stock:Int,discount:Double,created:String,categoryId:Int,status:Int) {
+    fun postProduct(header:String,name:String,details:String,productCode:String,productImage:String,unitId:Int,sellPrice:Double,supplierPrice:Double,shopId:Int,stock:Int,discount:Double,created:String,categoryId:Int,status:Int) {
         createProductListener?.started()
         Coroutines.main {
             try {
-                productPost = ProductPost(name!!,details!!,productCode!!,productImage!!,unitId!!,sellPrice!!,supplierPrice!!, supplierId!!,shopId!!, stock!!,discount!!, created!!,categoryId!!,status!!)
+                productPost = ProductPost(name!!,details!!,productCode!!,productImage!!,unitId!!,sellPrice!!,supplierPrice!!,shopId!!, stock!!,discount!!, created!!,categoryId!!,status!!)
                 Log.e("response", "response" + Gson().toJson(productPost))
                 val response = repository.postProduct(header,productPost!!)
                 createProductListener?.show(response?.message!!)
@@ -291,11 +291,11 @@ class HomeViewModel(
         }
 
     }
-    fun postUpdateProduct(header:String,id:Int,name:String,details:String,productCode:String,productImage:String,unitId:Int,sellPrice:Double,supplierPrice:Double,supplierId:Int,shopId:Int,stock:Int,discount:Double,created:String,categoryId:Int,status:Int) {
+    fun postUpdateProduct(header:String,id:Int,name:String,details:String,productCode:String,productImage:String,unitId:Int,sellPrice:Double,supplierPrice:Double,shopId:Int,stock:Int,discount:Double,created:String,categoryId:Int,status:Int) {
         createProductListener?.started()
         Coroutines.main {
             try {
-                productUpdatePost = ProductUpdatePost(id!!,name!!,details!!,productCode!!,productImage!!,unitId!!,sellPrice!!,supplierPrice!!, supplierId!!,shopId!!, stock!!,discount!!, created!!,categoryId!!,status!!)
+                productUpdatePost = ProductUpdatePost(id!!,name!!,details!!,productCode!!,productImage!!,unitId!!,sellPrice!!,supplierPrice!!,shopId!!, stock!!,discount!!, created!!,categoryId!!,status!!)
                 Log.e("response", "response" + Gson().toJson(productUpdatePost))
                 val response = repository.postUpdateProduct(header,productUpdatePost!!)
                 createProductListener?.show(response?.message!!)
