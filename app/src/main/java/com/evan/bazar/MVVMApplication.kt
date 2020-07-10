@@ -45,6 +45,10 @@ import com.evan.bazar.ui.home.supplier.SupplierDataSource
 import com.evan.bazar.ui.home.supplier.SupplierModelFactory
 import com.evan.bazar.ui.home.supplier.SupplierSourceFactory
 import com.evan.bazar.ui.home.supplier.SupplierViewModel
+import com.evan.bazar.ui.home.system.SystemListDataSource
+import com.evan.bazar.ui.home.system.SystemListModelFactory
+import com.evan.bazar.ui.home.system.SystemListSourceFactory
+import com.evan.bazar.ui.home.system.SystemListViewModel
 import com.evan.dokan.ui.home.notice.NoticeDataSource
 import com.evan.dokan.ui.home.notice.NoticeModelFactory
 import com.evan.dokan.ui.home.notice.NoticeSourceFactory
@@ -74,6 +78,7 @@ class MVVMApplication : Application(), KodeinAware {
         bind() from singleton { QuotesRepository(instance(), instance(), instance()) }
         bind() from provider { AuthViewModelFactory(instance()) }
         bind() from provider { CategoryModelFactory(instance(),instance()) }
+        bind() from provider { SystemListModelFactory(instance(),instance()) }
         bind() from provider { ChatListModelFactory(instance(),instance()) }
         bind() from provider { OwnPostModelFactory(instance(),instance()) }
         bind() from provider { PublicPostModelFactory(instance(),instance()) }
@@ -83,6 +88,7 @@ class MVVMApplication : Application(), KodeinAware {
         bind() from provider { DeliveryModelFactory(instance(),instance()) }
         bind() from provider { ProductModelFactory(instance(),instance()) }
         bind() from provider { CategoryDataSource(instance(),instance()) }
+        bind() from provider { SystemListDataSource(instance(),instance()) }
         bind() from provider { ChatListDataSource(instance(),instance()) }
         bind() from provider { NoticeDataSource(instance(),instance()) }
         bind() from provider { OwnPostDataSource(instance(),instance()) }
@@ -92,6 +98,7 @@ class MVVMApplication : Application(), KodeinAware {
         bind() from provider { DeliveryDataSource(instance(),instance()) }
         bind() from provider { ProductDataSource(instance(),instance()) }
         bind() from provider { CategorySourceFactory(instance()) }
+        bind() from provider { SystemListSourceFactory(instance()) }
         bind() from provider { ChatListSourceFactory(instance()) }
         bind() from provider { OwnPostSourceFactory(instance()) }
         bind() from provider { PublicPostSourceFactory(instance()) }
@@ -102,6 +109,7 @@ class MVVMApplication : Application(), KodeinAware {
         bind() from provider { ProductSourceFactory(instance()) }
         bind() from provider { HomeViewModelFactory(instance()) }
         bind() from provider { CategoryViewModel(instance(),instance()) }
+        bind() from provider { SystemListViewModel(instance(),instance()) }
         bind() from provider { ChatListViewModel(instance(),instance()) }
         bind() from provider { OwnPostViewModel(instance(),instance()) }
         bind() from provider { PublicPostViewModel(instance(),instance()) }

@@ -22,7 +22,6 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 
-
 class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
 
     override val kodein by kodein()
@@ -132,6 +131,11 @@ class LoginActivity : AppCompatActivity(),KodeinAware, AuthListener  {
             this,
             SharedPreferenceUtil.TYPE_IMAGE,
             user?.Picture!!
+        )
+        SharedPreferenceUtil.saveShared(
+            this,
+            SharedPreferenceUtil.TYPE_SHOP_TYPE_ID,
+            user?.ShopTypeId!!.toString()
         )
         auth!!.signInWithEmailAndPassword(user.Email!!, et_password?.text.toString())
             .addOnCompleteListener { task ->

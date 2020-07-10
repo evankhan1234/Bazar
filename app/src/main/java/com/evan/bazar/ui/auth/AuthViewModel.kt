@@ -190,11 +190,11 @@ class AuthViewModel(
 
     }
 
-    fun signUp(email:String,password:String,mobile:String,name:String,agreementDate:String,ownerAddress:String,status:String,shopTypeId:String,picture:String,created:String,shopName:String,shopAddress:String,licenseNumber:String) {
+    fun signUp(email:String,password:String,mobile:String,name:String,agreementDate:String,ownerAddress:String,status:String,shopTypeId:String,picture:String,created:String,shopName:String,shopAddress:String,licenseNumber:String,latitude:Double,longitude:Double) {
         signUpInterface?.onStartProgress()
         Coroutines.main {
             try {
-                registrationPost= RegistrationPost(email,password,mobile,name,agreementDate,ownerAddress,status,shopTypeId,picture,created,shopName,shopAddress,licenseNumber)
+                registrationPost= RegistrationPost(email,password,mobile,name,agreementDate,ownerAddress,status,shopTypeId,picture,created,shopName,shopAddress,licenseNumber,latitude,longitude)
                 val authResponse = repository.userRegistrationFor(registrationPost!!)
                 Log.e("response", "response" + Gson().toJson(authResponse))
                 if (authResponse.success!!) {

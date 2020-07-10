@@ -1,4 +1,4 @@
-package com.evan.bazar.ui.home.product
+package com.evan.bazar.ui.home.system
 
 import android.content.Context
 import android.text.Html
@@ -9,17 +9,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.evan.bazar.R
-import com.evan.bazar.data.db.entities.Product
-import com.evan.bazar.data.db.entities.Supplier
-import com.evan.bazar.ui.home.supplier.ISupplierUpdateListener
-import com.evan.bazar.ui.home.supplier.SupplierSearchAdapter
+import com.evan.bazar.data.db.entities.SystemList
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.layout_product_list.view.*
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-class ProductSearchAdapter (val context: Context, val product: MutableList<Product>?, val iproductUpdateListener: IProductUpdateListener) : RecyclerView.Adapter<ProductSearchAdapter.CustomViewHolder>() {
+class SystemListSearchAdapter (val context: Context, val product: MutableList<SystemList>?, val iproductUpdateListener: ISystemViewListener) : RecyclerView.Adapter<SystemListSearchAdapter.CustomViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -41,7 +36,7 @@ class ProductSearchAdapter (val context: Context, val product: MutableList<Produ
             iproductUpdateListener.onUpdate(product?.get(position)!!)
         }
         Glide.with(context)
-            .load(product?.get(position)?.ProductImage)
+            .load(product?.get(position)?.Picture)
             .into(holder.itemView.img_image!!)
 
         var product_name:String=""
@@ -49,11 +44,11 @@ class ProductSearchAdapter (val context: Context, val product: MutableList<Produ
         var sell_price:String=""
         var stock:String=""
         var supplier_price:String=""
-        product_name = "<b> <font color=#15507E>Product Name</font> : </b>"+product?.get(position)?.Name
-        product_code = "<b> <font color=#15507E>Product Code </font> : </b>"+product?.get(position)?.ProductCode
-        sell_price = "<b> <font color=#15507E>Sell Price </font> : </b>"+product?.get(position)?.SellPrice
+        product_name = "<b> <font color=#15507E>Product Name</font> : </b>"+product?.get(position)?.ItemName
+        product_code = "<b> <font color=#15507E>Product Code </font> : </b>"+product?.get(position)?.ItemCode
+        sell_price = "<b> <font color=#15507E>Sell Price </font> : </b>"+product?.get(position)?.SalesPrice
         stock = "<b> <font color=#15507E>Stock </font> : </b>"+product?.get(position)?.Stock
-        supplier_price = "<b> <font color=#15507E>Purchase Price </font> : </b>"+product?.get(position)?.SupplierPrice
+        supplier_price = "<b> <font color=#15507E>Purchase Price </font> : </b>"+product?.get(position)?.PurchasePrice
         holder.itemView.tv_product_name.text= Html.fromHtml(product_name)
         holder.itemView.tv_product_code.text= Html.fromHtml(product_code)
         holder.itemView.tv_sell_price.text= Html.fromHtml(sell_price)
