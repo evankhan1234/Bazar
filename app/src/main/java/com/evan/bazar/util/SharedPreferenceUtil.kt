@@ -12,6 +12,7 @@ object SharedPreferenceUtil {
     const val TYPE_NAME= "name"
     const val TYPE_IMAGE = "image"
     const val TYPE_SHOP_NAME = "shop_name"
+    const val TYPE_SHOP_TYPE_ID = "shop_type_id"
     fun saveShared(c: Context, type: String, value: String) {
         val ed = c.getSharedPreferences(mSharedName, Context.MODE_PRIVATE).edit()
         ed.putString(type, value)

@@ -59,6 +59,8 @@
     <string name="notice">Notice</string>
     <string name="supplier">Supplier</string>
     <string name="purchase">Purchase</string>
+    <string name="system">System Product</string>
+    <string name="add_system">Add Product</string>
     <string name="online_customer">Online Customer</string>
     <string name="offline_customer">Offline Customer</string>
     <!-- TODO: Remove or change this placeholder text -->

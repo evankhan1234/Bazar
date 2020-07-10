@@ -1,8 +1,7 @@
-package com.evan.bazar.ui.home.product
+package com.evan.bazar.ui.home.system
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,13 +12,15 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
-
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.*
 import com.evan.bazar.data.db.entities.Unit
 import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.HomeViewModel
 import com.evan.bazar.ui.home.HomeViewModelFactory
+import com.evan.bazar.ui.home.product.ICategoryTypeListener
+import com.evan.bazar.ui.home.product.ICreateProductListener
+import com.evan.bazar.ui.home.product.ISupplierListener
 import com.evan.bazar.ui.home.purchase.IUnitListener
 import com.evan.bazar.util.SharedPreferenceUtil
 import com.evan.bazar.util.hide
@@ -27,16 +28,15 @@ import com.evan.bazar.util.show
 import com.evan.bazar.util.snackbar
 import com.google.gson.Gson
 import com.makeramen.roundedimageview.RoundedImageView
-import kotlinx.android.synthetic.main.fragment_create_product.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryTypeListener,ISupplierListener,ICreateProductListener {
+class CreateSystemProductFragment : Fragment() , KodeinAware, IUnitListener, ICategoryTypeListener,
+    ISupplierListener, ICreateProductListener {
     override val kodein by kodein()
 
     private val factory : HomeViewModelFactory by instance()
@@ -64,7 +64,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
     var et_stock: EditText?=null
     var btn_ok: Button?=null
     var token:String?=""
-    var product: Product?=null
+    var systemList: SystemList?=null
     var switch_status: SwitchCompat?=null
     var id:Int?=0
     var status:Int?=null
@@ -76,7 +76,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val root= inflater.inflate(R.layout.fragment_create_product, container, false)
+        val root= inflater.inflate(R.layout.fragment_create_system_product, container, false)
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
         viewModel.unitListener=this
         viewModel.supplierListener=this
@@ -100,7 +100,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
 
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         viewModel.getUnit()
-       // viewModel.getSupplier(token!!)
+        // viewModel.getSupplier(token!!)
         viewModel.getCategory(token!!)
         img_user_add=root?.findViewById(R.id.img_user_add)
         img_user_add?.setOnClickListener{
@@ -108,28 +108,27 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
         }
         val args: Bundle? = arguments
         if (args != null) {
-            if (args?.containsKey(Product::class.java.getSimpleName()) != null) {
-                product = args?.getParcelable(Product::class.java.getSimpleName())
-                id=product?.Id
-                et_product_name?.setText(product?.Name)
-                et_details?.setText(product?.Details)
-                et_product_code?.setText(product?.ProductCode)
-                et_stock?.setText(product?.Stock!!.toString())
-                et_sell_price?.setText(product?.SellPrice!!.toString())
-                et_supplier_price?.setText(product?.SupplierPrice!!.toString())
-                et_discount?.setText(product?.Discount!!.toString())
-                switch_status?.isChecked = product?.Status==1
-                image_address=product?.ProductImage
+            if (args?.containsKey(SystemList::class.java.getSimpleName()) != null) {
+                systemList = args?.getParcelable(SystemList::class.java.getSimpleName())
+
+                et_product_name?.setText(systemList?.ItemName)
+                et_details?.setText(systemList?.ItemDescription)
+                et_product_code?.setText(systemList?.ItemCode)
+                et_stock?.setText(systemList?.Stock!!.toString())
+                et_sell_price?.setText(systemList?.SalesPrice!!.toString())
+                et_supplier_price?.setText(systemList?.PurchasePrice!!.toString())
+                et_discount?.setText(systemList?.Discount!!.toString())
+                switch_status?.isChecked = systemList?.Status==1
+                image_address=systemList?.Picture
                 Glide.with(this)
-                    .load(product?.ProductImage)
+                    .load(systemList?.Picture)
                     .into(img_background_mypage!!)
-                
-                Log.e("data","data"+ Gson().toJson(product))
+
+                Log.e("data","data"+ Gson().toJson(systemList))
             }
         }
         btn_ok?.setOnClickListener {
 
-            if (id == 0) {
                 val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
                 val currentDate = sdf.format(Date())
                 if (switch_status?.isChecked!!) {
@@ -169,8 +168,8 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                 }  else if (discount.isNullOrEmpty()) {
                     root_layout?.snackbar("Discount is Empty")
                 }  else if (image_address.isNullOrEmpty()) {
-                root_layout?.snackbar("Image is Empty")
-               }
+                    root_layout?.snackbar("Image is Empty")
+                }
 
                 else if (id_category==0) {
                     root_layout?.snackbar("Product Category is Empty.Please Add Product Category")
@@ -201,87 +200,6 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                         status!!
                     )
 
-//                    viewModel.postSupplier(
-//                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,name,mobile,email,address,details,image_address!!,status!!,
-//                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),currentDate)
-                }
-            } else {
-                val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-                val currentDate = sdf.format(Date())
-                if (switch_status?.isChecked!!) {
-                    status = 1
-                } else {
-                    status = 0
-                }
-
-                var product_name: String = ""
-                var product_details: String = ""
-                var product_code: String = ""
-                var sell_price: String = ""
-                var supplier_price: String = ""
-                var stock: String = ""
-                var discount: String = ""
-                product_name = et_product_name?.text.toString()
-                product_details = et_details?.text.toString()
-                product_code = et_product_code?.text.toString()
-                sell_price = et_sell_price?.text.toString()
-                stock = et_stock?.text.toString()
-                supplier_price = et_supplier_price?.text.toString()
-                discount = et_discount?.text.toString()
-
-                if (product_name.isNullOrEmpty() && product_details.isNullOrEmpty() && product_code.isNullOrEmpty() && sell_price.isNullOrEmpty() && supplier_price.isNullOrEmpty() && stock.isNullOrEmpty() && discount.isNullOrEmpty() ) {
-                    root_layout?.snackbar("All Field is Empty")
-                } else if (product_name.isNullOrEmpty()) {
-                    root_layout?.snackbar("Product Name is Empty")
-                } else if (product_details.isNullOrEmpty()) {
-                    root_layout?.snackbar("Product Details is Empty")
-                } else if (product_code.isNullOrEmpty()) {
-                    root_layout?.snackbar("Product Code is Empty")
-                } else if (sell_price.isNullOrEmpty()) {
-                    root_layout?.snackbar("Sell Price is Empty")
-                } else if (supplier_price.isNullOrEmpty()) {
-                    root_layout?.snackbar("Supplier Price is Empty")
-                } else if (stock.isNullOrEmpty()) {
-                    root_layout?.snackbar("Stock is Empty")
-                }  else if (discount.isNullOrEmpty()) {
-                    root_layout?.snackbar("Discount is Empty")
-                }
-                else if (image_address.isNullOrEmpty()) {
-                    root_layout?.snackbar("Image is Empty")
-                }
-                else if (id_category==0) {
-                    root_layout?.snackbar("Product Category is Empty.Please Add Product Category")
-                }
-                else {
-                    Log.e("Evan", "Evan")
-                    viewModel.postUpdateProduct(
-                        SharedPreferenceUtil.getShared(
-                            activity!!,
-                            SharedPreferenceUtil.TYPE_AUTH_TOKEN
-                        )!!,
-                        id!!,
-                        product_name!!,
-                        product_details!!,
-                        product_code!!,
-                        image_address!!,
-                        id_unit!!,
-                        sell_price!!.toDouble(),
-                        supplier_price!!.toDouble(),
-
-                        SharedPreferenceUtil.getShared(
-                            activity!!,
-                            SharedPreferenceUtil.TYPE_SHOP_ID
-                        )!!.toInt(),
-                        stock!!.toInt(),
-                        discount!!.toDouble(),
-                        currentDate!!,
-                        id_category!!,
-                        status!!
-                    )
-//                    viewModel.postUpdateSupplier(
-//                        SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)!!,id!!,name,mobile,email,address,details,image_address!!,status!!,
-//                SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_ID)!!.toInt(),currentDate)
-                }
             }
         }
         return root
@@ -312,8 +230,8 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                         id_unit = units.get(position).Id
                         for (i in unit!!.indices) {
                             Log.e("unit_id","unit_id"+ unit!!.get(i).Id!!)
-                            Log.e("unit_id_","unit_id_"+ product?.UnitId)
-                            if (unit!!.get(i).Id!!.equals(product?.UnitId)) {
+                            Log.e("unit_id_","unit_id_"+ systemList?.UnitId)
+                            if (unit!!.get(i).Id!!.equals(systemList?.UnitId)) {
                                 spinner_unit?.setSelection(i)
                                 Log.e("trues","trues")
                             }
@@ -353,11 +271,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                         id: Long
                     ) {
                         id_category = categories!!.get(position).Id!!.toInt()
-                        for (i in category!!.indices) {
-                            if (category!!.get(i).Id!!.equals(product?.ProductCategoryId.toString())) {
-                                spinner_category?.setSelection(i)
-                            }
-                        }
+
                         Log.e("shop", "shop" + categories.get(position).Id)
                     }
 
@@ -394,11 +308,7 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
                     ) {
                         id_supplier = suppliers.get(position).Id
                         Log.e("supplier", "supplier" + suppliers.get(position).Id)
-                        for (i in supplier!!.indices) {
-                            if (supplier!!.get(i).Id!!.equals(product?.SupplierId)) {
-                                spinner_supplier?.setSelection(i)
-                            }
-                        }
+
                     }
                     override fun onNothingSelected(parent: AdapterView<*>) {
                         // Another interface callback
@@ -434,13 +344,5 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
             .load("http://hathbazzar.com/"+temp)
             .into(img_background_mypage!!)
         img_user_add?.visibility=View.INVISIBLE
-
-//        image_address="http://192.168.0.106/"+temp
-//        Log.e("for","Image"+temp)
-//        Glide.with(this)
-//            .load("http://192.168.0.106/"+temp)
-//            .into(img_background_mypage!!)
-//        img_user_add?.visibility=View.INVISIBLE
     }
-
 }

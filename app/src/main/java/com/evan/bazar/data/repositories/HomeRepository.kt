@@ -200,4 +200,10 @@ class HomeRepository (
     suspend fun updateChatCount(header:String,post: CustomerIdPost): BasicResponses {
         return apiRequest { api.updateChatCount(header,post) }
     }
+    suspend fun getSystemList(header:String,post: SystemPost): SystemListResponses {
+        return apiRequest { api.getSystemList(header,post) }
+    }
+    suspend fun getSystemSearchList(header:String,post: SystemSearchPost): SystemListResponses {
+        return apiRequest { api.getSystemSearchList(header,post) }
+    }
 }

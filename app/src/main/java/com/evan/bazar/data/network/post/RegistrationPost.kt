@@ -13,5 +13,7 @@ data class RegistrationPost (
     val Created: String?,
     val Name: String?,
     val Address: String?,
-    val LicenseNumber: String?
+    val LicenseNumber: String?,
+    val Latitude: Double?,
+    val Longitude: Double?
 )

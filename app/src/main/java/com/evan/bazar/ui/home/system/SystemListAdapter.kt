@@ -1,5 +1,6 @@
-package com.evan.bazar.ui.home.product
+package com.evan.bazar.ui.home.system
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Html
 import android.view.LayoutInflater
@@ -10,15 +11,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.evan.bazar.R
-import com.evan.bazar.data.db.entities.Product
-import com.evan.bazar.ui.home.product.IProductUpdateListener
+import com.evan.bazar.data.db.entities.SystemList
 import kotlinx.android.synthetic.main.layout_product_list.view.*
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-class ProductAdapter (val context: Context, val iProductUpdateListener: IProductUpdateListener) :
-    PagedListAdapter<Product, RecyclerView.ViewHolder>(NewsDiffCallback) {
+class SystemListAdapter (val context: Context, val iProductUpdateListener: ISystemViewListener) :
+    PagedListAdapter<SystemList, RecyclerView.ViewHolder>(NewsDiffCallback) {
     private val DATA_VIEW_TYPE = 1
     private val FOOTER_VIEW_TYPE = 2
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -35,12 +33,13 @@ class ProductAdapter (val context: Context, val iProductUpdateListener: IProduct
     }
 
     companion object {
-        val NewsDiffCallback = object : DiffUtil.ItemCallback<Product>() {
-            override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+        val NewsDiffCallback = object : DiffUtil.ItemCallback<SystemList>() {
+            override fun areItemsTheSame(oldItem: SystemList, newItem: SystemList): Boolean {
                 return oldItem.Id == newItem.Id
             }
 
-            override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(oldItem: SystemList, newItem: SystemList): Boolean {
                 return oldItem == newItem
             }
         }
@@ -50,7 +49,7 @@ class ProductAdapter (val context: Context, val iProductUpdateListener: IProduct
 
 class AlertViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(context: Context, product: Product?, position: Int, listener: IProductUpdateListener) {
+    fun bind(context: Context, product: SystemList?, position: Int, listener: ISystemViewListener) {
 
         if (product != null)
         {
@@ -59,7 +58,7 @@ class AlertViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 listener.onUpdate(product)
             }
             Glide.with(context)
-                .load(product?.ProductImage)
+                .load(product?.Picture)
                 .into(itemView.img_image!!)
 
             var product_name:String=""
@@ -70,19 +69,19 @@ class AlertViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 //            var discount:String=""
 //            var total:String=""
 //            var grand_total:String=""
-            product_name = "<b> <font color=#15507E>Product Name</font> : </b>"+product?.Name
-            product_code = "<b> <font color=#15507E>Product Code </font> : </b>"+product?.ProductCode
-            sell_price = "<b> <font color=#15507E>Sell Price </font> : </b>"+product?.SellPrice
+            product_name = "<b> <font color=#15507E>Product Name</font> : </b>"+product?.ItemName
+            product_code = "<b> <font color=#15507E>Product Code </font> : </b>"+product?.ItemCode
+            sell_price = "<b> <font color=#15507E>Sell Price </font> : </b>"+product?.SalesPrice
             stock = "<b> <font color=#15507E>Stock </font> : </b>"+product?.Stock
-            supplier_price = "<b> <font color=#15507E>Purchase Price </font> : </b>"+product?.SupplierPrice
+            supplier_price = "<b> <font color=#15507E>Purchase Price </font> : </b>"+product?.PurchasePrice
 //            discount = "<b> <font color=#15507E>Discount </font> : </b>"+Product?.Discount
 //            total = "<b> <font color=#15507E>Total </font> : </b>"+Product?.Total
 //            grand_total = "<b> <font color=#15507E>Grand Total </font> : </b>"+Product?.GrandTotal
-              itemView.tv_product_name.text= Html.fromHtml(product_name)
-              itemView.tv_product_code.text= Html.fromHtml(product_code)
-              itemView.tv_sell_price.text= Html.fromHtml(sell_price)
-              itemView.tv_stock.text= Html.fromHtml(stock)
-              itemView.tv_supplier_price.text= Html.fromHtml(supplier_price)
+            itemView.tv_product_name.text= Html.fromHtml(product_name)
+            itemView.tv_product_code.text= Html.fromHtml(product_code)
+            itemView.tv_sell_price.text= Html.fromHtml(sell_price)
+            itemView.tv_stock.text= Html.fromHtml(stock)
+            itemView.tv_supplier_price.text= Html.fromHtml(supplier_price)
 //            itemView.tv_discount.text= Html.fromHtml(discount)
 //            itemView.tv_total.text= Html.fromHtml(total)
 //            itemView.tv_grand_total.text= Html.fromHtml(grand_total)

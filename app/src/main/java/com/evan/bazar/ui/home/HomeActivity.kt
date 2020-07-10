@@ -49,6 +49,8 @@ import com.evan.bazar.ui.home.settings.profile.ProfileUpdateFragment
 import com.evan.bazar.ui.home.store.StoreFragment
 import com.evan.bazar.ui.home.supplier.CreateSupplierFragment
 import com.evan.bazar.ui.home.supplier.SupplierFragment
+import com.evan.bazar.ui.home.system.CreateSystemProductFragment
+import com.evan.bazar.ui.home.system.SystemListFragment
 import com.evan.bazar.util.*
 import com.evan.dokan.ui.home.notice.NoticeFragment
 import com.evan.dokan.ui.home.notice.NoticeViewFragment
@@ -273,6 +275,18 @@ class HomeActivity : AppCompatActivity(),KodeinAware,IChatCountListener {
                 noticeFragment.removeChild()
                 setUpHeader(FRAG_NOTICE )
             }
+            else if (f is SystemListFragment) {
+                val noticeFragment: SystemListFragment =
+                    mFragManager?.findFragmentByTag(FRAG_SYSTEM_PRODUCT.toString()) as SystemListFragment
+                noticeFragment.removeChild()
+                setUpHeader(FRAG_SYSTEM_PRODUCT )
+            }
+            else if (f is CreateSystemProductFragment) {
+                val noticeFragment: CreateSystemProductFragment =
+                    mFragManager?.findFragmentByTag(FRAG_UPDATE_SYSTEM_PRODUCT.toString()) as CreateSystemProductFragment
+                setUpHeader(FRAG_UPDATE_SYSTEM_PRODUCT )
+            }
+
         }
 
     }
@@ -320,6 +334,11 @@ class HomeActivity : AppCompatActivity(),KodeinAware,IChatCountListener {
     fun goToCreateProductFragment() {
         setUpHeader(FRAG_CREATE_PRODUCT)
         addFragment(FRAG_CREATE_PRODUCT, true, null)
+
+    }
+    fun goToCreateSystemProductFragment() {
+        setUpHeader(FRAG_SYSTEM_PRODUCT)
+        addFragment(FRAG_SYSTEM_PRODUCT, true, null)
 
     }
     fun goToUpdatePasswordFragment(shopUser: ShopUser) {
@@ -578,6 +597,51 @@ class HomeActivity : AppCompatActivity(),KodeinAware,IChatCountListener {
         fragTransaction!!.commit()
 
     }
+    fun goToUpdateSystemProductFragment(systemList: SystemList) {
+        setUpHeader(FRAG_UPDATE_SYSTEM_PRODUCT)
+        mFragManager = supportFragmentManager
+        // create transaction
+        var fragId:Int?=0
+        fragId=FRAG_UPDATE_SYSTEM_PRODUCT
+        fragTransaction = mFragManager?.beginTransaction()
+        //check if there is any backstack if yes then remove it
+        val count = mFragManager?.getBackStackEntryCount()
+        if (count != 0) {
+            //this will clear the back stack and displays no animation on the screen
+            // mFragManager?.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        // check current fragment is wanted fragment
+        if (mCurrentFrag != null && mCurrentFrag!!.getTag() != null && mCurrentFrag!!.getTag() == fragId.toString()) {
+            return
+        }
+        var newFrag: Fragment? = null
+
+        // identify which fragment will be called
+
+        newFrag = CreateSystemProductFragment()
+        val b= Bundle()
+        b.putParcelable(SystemList::class.java?.getSimpleName(), systemList)
+
+        newFrag.setArguments(b)
+
+        mCurrentFrag = newFrag
+
+        fragTransaction!!.setCustomAnimations(
+            R.anim.view_transition_in_left,
+            R.anim.view_transition_out_left,
+            R.anim.view_transition_in_right,
+            R.anim.view_transition_out_right
+        )
+
+        // param 1: container id, param 2: new fragment, param 3: fragment id
+
+        fragTransaction?.replace(R.id.main_container, newFrag!!, fragId.toString())
+        // prevent showed when user press back fabReview
+        fragTransaction?.addToBackStack(fragId.toString())
+        //  fragTransaction?.hide(active).show(guideFragment).commit();
+        fragTransaction!!.commit()
+
+    }
     fun goToUpdateProductFragment(product: Product) {
         setUpHeader(FRAG_UPDATE_PRODUCT)
         mFragManager = supportFragmentManager
@@ -731,6 +795,9 @@ class HomeActivity : AppCompatActivity(),KodeinAware,IChatCountListener {
             FRAG_CHAT->{
                 newFrag = ChatListFragment()
             }
+            FRAG_SYSTEM_PRODUCT->{
+                newFrag = SystemListFragment()
+            }
         }
         mCurrentFrag = newFrag
         // init argument
@@ -819,6 +886,13 @@ class HomeActivity : AppCompatActivity(),KodeinAware,IChatCountListener {
                 btn_footer_store.setSelected(true)
 
             }
+            FRAG_SYSTEM_PRODUCT -> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.system)
+                btn_footer_store.setSelected(true)
+
+            }
             FRAG_CREATE_PURCHASE -> {
                 ll_back_header?.visibility = View.VISIBLE
                 rlt_header?.visibility = View.GONE
@@ -863,6 +937,12 @@ class HomeActivity : AppCompatActivity(),KodeinAware,IChatCountListener {
                 ll_back_header?.visibility = View.VISIBLE
                 rlt_header?.visibility = View.GONE
                 tv_details.text = resources.getString(R.string.product)
+                btn_footer_store.setSelected(true)
+            }
+            FRAG_UPDATE_SYSTEM_PRODUCT-> {
+                ll_back_header?.visibility = View.VISIBLE
+                rlt_header?.visibility = View.GONE
+                tv_details.text = resources.getString(R.string.add_system)
                 btn_footer_store.setSelected(true)
             }
             FRAG_NOTICE->{

@@ -212,7 +212,16 @@ interface MyApi {
     suspend fun getChatCount(
         @Header("Authorization") Authorization:String
     ): Response<CountResponses>
-
+    @POST("system-product-pagination.php")
+    suspend fun getSystemList(
+        @Header("Authorization") Authorization:String,
+        @Body systemPost: SystemPost
+    ): Response<SystemListResponses>
+    @POST("searching-system-list.php")
+    suspend fun getSystemSearchList(
+        @Header("Authorization") Authorization:String,
+        @Body systemPost: SystemSearchPost
+    ): Response<SystemListResponses>
     @POST("update-chat-seen.php")
     suspend fun updateChatCount(
         @Header("Authorization") Authorization:String,
@@ -360,7 +369,7 @@ interface MyApi {
             return Retrofit.Builder()
                 .client(okkHttpclient)
                 //.baseUrl("http://206.189.180.190/v1/")
-                .baseUrl("http://192.168.0.106/stationary/v1/")
+                .baseUrl("http://192.168.0.104/stationary/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(MyApi::class.java)

@@ -1,4 +1,4 @@
-package com.evan.bazar.ui.home.product
+package com.evan.bazar.ui.home.system
 
 import android.os.Bundle
 import android.text.Editable
@@ -15,16 +15,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.evan.bazar.R
-import com.evan.bazar.data.db.entities.Product
-import com.evan.bazar.data.db.entities.Purchase
+import com.evan.bazar.data.db.entities.SystemList
 import com.evan.bazar.ui.home.HomeActivity
-import com.evan.bazar.ui.home.purchase.PurchaseAdapter
-import com.evan.bazar.ui.home.purchase.PurchaseModelFactory
-import com.evan.bazar.ui.home.purchase.PurchaseViewModel
 import com.evan.bazar.ui.home.supplier.CreateSupplierFragment
-import com.evan.bazar.ui.home.supplier.SupplierSearchAdapter
 import com.evan.bazar.util.NetworkState
 import com.evan.bazar.util.SharedPreferenceUtil
 import com.evan.bazar.util.hide
@@ -34,49 +28,50 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 
-class ProductFragment : Fragment(),KodeinAware,IProductUpdateListener ,IProductListener{
+class SystemListFragment : Fragment(), KodeinAware,ISystemViewListener,ISystemListener {
     override val kodein by kodein()
 
-    private val factory : ProductModelFactory by instance()
-    var rcv_search:RecyclerView?=null
-    var producteAdapter: ProductAdapter?=null
-    var adapter_search: ProductSearchAdapter?=null
+    private val factory : SystemListModelFactory by instance()
+    var rcv_search: RecyclerView?=null
+    var producteAdapter: SystemListAdapter?=null
+    var adapter_search: SystemListSearchAdapter?=null
     var edit_content: EditText?=null
     var rcv_product: RecyclerView?=null
     var progress_bar: ProgressBar?=null
     var btn_product_new: ImageView?=null
     var token:String?=""
-    private lateinit var viewModel: ProductViewModel
+    private lateinit var viewModel: SystemListViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val root= inflater.inflate(R.layout.fragment_product, container, false)
+        val root= inflater.inflate(R.layout.fragment_system_list, container, false)
         rcv_search=root?.findViewById(R.id.rcv_search)
         progress_bar=root?.findViewById(R.id.progress_bar)
         rcv_product=root?.findViewById(R.id.rcv_product)
         btn_product_new=root?.findViewById(R.id.btn_product_new)
         edit_content=root?.findViewById(R.id.edit_content)
         edit_content?.addTextChangedListener(keyword)
-        viewModel = ViewModelProviders.of(this, factory).get(ProductViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(SystemListViewModel::class.java)
         viewModel.listener=this
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
 
 
         btn_product_new?.setOnClickListener {
             if (activity is HomeActivity) {
-                (activity as HomeActivity).goToCreateSystemProductFragment()
+                (activity as HomeActivity).goToCreateProductFragment()
             }
         }
         return root
     }
 
-    override fun onUpdate(product: Product) {
+    override fun onUpdate(system: SystemList) {
         if (activity is HomeActivity) {
-            (activity as HomeActivity).goToUpdateProductFragment(product)
+            (activity as HomeActivity).goToUpdateSystemProductFragment(system)
         }
     }
+
     fun replace(){
         viewModel.replaceSubscription(this)
         startListening()
@@ -90,7 +85,7 @@ class ProductFragment : Fragment(),KodeinAware,IProductUpdateListener ,IProductL
     }
 
     private fun initAdapter() {
-        producteAdapter = ProductAdapter(context!!,this)
+        producteAdapter = SystemListAdapter(context!!,this)
         rcv_product?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rcv_product?.adapter = producteAdapter
         startListening()
@@ -135,11 +130,11 @@ class ProductFragment : Fragment(),KodeinAware,IProductUpdateListener ,IProductL
         }
     }
 
-    override fun show(data: MutableList<Product>) {
+    override fun show(data: MutableList<SystemList>) {
         rcv_search?.visibility=View.VISIBLE
         rcv_product?.visibility=View.GONE
         viewModel.replaceSubscription(this)
-        adapter_search = ProductSearchAdapter(context!!,data!!,this)
+        adapter_search = SystemListSearchAdapter(context!!,data!!,this)
         rcv_search?.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             setHasFixedSize(true)
@@ -173,7 +168,7 @@ class ProductFragment : Fragment(),KodeinAware,IProductUpdateListener ,IProductL
                 else{
                     var keyword:String?=""
                     keyword=s.toString()+"%"
-                    viewModel.getProduct(token!!,keyword)
+                    viewModel.getSystemList(token!!,keyword,SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_SHOP_TYPE_ID)!!.toInt())
                 }
 
             } catch (e: Exception) {
@@ -189,4 +184,6 @@ class ProductFragment : Fragment(),KodeinAware,IProductUpdateListener ,IProductL
         rcv_product?.visibility=View.GONE
         viewModel.replaceSubscription(this)
     }
+
+
 }
