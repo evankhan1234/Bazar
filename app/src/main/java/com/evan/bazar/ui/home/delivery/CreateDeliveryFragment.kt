@@ -241,7 +241,7 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
 
     fun getStartDate(startDate: String?): String? {
         val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val formatter = SimpleDateFormat("dd,MMMM yyyy")
+        val formatter = SimpleDateFormat("yyyyMMdd")
         val output: String = formatter.format(parser.parse(startDate!!))
         return output
     }
