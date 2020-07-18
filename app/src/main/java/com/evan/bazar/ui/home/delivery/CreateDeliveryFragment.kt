@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.CustomerOrder
 import com.evan.bazar.data.db.entities.Orders
+import com.evan.bazar.data.db.entities.ShopUser
 import com.evan.bazar.data.network.post.CustomerOrderStatus
 import com.evan.bazar.data.network.post.Push
 import com.evan.bazar.data.network.post.PushPost
@@ -23,6 +24,7 @@ import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.HomeViewModel
 import com.evan.bazar.ui.home.HomeViewModelFactory
 import com.evan.bazar.ui.home.dashboard.IPushListener
+import com.evan.bazar.ui.home.settings.IShopUserListener
 import com.evan.bazar.util.*
 import com.google.gson.Gson
 import org.kodein.di.KodeinAware
@@ -36,7 +38,8 @@ import kotlin.collections.ArrayList
 
 
 class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListener,
-    IDeliveryPostListener, IDeleteListener, IDeleteIdListener, IItemClickListener,IPushListener {
+    IDeliveryPostListener, IDeleteListener, IDeleteIdListener, IItemClickListener,IPushListener ,
+    IShopUserListener {
     override val kodein by kodein()
     var progress_bar: ProgressBar? = null
     var rcv_orders: RecyclerView? = null
@@ -62,6 +65,9 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
     //  var data_for: ArrayList<CustomerOrderStatus>?=null
     var data_customer_status: MutableList<CustomerOrderStatus>? = null
     var list: ArrayList<CustomerOrderStatus> = arrayListOf()
+
+    var latitude:Double?=0.0
+    var longitude:Double?=0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,6 +79,7 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
         viewModel.deliveryPostListener = this
         viewModel.deleteListener = this
         viewModel.pushListener = this
+        viewModel.shopUserListener=this
         btn_cancel = root?.findViewById(R.id.btn_cancel)
         et_due_amount = root?.findViewById(R.id.et_due_amount)
         root_layout = root?.findViewById(R.id.root_layout)
@@ -100,6 +107,7 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
             }
         }
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
+        viewModel.getShopUserDetails(token!!)
         viewModel.getToken(token!!,2,order?.CustomerId!!.toString())
         viewModel.getCustomerOrders(token!!, order?.Id!!)
         btn_cancel?.setOnClickListener {
@@ -188,7 +196,8 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
                     invoice_number!!,
                     currentDate!!,
                     delivery_details!!,
-                    delivery_charge!!
+                    delivery_charge!!,
+                    latitude!!,longitude!!
                 )
                 Log.e("sub_total", "sub_total" + sub_total)
                 Log.e("customer_id", "customer_id" + customer_id)
@@ -244,6 +253,11 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
         val formatter = SimpleDateFormat("yyyyMMdd")
         val output: String = formatter.format(parser.parse(startDate!!))
         return output
+    }
+
+    override fun show(shopUser: ShopUser?) {
+        latitude=shopUser?.Latitude
+        longitude=shopUser?.Longitude
     }
 
     override fun onStarted() {
