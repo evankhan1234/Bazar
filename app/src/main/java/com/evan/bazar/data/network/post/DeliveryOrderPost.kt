@@ -2,7 +2,7 @@ package com.evan.bazar.data.network.post
 
 import com.google.gson.annotations.SerializedName
 
-data class DeliveryOrderPost (
+data class DeliveryOrderPost(
     @SerializedName("CustomerId")
     val CustomerId: Int?,
     @SerializedName("OrderId")
@@ -26,5 +26,9 @@ data class DeliveryOrderPost (
     @SerializedName("OrderDetails")
     val OrderDetails: String?,
     @SerializedName("DeliveryCharge")
-    val DeliveryCharge: Double?
-    )
+    val DeliveryCharge: Double?,
+    @SerializedName("Latitude")
+    val Latitude: Double?,
+    @SerializedName("Longitude")
+    val Longitude: Double?
+)

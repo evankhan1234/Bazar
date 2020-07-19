@@ -362,11 +362,11 @@ class HomeViewModel(
 
     }
 
-    fun postDelivery(header:String,customerId:Int,orderId:Int,discount:Double,grandTotal:Double,paidAmount:Double,dueAmount:Double,total:Double,status:Int,invoiceNumber:String,created:String,orderDetails:String,deliveryCharge:Double) {
+    fun postDelivery(header:String,customerId:Int,orderId:Int,discount:Double,grandTotal:Double,paidAmount:Double,dueAmount:Double,total:Double,status:Int,invoiceNumber:String,created:String,orderDetails:String,deliveryCharge:Double,latitude:Double,longitude:Double) {
         deliveryPostListener?.started()
         Coroutines.main {
             try {
-                deliveryOrderPost = DeliveryOrderPost(customerId!!,orderId!!,discount!!,grandTotal!!,paidAmount!!,dueAmount!!,total!!, status!!,invoiceNumber!!, created!!,orderDetails!!, deliveryCharge!!)
+                deliveryOrderPost = DeliveryOrderPost(customerId!!,orderId!!,discount!!,grandTotal!!,paidAmount!!,dueAmount!!,total!!, status!!,invoiceNumber!!, created!!,orderDetails!!, deliveryCharge!!,latitude,longitude)
                 Log.e("response", "response" + Gson().toJson(deliveryOrderPost))
                 val response = repository.postDelivery(header,deliveryOrderPost!!)
                 deliveryPostListener?.show(response?.message!!)

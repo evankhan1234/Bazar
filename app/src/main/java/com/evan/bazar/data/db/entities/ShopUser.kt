@@ -29,5 +29,9 @@ data class ShopUser (
     @SerializedName("Picture")
     var Picture: String?,
     @SerializedName("Password")
-    var Password: String?
+    var Password: String?,
+    @SerializedName("Latitude")
+    var Latitude: Double?,
+    @SerializedName("Longitude")
+    var Longitude: Double?
     ): Parcelable
