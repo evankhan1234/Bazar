@@ -81,6 +81,9 @@ class AlertViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             else if(delivery?.Status==3){
                 itemView.tv_status.setText("Delivered")
             }
+            else if(delivery?.Status==0){
+                itemView.tv_status.setText("Canceled")
+            }
            // tv_status
         }
     }
