@@ -13,6 +13,7 @@ import com.evan.bazar.ui.home.dashboard.IPushListener
 import com.evan.bazar.ui.home.dashboard.IStoreCountListener
 import com.evan.bazar.ui.home.delivery.ICustomerOrderListListener
 import com.evan.bazar.ui.home.delivery.IDeleteListener
+import com.evan.bazar.ui.home.delivery.IDeliveryChargeListener
 import com.evan.bazar.ui.home.delivery.IDeliveryPostListener
 import com.evan.bazar.ui.home.newsfeed.ownpost.IPostListener
 import com.evan.bazar.ui.home.newsfeed.publicpost.comments.ICommentsListener
@@ -87,6 +88,7 @@ class HomeViewModel(
     var chatCountListener: IChatCountListener?=null
     var profileUpdateListener: IProfileUpdateListener?=null
     var changePasswordListener: IChangePasswordListener?=null
+    var deliveryChargeListener: IDeliveryChargeListener?=null
     fun getCategoryType(header:String) {
         categoryListener?.started()
         Coroutines.main {
@@ -856,6 +858,24 @@ class HomeViewModel(
                 customerIdPost= CustomerIdPost(customerId)
                 val response = repository.updateChatCount(header!!,customerIdPost!!)
                 Log.e("response", "response" + Gson().toJson(response))
+            } catch (e: ApiException) {
+
+            } catch (e: NoInternetException) {
+
+            }
+        }
+
+    }
+    fun getDeliveryCharge(header:String) {
+
+        Coroutines.main {
+            try {
+
+                val response = repository.getDeliveryCharge(header)
+                deliveryChargeListener?.onAmount(response?.data!!)
+
+                Log.e("deliveryCharge", "response" + Gson().toJson(response))
+
             } catch (e: ApiException) {
 
             } catch (e: NoInternetException) {
