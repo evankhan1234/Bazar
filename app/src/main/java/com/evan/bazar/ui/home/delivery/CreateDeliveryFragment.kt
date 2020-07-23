@@ -38,8 +38,8 @@ import kotlin.collections.ArrayList
 
 
 class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListener,
-    IDeliveryPostListener, IDeleteListener, IDeleteIdListener, IItemClickListener,IPushListener ,
-    IShopUserListener {
+    IDeliveryPostListener, IDeleteListener, IDeleteIdListener, IItemClickListener, IPushListener,
+    IShopUserListener, IDeliveryChargeListener {
     override val kodein by kodein()
     var progress_bar: ProgressBar? = null
     var rcv_orders: RecyclerView? = null
@@ -60,14 +60,15 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
     var et_delivery_details: EditText? = null
     var root_layout: RelativeLayout? = null
     var btn_cancel: Button? = null
-    var pushPost: PushPost?=null
-    var push: Push?=null
+    var pushPost: PushPost? = null
+    var push: Push? = null
+
     //  var data_for: ArrayList<CustomerOrderStatus>?=null
     var data_customer_status: MutableList<CustomerOrderStatus>? = null
     var list: ArrayList<CustomerOrderStatus> = arrayListOf()
-
-    var latitude:Double?=0.0
-    var longitude:Double?=0.0
+    var delivery_charge: Double? = 0.0
+    var latitude: Double? = 0.0
+    var longitude: Double? = 0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,7 +80,8 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
         viewModel.deliveryPostListener = this
         viewModel.deleteListener = this
         viewModel.pushListener = this
-        viewModel.shopUserListener=this
+        viewModel.shopUserListener = this
+        viewModel.deliveryChargeListener = this
         btn_cancel = root?.findViewById(R.id.btn_cancel)
         et_due_amount = root?.findViewById(R.id.et_due_amount)
         root_layout = root?.findViewById(R.id.root_layout)
@@ -108,8 +110,9 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
         }
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         viewModel.getShopUserDetails(token!!)
-        viewModel.getToken(token!!,2,order?.CustomerId!!.toString())
+        viewModel.getToken(token!!, 2, order?.CustomerId!!.toString())
         viewModel.getCustomerOrders(token!!, order?.Id!!)
+        viewModel.getDeliveryCharge(token!!)
         btn_cancel?.setOnClickListener {
 //
             showDialogReservationConfirmation(context!!,
@@ -124,9 +127,12 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
                         viewModel.updateCustomerOrderStatus(token!!, order_id!!, 0)
                         Toast.makeText(activity, "Order Cancel Successfully", Toast.LENGTH_LONG)
                             .show()
-                        push= Push("Orders","Your Order is Cancel")
-                        pushPost= PushPost(tokenData,push)
-                        viewModel.sendPush("key=AAAAdCyJ2hw:APA91bGF6x20oQnuC2ZeAXsJju-OCAZ67dBpQvaLx7h18HSAnhl9CPWupCJaV0552qJvm1qIHL_LAZoOvv5oWA9Iraar_XQkWe3JEUmJ1v7iKq09QYyPB3ZGMeSinzC-GlKwpaJU_IvO",pushPost!!)
+                        push = Push("Orders", "Your Order is Cancel")
+                        pushPost = PushPost(tokenData, push)
+                        viewModel.sendPush(
+                            "key=AAAAdCyJ2hw:APA91bGF6x20oQnuC2ZeAXsJju-OCAZ67dBpQvaLx7h18HSAnhl9CPWupCJaV0552qJvm1qIHL_LAZoOvv5oWA9Iraar_XQkWe3JEUmJ1v7iKq09QYyPB3ZGMeSinzC-GlKwpaJU_IvO",
+                            pushPost!!
+                        )
                         if (activity is HomeActivity) {
                             (activity as HomeActivity).backPress()
                         }
@@ -148,15 +154,7 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
             paid_amount_text = et_paid_amount?.text.toString()
             delivery_charge_text = et_delivery_charge?.text.toString()
 
-            if (delivery_details.isNullOrEmpty() && paid_amount_text.isNullOrEmpty() && delivery_charge_text.isNullOrEmpty()) {
-                root_layout?.snackbar("All Field is Empty")
-            } else if (paid_amount_text.isNullOrEmpty()) {
-                root_layout?.snackbar("Paid Amount is Empty")
-            } else if (delivery_charge_text.isNullOrEmpty()) {
-                root_layout?.snackbar("Delivery Charge is Empty")
-            } else if (delivery_details.isNullOrEmpty()) {
-                root_layout?.snackbar("Delivery Details is Empty")
-            } else if (sub_total == 0.0) {
+            if (sub_total == 0.0) {
                 root_layout?.snackbar("Item is Empty")
             } else {
                 var customer_id: Int?
@@ -164,7 +162,7 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
                 var discount: Double? = 0.0
                 var paid_amount: Double? = 0.0
                 var due_amount: Double? = 0.0
-                var delivery_charge: Double? = 0.0
+
                 var invoice_number: String? = ""
                 customer_id = order?.CustomerId
                 order_id = order?.Id
@@ -176,28 +174,28 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
                 } catch (e: Exception) {
                     discount = 0.0
                 }
-                try {
-                    due_amount = et_due_amount?.text.toString().toDouble()
-                } catch (e: Exception) {
-                    due_amount = 0.0
-                }
-                paid_amount = et_paid_amount?.text.toString().toDouble()
-                delivery_charge = et_delivery_charge?.text.toString().toDouble()
+//                try {
+//                    due_amount = et_due_amount?.text.toString().toDouble()
+//                } catch (e: Exception) {
+//                    due_amount = 0.0
+//                }
+//                paid_amount = et_paid_amount?.text.toString().toDouble()
+                // delivery_charge = et_delivery_charge?.text.toString().toDouble()
                 viewModel.postDelivery(
                     token!!,
                     customer_id!!,
                     order_id!!,
                     discount!!,
                     total_value!!,
-                    paid_amount!!,
-                    due_amount!!,
+                  0.0,
+                    0.0,
                     total_value!!,
                     2,
                     invoice_number!!,
                     currentDate!!,
-                    delivery_details!!,
+                    "",
                     delivery_charge!!,
-                    latitude!!,longitude!!
+                    latitude!!, longitude!!
                 )
                 Log.e("sub_total", "sub_total" + sub_total)
                 Log.e("customer_id", "customer_id" + customer_id)
@@ -256,8 +254,8 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
     }
 
     override fun show(shopUser: ShopUser?) {
-        latitude=shopUser?.Latitude
-        longitude=shopUser?.Longitude
+        latitude = shopUser?.Latitude
+        longitude = shopUser?.Longitude
     }
 
     override fun onStarted() {
@@ -303,9 +301,12 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
     }
 
     override fun show(value: String) {
-        push= Push("Orders","Your Order is processing")
-        pushPost= PushPost(tokenData,push)
-        viewModel.sendPush("key=AAAAdCyJ2hw:APA91bGF6x20oQnuC2ZeAXsJju-OCAZ67dBpQvaLx7h18HSAnhl9CPWupCJaV0552qJvm1qIHL_LAZoOvv5oWA9Iraar_XQkWe3JEUmJ1v7iKq09QYyPB3ZGMeSinzC-GlKwpaJU_IvO",pushPost!!)
+        push = Push("Orders", "Your Order is processing")
+        pushPost = PushPost(tokenData, push)
+        viewModel.sendPush(
+            "key=AAAAdCyJ2hw:APA91bGF6x20oQnuC2ZeAXsJju-OCAZ67dBpQvaLx7h18HSAnhl9CPWupCJaV0552qJvm1qIHL_LAZoOvv5oWA9Iraar_XQkWe3JEUmJ1v7iKq09QYyPB3ZGMeSinzC-GlKwpaJU_IvO",
+            pushPost!!
+        )
         Toast.makeText(activity, value, Toast.LENGTH_LONG).show()
         showDialogSuccessfull(context!!,
             value,
@@ -402,8 +403,13 @@ class CreateDeliveryFragment : Fragment(), KodeinAware, ICustomerOrderListListen
         tv_grand_total?.setText(number2digits.toString() + " Tk")
         ordersAdapter?.notifyDataSetChanged()
     }
-    var tokenData:String?=""
+
+    var tokenData: String? = ""
     override fun onLoad(data: String) {
-        tokenData=data
+        tokenData = data
+    }
+
+    override fun onAmount(charge: Double) {
+        delivery_charge = charge
     }
 }

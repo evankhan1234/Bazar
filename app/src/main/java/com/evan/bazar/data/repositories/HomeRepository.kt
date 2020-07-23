@@ -206,4 +206,8 @@ class HomeRepository (
     suspend fun getSystemSearchList(header:String,post: SystemSearchPost): SystemListResponses {
         return apiRequest { api.getSystemSearchList(header,post) }
     }
+
+    suspend fun getDeliveryCharge(header:String): DeliveryAmountResponses {
+        return apiRequest { api.getDeliveryCharge(header) }
+    }
 }

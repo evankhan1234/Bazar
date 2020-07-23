@@ -180,13 +180,14 @@
                                     android:textSize="13sp" />
                         </RelativeLayout>
                         <View
+                                android:visibility="gone"
                                 android:background="@color/black_opacity_30"
                                 android:layout_marginTop="7dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp" />
                         <RelativeLayout
                                 android:layout_marginTop="10dp"
-
+                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
@@ -221,14 +222,14 @@
                                     android:textColor="@color/black_again"
                                     android:textSize="13sp" />
                         </RelativeLayout>
-                        <View
+                        <View android:visibility="gone"
                                 android:background="@color/black_opacity_30"
                                 android:layout_marginTop="7dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp" />
                         <RelativeLayout
                                 android:layout_marginTop="10dp"
-
+                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
@@ -262,14 +263,14 @@
                                     android:textColor="@color/black_again"
                                     android:textSize="13sp" />
                         </RelativeLayout>
-                        <View
+                        <View android:visibility="gone"
                                 android:background="@color/black_opacity_30"
                                 android:layout_marginTop="7dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp" />
                         <RelativeLayout
                                 android:layout_marginTop="10dp"
-
+                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
@@ -325,6 +326,7 @@
                         android:textColor="@color/black_again"
                         android:textSize="15sp" />
                 <EditText
+                        android:visibility="gone"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:inputType="numberDecimal"
@@ -344,6 +346,7 @@
                         android:textColor="@color/black_again"
                         android:textSize="13sp" />
                 <EditText
+                        android:visibility="gone"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:inputType="text"

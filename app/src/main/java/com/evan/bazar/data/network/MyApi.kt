@@ -112,7 +112,10 @@ interface MyApi {
 //        @Header("Authorization") test:String,
 //        @Part file: MultipartBody.Part?, @Part("uploaded_file") requestBody: RequestBody?
 //    ) : Response<ImageResponse>
-
+    @GET("get-delivery-charge.php")
+    suspend fun getDeliveryCharge(
+        @Header("Authorization") Authorization:String
+    ): Response<DeliveryAmountResponses>
     @POST("update-delivery-api.php")
     suspend fun updateDeliveryStatus(
         @Header("Authorization") Authorization:String,
