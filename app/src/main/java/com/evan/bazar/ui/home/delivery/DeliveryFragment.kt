@@ -106,7 +106,7 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener,IPushLi
     }
 
     override fun onUpdate(delivery: Delivery) {
-        showDialog(context!!,delivery)
+      //  showDialog(context!!,delivery)
     }
 
     fun showDialog(mContext: Context,delivery: Delivery) {
