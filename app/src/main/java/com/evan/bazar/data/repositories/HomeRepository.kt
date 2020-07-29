@@ -210,4 +210,14 @@ class HomeRepository (
     suspend fun getDeliveryCharge(header:String): DeliveryAmountResponses {
         return apiRequest { api.getDeliveryCharge(header) }
     }
+
+    suspend fun getCustomerOrdersList(header:String,customerOrderPost: CustomerOrderPost): CustomerOrderListResponses {
+        return apiRequest { api.getCustomerOrderList(header,customerOrderPost) }
+    }
+    suspend fun getCustomerOrderInformation(header:String,post: CustomerOrderPost): CustomerDeliveryResponses {
+        return apiRequest { api.getCustomerOrderInformation(header,post) }
+    }
+    suspend fun updateReturnOrderStatus(header:String,post: OrderReasonStatusPost): BasicResponses {
+        return apiRequest { api.updateReturnOrderStatus(header,post) }
+    }
 }

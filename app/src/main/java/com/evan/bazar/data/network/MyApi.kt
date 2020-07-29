@@ -153,6 +153,12 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body customerOrderItem: CustomerOrderItem
     ): Response<BasicResponses>
+
+    @POST("update-return-order-status.php")
+    suspend fun updateReturnOrderStatus(
+        @Header("Authorization") Authorization:String,
+        @Body post: OrderReasonStatusPost
+    ): Response<BasicResponses>
     @POST("user-token.php")
     suspend fun createToken(
         @Header("Authorization") Authorization:String,
@@ -188,6 +194,18 @@ interface MyApi {
         @Header("Authorization") Authorization:String,
         @Body customerOrderPost: CustomerOrderPost
     ): Response<CustomerOrderResponses>
+
+    @POST("customer-order-products-delivery.php")
+    suspend fun getCustomerOrderList(
+        @Header("Authorization") Authorization:String,
+        @Body customerOrderPost: CustomerOrderPost
+    ): Response<CustomerOrderListResponses>
+    @POST("get-delivery-customer-order-details.php")
+    suspend fun getCustomerOrderInformation(
+        @Header("Authorization") Authorization:String,
+        @Body post: CustomerOrderPost
+    ): Response<CustomerDeliveryResponses>
+
     @GET("order-get.php")
     suspend fun getOrders(
         @Header("Authorization") Authorization:String

@@ -20,6 +20,7 @@ import com.evan.bazar.data.db.entities.Delivery
 import com.evan.bazar.data.network.post.Push
 import com.evan.bazar.data.network.post.PushPost
 import com.evan.bazar.ui.custom.CustomDialog
+import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.dashboard.IPushListener
 import com.evan.bazar.ui.home.supplier.SupplierAdapter
 import com.evan.bazar.ui.home.supplier.SupplierModelFactory
@@ -107,6 +108,10 @@ class DeliveryFragment : Fragment(),KodeinAware ,IDeliveryUpdateListener,IPushLi
 
     override fun onUpdate(delivery: Delivery) {
       //  showDialog(context!!,delivery)
+        if (activity is HomeActivity) {
+            (activity as HomeActivity).goToViewCustomerDeliveryFragment(delivery!!)
+        }
+
     }
 
     fun showDialog(mContext: Context,delivery: Delivery) {
