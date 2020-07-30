@@ -131,7 +131,7 @@
                     android:layout_gravity="end"
                     android:background="@drawable/black_capsul"
                     android:stateListAnimator="@null"
-                    android:text="Delete"
+                    android:text="Done"
                     android:textColor="#fff"
                     android:textSize="15sp" />
             </RelativeLayout>
