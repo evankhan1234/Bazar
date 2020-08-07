@@ -60,6 +60,8 @@ class OrderAdapter(
         holder.itemView.tv_product_name.setText(order?.get(position)?.Name)
         holder.itemView.text_quantity.setText(order?.get(position)?.Quantity?.toString())
 
+        holder.itemView.img_minus.visibility=View.GONE
+        holder.itemView.img_plus.visibility=View.GONE
         holder.itemView.tv_date.text = getStartDate(order?.get(position)?.Created)
 
         if (order?.get(position)?.ReturnProduct == 2) {

@@ -1352,6 +1352,10 @@ class HomeActivity : AppCompatActivity(),KodeinAware,IChatCountListener {
 
                                         f.showImage(updated_image_url)
                                     }
+                                    else if (f is CreateSystemProductFragment) {
+
+                                        f.showImage(updated_image_url)
+                                    }
                                     else if (f is ProfileUpdateFragment) {
 
                                         f.showImage(updated_image_url)

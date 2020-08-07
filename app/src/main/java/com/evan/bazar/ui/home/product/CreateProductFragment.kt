@@ -428,19 +428,19 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
         progress_bar?.hide()
     }
     fun showImage(temp:String?){
-        image_address="http://hathbazzar.com/"+temp
-        Log.e("for","Image"+temp)
-        Glide.with(this)
-            .load("http://hathbazzar.com/"+temp)
-            .into(img_background_mypage!!)
-        img_user_add?.visibility=View.INVISIBLE
-
-//        image_address="http://192.168.0.106/"+temp
+//        image_address="http://hathbazzar.com/"+temp
 //        Log.e("for","Image"+temp)
 //        Glide.with(this)
-//            .load("http://192.168.0.106/"+temp)
+//            .load("http://hathbazzar.com/"+temp)
 //            .into(img_background_mypage!!)
 //        img_user_add?.visibility=View.INVISIBLE
+
+        image_address="http://192.168.0.105/"+temp
+        Log.e("for","Image"+temp)
+        Glide.with(this)
+            .load("http://192.168.0.105/"+temp)
+            .into(img_background_mypage!!)
+        img_user_add?.visibility=View.INVISIBLE
     }
 
 }
