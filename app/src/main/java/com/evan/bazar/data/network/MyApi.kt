@@ -1,6 +1,7 @@
 package com.evan.bazar.data.network
 
 
+import android.annotation.SuppressLint
 import com.evan.bazar.data.network.post.*
 import com.evan.bazar.data.network.responses.*
 import okhttp3.MultipartBody
@@ -376,6 +377,7 @@ interface MyApi {
     suspend fun getQuotes(): Response<QuotesResponse>
 
     companion object {
+        @SuppressLint("NewApi")
         operator fun invoke(
             networkConnectionInterceptor: NetworkConnectionInterceptor
         ): MyApi {
