@@ -591,7 +591,7 @@ class CreateAccountActivity : AppCompatActivity(),KodeinAware, SignUpInterface {
     }
 
     override fun onEndProgress() {
-        progress_bar?.hide()
+
 
     }
 
