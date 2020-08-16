@@ -139,10 +139,10 @@ class StepOneFragment : Fragment() {
 //        Glide.with(this)
 //            .load("http://hathbazzar.com/"+temp)
 //            .into(img_user_profile!!)
-        image_address="http://192.168.0.104/"+temp
-        Log.e("","http://192.168.0.104/"+temp)
+        image_address="http://192.168.0.105/"+temp
+        Log.e("","http://192.168.0.105/"+temp)
         Glide.with(this)
-            .load("http://192.168.0.104/"+temp)
+            .load("http://192.168.0.105/"+temp)
             .into(img_user_profile!!)
 
 
