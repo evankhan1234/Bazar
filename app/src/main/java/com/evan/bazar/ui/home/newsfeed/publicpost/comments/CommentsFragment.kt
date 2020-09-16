@@ -94,7 +94,7 @@ class CommentsFragment(posts: Post) : BottomSheetDialogFragment() ,KodeinAware,I
         token = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_AUTH_TOKEN)
         name = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_NAME)
         image = SharedPreferenceUtil.getShared(activity!!, SharedPreferenceUtil.TYPE_IMAGE)
-        viewModel.getComments(token!!,post?.Id!!,2)
+        viewModel.getComments(token!!,post?.Id!!,1)
         if(!post?.Picture.equals("empty")){
             Glide.with(this)
                 .load(post?.Picture).dontAnimate()
@@ -148,7 +148,7 @@ class CommentsFragment(posts: Post) : BottomSheetDialogFragment() ,KodeinAware,I
         }
         rcl_comments?.isNestedScrollingEnabled=false
         img_reload?.setOnClickListener {
-            viewModel.getComments(token!!,post?.Id!!,2)
+            viewModel.getComments(token!!,post?.Id!!,1)
         }
         btn_sends?.setOnClickListener {
             var content:String=""
@@ -188,13 +188,13 @@ class CommentsFragment(posts: Post) : BottomSheetDialogFragment() ,KodeinAware,I
 
     override fun onSuccess(message: String) {
         Toast.makeText(context!!,message,Toast.LENGTH_SHORT).show()
-        viewModel.getComments(token!!,post?.Id!!,2)
-        viewModel.getCommentsAgain(token!!,post?.Id!!,2)
+        viewModel.getComments(token!!,post?.Id!!,1)
+        viewModel.getCommentsAgain(token!!,post?.Id!!,1)
         edt_input?.setText("")
     }
 
     fun reload(){
-        viewModel.getComments(token!!,post?.Id!!,2)
+        viewModel.getComments(token!!,post?.Id!!,1)
     }
     override fun onFailure(message: String) {
         Toast.makeText(context!!,message,Toast.LENGTH_SHORT).show()
