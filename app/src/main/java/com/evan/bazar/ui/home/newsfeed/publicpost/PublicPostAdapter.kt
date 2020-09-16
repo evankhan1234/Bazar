@@ -1,5 +1,6 @@
 package com.evan.bazar.ui.home.newsfeed.publicpost
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.Html
@@ -62,6 +63,7 @@ class PublicPostAdapter (val context: Context, val publicPostUpdateListener: IPu
                 return oldItem.Id == newItem.Id
             }
 
+            @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return oldItem == newItem
             }
