@@ -150,7 +150,7 @@ class ReplyFragment (comments: Comments) : BottomSheetDialogFragment() , KodeinA
             content=edt_input?.text.toString()
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             val currentDate = sdf.format(Date())
-            viewModel?.createReply(token!!,name!!,content,currentDate,1,2,image!!,comment?.Id!!)
+            viewModel?.createReply(token!!,name!!,content,currentDate,1,1,image!!,comment?.Id!!)
 
         }
         return dialog
