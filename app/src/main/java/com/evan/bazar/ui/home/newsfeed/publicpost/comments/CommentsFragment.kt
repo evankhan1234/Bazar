@@ -155,7 +155,7 @@ class CommentsFragment(posts: Post) : BottomSheetDialogFragment() ,KodeinAware,I
             content=edt_input?.text.toString()
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             val currentDate = sdf.format(Date())
-            viewModel?.createComments(token!!,name!!,content,currentDate,1,2,image!!,0,post?.Id!!)
+            viewModel?.createComments(token!!,name!!,content,currentDate,1,1,image!!,0,post?.Id!!)
 
         }
         return dialog
