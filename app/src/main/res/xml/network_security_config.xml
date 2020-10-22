@@ -2,7 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">192.168.0.110</domain>
-        <domain includeSubdomains="true">192.168.0.103</domain>
+        <domain includeSubdomains="true">199.192.28.11</domain>
         <domain includeSubdomains="true">hathbazzar.com</domain>
         <domain includeSubdomains="true">206.189.180.190</domain>
         <domain includeSubdomains="true">10.10.10.209</domain>

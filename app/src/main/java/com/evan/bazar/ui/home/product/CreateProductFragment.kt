@@ -435,10 +435,10 @@ class CreateProductFragment : Fragment(),KodeinAware,IUnitListener,ICategoryType
 //            .into(img_background_mypage!!)
 //        img_user_add?.visibility=View.INVISIBLE
 
-        image_address="http://192.168.0.105/"+temp
+        image_address="199.192.28.11/"+temp
         Log.e("for","Image"+temp)
         Glide.with(this)
-            .load("http://192.168.0.105/"+temp)
+            .load("http://199.192.28.11/"+temp)
             .into(img_background_mypage!!)
         img_user_add?.visibility=View.INVISIBLE
     }
