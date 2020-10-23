@@ -197,11 +197,19 @@ class CreateSupplierFragment : Fragment(),KodeinAware,ICreateSupplierListener {
     }
 
     fun showImage(temp:String?){
-        image_address="http://hathbazzar.com/"+temp
+//        image_address="http://hathbazzar.com/"+temp
+//        Log.e("for","Image"+temp)
+//        Glide.with(this)
+//            .load("http://hathbazzar.com/"+temp)
+//            .into(img_user_profile!!)
+
+        image_address="http://199.192.28.11/"+temp
         Log.e("for","Image"+temp)
         Glide.with(this)
-            .load("http://hathbazzar.com/"+temp)
+            .load("http://199.192.28.11/"+temp)
             .into(img_user_profile!!)
+
+
     }
 
     override fun show(value: String) {

@@ -467,6 +467,7 @@ class HomeViewModel(
                 Log.e("Search", "Search" + Gson().toJson(newsfeedPost))
                 val response = repository.createdNewsFeedPost(header,newsfeedPost!!)
                 Log.e("response", "response" + Gson().toJson(response))
+
                 postListener?.onSuccess(response?.message!!)
                 postListener?.onEnd()
 

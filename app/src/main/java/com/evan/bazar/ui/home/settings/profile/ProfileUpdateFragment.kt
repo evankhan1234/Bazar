@@ -92,18 +92,28 @@ class ProfileUpdateFragment : Fragment() ,KodeinAware,IProfileUpdateListener{
     }
 
     fun showImage(temp:String?){
-        image_address="http://hathbazzar.com/"+temp
+//        image_address="http://hathbazzar.com/"+temp
+//        Log.e("for","Image"+temp)
+//        Glide.with(this)
+//            .load("http://hathbazzar.com/"+temp)
+//            .into(img_user_profile!!)
+      //  img_user_add?.visibility=View.INVISIBLE
+
+        image_address="http://199.192.28.11/"+temp
         Log.e("for","Image"+temp)
         Glide.with(this)
-            .load("http://hathbazzar.com/"+temp)
+            .load("http://199.192.28.11/"+temp)
             .into(img_user_profile!!)
-      //  img_user_add?.visibility=View.INVISIBLE
     }
     var reference: DatabaseReference? = null
     override fun onLoad(message: String) {
         Toast.makeText(context!!,message, Toast.LENGTH_SHORT).show()
         (activity as HomeActivity?)!!.onBackPressed()
         status(image_address!!)
+        SharedPreferenceUtil.saveShared(
+            activity!!,
+            SharedPreferenceUtil.TYPE_IMAGE,
+            image_address!!)
     }
     open fun status(status: String) {
         var fuser: FirebaseUser? = null
