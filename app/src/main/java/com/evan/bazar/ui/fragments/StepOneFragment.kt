@@ -1,17 +1,19 @@
 package com.evan.bazar.ui.fragments
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.RelativeLayout
+import android.widget.*
 import androidx.appcompat.widget.AppCompatImageButton
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 
 import com.evan.bazar.R
 import com.evan.bazar.ui.auth.CreateAccountActivity
@@ -33,6 +35,7 @@ class StepOneFragment : Fragment() {
     var et_address:EditText?=null
     var show_pass:ImageView?=null
     var image_address:String?=""
+    var progress_bar: ProgressBar?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +51,7 @@ class StepOneFragment : Fragment() {
         et_address=root?.findViewById(R.id.et_address)
         img_user_add=root?.findViewById(R.id.img_user_add)
         img_user_profile=root?.findViewById(R.id.img_user_profile)
+        progress_bar=root?.findViewById(R.id.progress_bar)
         img_user_add?.setOnClickListener{
             (activity as CreateAccountActivity?)!!.openImageChooser()
         }
@@ -139,12 +143,40 @@ class StepOneFragment : Fragment() {
 //        Glide.with(this)
 //            .load("http://hathbazzar.com/"+temp)
 //            .into(img_user_profile!!)
-        image_address="http://192.168.0.105/"+temp
-        Log.e("","http://192.168.0.105/"+temp)
+        image_address="http://199.192.28.11/"+temp
+        Log.e("","http://199.192.28.11/"+temp)
+//        Glide.with(this)
+//            .load("http://199.192.28.11/"+temp)
+//            .into(img_user_profile!!)
+        loadImage(image_address!!)
+
+    }
+    fun loadImage(image_path:String){
+        progress_bar?.visibility = View.VISIBLE
         Glide.with(this)
-            .load("http://192.168.0.105/"+temp)
+            .load(image_path)
+            .listener(object : RequestListener<Drawable> {
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress_bar?.visibility = View.GONE
+                    return false
+                }
+
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress_bar?.visibility = View.GONE
+                    return false
+                }
+            })
             .into(img_user_profile!!)
-
-
     }
 }

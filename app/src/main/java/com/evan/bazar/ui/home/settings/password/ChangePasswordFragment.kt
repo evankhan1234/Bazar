@@ -14,6 +14,7 @@ import com.evan.bazar.ui.home.HomeActivity
 import com.evan.bazar.ui.home.HomeViewModel
 import com.evan.bazar.ui.home.HomeViewModelFactory
 import com.evan.bazar.util.*
+import com.google.firebase.auth.FirebaseAuth
 
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -40,7 +41,7 @@ class ChangePasswordFragment : Fragment(),KodeinAware,IChangePasswordListener {
     var btn_ok: Button?=null
     var shopUsers: ShopUser?=null
     var root_layout: RelativeLayout?=null
-
+    var auth: FirebaseAuth? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +50,7 @@ class ChangePasswordFragment : Fragment(),KodeinAware,IChangePasswordListener {
         val root= inflater.inflate(R.layout.fragment_change_password, container, false)
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
         viewModel.changePasswordListener=this
+        auth = FirebaseAuth.getInstance()
         root_layout=root?.findViewById(R.id.root_layout)
         et_current_password=root?.findViewById(R.id.et_current_password)
         progress_bar=root?.findViewById(R.id.progress_bar)
@@ -178,6 +180,24 @@ class ChangePasswordFragment : Fragment(),KodeinAware,IChangePasswordListener {
     override fun onUser(message: String) {
         Toast.makeText(context!!,message,Toast.LENGTH_SHORT).show()
         (activity as HomeActivity?)!!.onBackPressed()
+        current_password=et_current_password?.text.toString()
+        password=et_password?.text.toString()
+        auth!!.signInWithEmailAndPassword(shopUsers?.Email!!,current_password)
+            .addOnCompleteListener(activity!!) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success now update email
+                    auth!!.currentUser!!.updatePassword(password)
+                        .addOnCompleteListener{ task ->
+                            if (task.isSuccessful) {
+
+                            }else{
+                                // email update failed
+                            }
+                        }
+                } else {
+                    // sign in failed
+                }
+            }
     }
 
     override fun onFailure(message: String) {

@@ -1,18 +1,20 @@
 package com.evan.bazar.ui.home.settings.profile
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.ShopUser
 import com.evan.bazar.ui.home.HomeActivity
@@ -31,7 +33,7 @@ import java.util.HashMap
 
 class ProfileUpdateFragment : Fragment() ,KodeinAware,IProfileUpdateListener{
     override val kodein by kodein()
-
+    var progress_bar: ProgressBar?=null
     private val factory : HomeViewModelFactory by instance()
     private lateinit var viewModel: HomeViewModel
     var shopUsers: ShopUser?=null
@@ -62,6 +64,7 @@ class ProfileUpdateFragment : Fragment() ,KodeinAware,IProfileUpdateListener{
         et_email=root?.findViewById(R.id.et_email)
         et_address=root?.findViewById(R.id.et_address)
         btn_update=root?.findViewById(R.id.btn_update)
+        progress_bar=root?.findViewById(R.id.progress_bar)
         img_user_add?.setOnClickListener {
             (activity as HomeActivity?)!!.openImageChooser()
         }
@@ -101,8 +104,35 @@ class ProfileUpdateFragment : Fragment() ,KodeinAware,IProfileUpdateListener{
 
         image_address="http://199.192.28.11/"+temp
         Log.e("for","Image"+temp)
+        loadImage(image_address!!)
+
+    }
+    fun loadImage(image_path:String){
+        progress_bar?.visibility = View.VISIBLE
         Glide.with(this)
-            .load("http://199.192.28.11/"+temp)
+            .load(image_path)
+            .listener(object : RequestListener<Drawable> {
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress_bar?.visibility = View.GONE
+                    return false
+                }
+
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress_bar?.visibility = View.GONE
+                    return false
+                }
+            })
             .into(img_user_profile!!)
     }
     var reference: DatabaseReference? = null

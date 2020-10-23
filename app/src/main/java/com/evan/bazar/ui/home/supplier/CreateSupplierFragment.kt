@@ -1,5 +1,6 @@
 package com.evan.bazar.ui.home.supplier
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +12,10 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.Supplier
@@ -205,13 +210,40 @@ class CreateSupplierFragment : Fragment(),KodeinAware,ICreateSupplierListener {
 
         image_address="http://199.192.28.11/"+temp
         Log.e("for","Image"+temp)
-        Glide.with(this)
-            .load("http://199.192.28.11/"+temp)
-            .into(img_user_profile!!)
-
+//        Glide.with(this)
+//            .load("http://199.192.28.11/"+temp)
+//            .into(img_user_profile!!)
+        loadImage(image_address!!)
 
     }
+    fun loadImage(image_path:String){
+        progress_bar?.visibility = View.VISIBLE
+        Glide.with(this)
+            .load(image_path)
+            .listener(object : RequestListener<Drawable> {
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress_bar?.visibility = View.GONE
+                    return false
+                }
 
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress_bar?.visibility = View.GONE
+                    return false
+                }
+            })
+            .into(img_user_profile!!)
+    }
     override fun show(value: String) {
         Toast.makeText(activity, value, Toast.LENGTH_LONG).show()
         if (activity is HomeActivity) {
