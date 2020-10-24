@@ -1,7 +1,10 @@
 package com.evan.bazar.ui.home.system
 
 import android.app.Activity
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +15,10 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.evan.bazar.R
 import com.evan.bazar.data.db.entities.*
 import com.evan.bazar.data.db.entities.Unit
@@ -125,6 +132,19 @@ class CreateSystemProductFragment : Fragment() , KodeinAware, IUnitListener, ICa
                     .into(img_background_mypage!!)
 
                 Log.e("data","data"+ Gson().toJson(systemList))
+                Handler(Looper.getMainLooper()).postDelayed({
+                    /* Create an Intent that will start the Menu-Activity. */
+                    for (i in unit!!.indices) {
+                        Log.e("unit_id","unit_id"+ unit!!.get(i).Id!!)
+                        Log.e("unit_id_","unit_id_"+ systemList?.UnitId)
+                        if (unit!!.get(i).Id!!.equals(systemList?.UnitId)) {
+                            spinner_unit?.setSelection(i)
+                            Log.e("trues","trues")
+                        }
+                    }
+
+                }, 2000)
+
             }
         }
         btn_ok?.setOnClickListener {
@@ -228,14 +248,7 @@ class CreateSystemProductFragment : Fragment() , KodeinAware, IUnitListener, ICa
                         id: Long
                     ) {
                         id_unit = units.get(position).Id
-                        for (i in unit!!.indices) {
-                            Log.e("unit_id","unit_id"+ unit!!.get(i).Id!!)
-                            Log.e("unit_id_","unit_id_"+ systemList?.UnitId)
-                            if (unit!!.get(i).Id!!.equals(systemList?.UnitId)) {
-                                spinner_unit?.setSelection(i)
-                                Log.e("trues","trues")
-                            }
-                        }
+
                         Log.e("shop", "shop" + units.get(position).Id)
                     }
 
@@ -340,10 +353,7 @@ class CreateSystemProductFragment : Fragment() , KodeinAware, IUnitListener, ICa
     fun showImage(temp:String?){
         image_address="http://199.192.28.11/"+temp
         Log.e("for","Image"+temp)
-        Glide.with(this)
-            .load("http://199.192.28.11/"+temp)
-            .into(img_background_mypage!!)
-        img_user_add?.visibility=View.INVISIBLE
+
 //
 //        image_address="http://hathbazzar.com/"+temp
 //        Log.e("for","Image"+temp)
@@ -351,5 +361,35 @@ class CreateSystemProductFragment : Fragment() , KodeinAware, IUnitListener, ICa
 //            .load("http://hathbazzar.com/"+temp)
 //            .into(img_background_mypage!!)
 //        img_user_add?.visibility=View.INVISIBLE
+        loadImage(image_address!!)
+
+    }
+    fun loadImage(image_path:String){
+        progress_bar?.visibility = View.VISIBLE
+        Glide.with(this)
+            .load(image_path)
+            .listener(object : RequestListener<Drawable> {
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress_bar?.visibility = View.GONE
+                    return false
+                }
+
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress_bar?.visibility = View.GONE
+                    return false
+                }
+            })
+            .into(img_background_mypage!!)
     }
 }
